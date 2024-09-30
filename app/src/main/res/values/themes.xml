@@ -2,8 +2,13 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.MeowApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/pink2</item>
     </style>
 
     <style name="Theme.MeowApp" parent="Base.Theme.MeowApp" />
+
+    <style name="roundedImageStyle" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">7dp</item>
+    </style>
 </resources>
