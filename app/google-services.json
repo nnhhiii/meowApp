@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "677069147899",
+    "firebase_url": "https://appngonngu-default-rtdb.firebaseio.com",
+    "project_id": "appngonngu",
+    "storage_bucket": "appngonngu.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:677069147899:android:8d38dff04e7457cbf26a5e",
+        "android_client_info": {
+          "package_name": "com.example.meowapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRbT1eeBwbobQSAoLKuAFm5bh-WkIGThg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
