@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true"
+    tools:context=".questionType.Start">
+
+    <TextView
+        android:id="@+id/header_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25dp"
+        android:text="Dịch và sắp xếp các từ sau"
+        android:layout_margin="25dp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/question"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hello, what is your name?"
+        android:textSize="20dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_below="@+id/header_title"/>
+
+    <TextView
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/question"
+        android:layout_margin="25dp"
+        android:background="@drawable/edittext_with_lines" />
+    <TextView
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view"
+        android:layout_margin="25dp"
+        android:background="@drawable/edittext_with_lines" />
+    <TextView
+        android:id="@+id/view3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view2"
+        android:layout_margin="25dp"
+        android:background="@drawable/edittext_with_lines" />
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/wordContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view3"
+        app:flexWrap="wrap"
+        app:justifyContent="center"
+        android:layout_margin="25dp">
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:text="Kiểm tra"
+        android:textSize="18dp"
+        android:layout_margin="25dp"/>
+</RelativeLayout>

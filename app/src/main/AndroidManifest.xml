@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/ic_logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/ic_logo2"
         android:supportsRtl="true"
         android:theme="@style/Theme.MeowApp"
         tools:targetApi="31">
+        <activity
+            android:name=".questionType.BlankActivity"
+            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".questionType.start"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".user.Add"
             android:exported="false" />
@@ -25,7 +31,7 @@
             android:name=".user.Manage"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".questionType.Start"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -12,6 +12,14 @@ firebaseDatabase = "21.0.0"
 annotation = "1.8.0"
 lifecycleLivedataKtx = "2.8.0"
 lifecycleViewmodelKtx = "2.8.0"
+lifecycleRuntimeKtx = "2.9.0-alpha03"
+startupRuntime = "1.2.0"
+adapterGuava = "2.11.0"
+converterGson = "2.11.0"
+flexbox = "3.0.0"
+loggingInterceptor = "5.0.0-alpha.14"
+picasso = "2.71828"
+firebaseStorage = "21.0.0"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -26,6 +34,14 @@ firebase-database = { group = "com.google.firebase", name = "firebase-database",
 annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
 lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
 lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
+lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+startup-runtime = { group = "androidx.startup", name = "startup-runtime", version.ref = "startupRuntime" }
+adapter-guava = { group = "com.squareup.retrofit2", name = "adapter-guava", version.ref = "adapterGuava" }
+converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "converterGson" }
+flexbox = { group = "com.google.android.flexbox", name = "flexbox", version.ref = "flexbox" }
+logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "loggingInterceptor" }
+picasso = { group = "com.squareup.picasso", name = "picasso", version.ref = "picasso" }
+firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

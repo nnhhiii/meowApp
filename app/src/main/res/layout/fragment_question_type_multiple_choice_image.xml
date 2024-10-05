@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true"
+    tools:context=".questionType.WritingFragment">
+
+    <TextView
+        android:id="@+id/header_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25dp"
+        android:text="Chọn hình ảnh đúng"
+        android:layout_margin="25dp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/question"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Milk"
+        android:textSize="20dp"
+        android:layout_marginLeft="25dp"
+        android:layout_below="@+id/header_title"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView1"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
+        android:layout_below="@+id/question"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="35dp"
+        android:layout_marginStart="35dp"
+        app:cardCornerRadius="20dp" >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/image_1"
+                android:layout_width="match_parent"
+                android:layout_height="145dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/ic_launcher_background"
+                android:scaleType="centerCrop" />
+            <TextView
+                android:id="@+id/option_a"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/image_1"
+                android:text="Trà"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"/>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
+        android:layout_below="@+id/question"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="35dp"
+        app:cardCornerRadius="20dp" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/image_2"
+                android:layout_width="match_parent"
+                android:layout_height="145dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/ic_launcher_background"
+                android:scaleType="centerCrop" />
+            <TextView
+                android:id="@+id/option_b"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/image_2"
+                android:text="Sữa"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"/>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView3"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
+        android:layout_below="@+id/cardView1"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="35dp"
+        app:cardCornerRadius="20dp" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/image_3"
+                android:layout_width="match_parent"
+                android:layout_height="145dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/ic_launcher_background"
+                android:scaleType="centerCrop" />
+            <TextView
+                android:id="@+id/option_c"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/image_3"
+                android:text="Nước"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"/>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView4"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
+        android:layout_below="@+id/cardView2"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="35dp"
+        app:cardCornerRadius="20dp" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/image_4"
+                android:layout_width="match_parent"
+                android:layout_height="145dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/ic_launcher_background"
+                android:scaleType="centerCrop" />
+            <TextView
+                android:id="@+id/option_d"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/image_4"
+                android:text="Cà phê"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"/>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:text="Kiểm tra"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:layout_margin="25dp"/>
+</RelativeLayout>

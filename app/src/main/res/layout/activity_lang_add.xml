@@ -1,0 +1,72 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Phần tiêu đề (Title) -->
+    <RelativeLayout
+        android:id="@+id/layout_tren"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF">
+
+        <ImageButton
+            android:id="@+id/btnCancel"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:background="@color/white"
+            android:src="@drawable/ic_arrow_back" />
+
+        <TextView
+            android:id="@+id/headerTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="Thêm ngôn ngữ"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <!-- Biểu mẫu nhập thông tin -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="25dp"
+        android:layout_below="@id/layout_tren">
+
+        <!-- Trường nhập Tên ngôn ngữ -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên ngôn ngữ"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <EditText
+            android:id="@+id/et_language_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nhập vào tên ngôn ngữ"
+            android:padding="12dp"
+            android:background="@android:drawable/edit_text" />
+
+
+    </LinearLayout>
+
+    <!-- Nút Thêm -->
+    <Button
+        android:id="@+id/btn_add_language"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Thêm"
+        android:textSize="18sp"
+        android:textColor="#FFFFFF"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="25dp"
+        android:padding="12dp" />
+
+</RelativeLayout>

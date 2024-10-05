@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".questionType.Start">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_above="@+id/image"
+        android:text="Meow"
+        android:textSize="30dp"
+        android:gravity="center"
+        android:textColor="@color/pink1"
+        android:fontFamily="@font/feather_bold"/>
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/ic_logo"
+        android:layout_centerInParent="true"/>
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/image"
+        android:text="Hãy bắt đầu"
+        android:textSize="22dp"
+        android:gravity="center"
+        android:textColor="@color/pink3"
+        android:fontFamily="@font/feather_bold"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text1"
+        android:text="bài học mới mỗi ngày!"
+        android:textSize="22dp"
+        android:gravity="center"
+        android:textColor="@color/pink3"
+        android:fontFamily="@font/feather_bold"/>
+    <Button
+        android:id="@+id/btnStart"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:text="Bắt đầu"
+        android:textSize="18dp"
+        android:layout_margin="25dp"/>
+</RelativeLayout>
