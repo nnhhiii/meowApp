@@ -20,8 +20,10 @@ flexbox = "3.0.0"
 loggingInterceptor = "5.0.0-alpha.14"
 picasso = "2.71828"
 firebaseStorage = "21.0.0"
+recyclerview ="1.2.1"
 
 [libraries]
+recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

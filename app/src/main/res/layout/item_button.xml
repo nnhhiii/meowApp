@@ -1,0 +1,19 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="120dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <Button
+        android:id="@+id/item_button"
+        android:layout_width="78dp"
+        android:layout_height="71dp"
+        android:layout_gravity="center"
+        android:background="@drawable/button_ls"
+        android:elevation="8dp"
+        android:padding="16dp"
+        android:text="LOVE"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
+
+</LinearLayout>

@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.adapter.guava)
     implementation(libs.converter.gson)
     implementation(libs.flexbox)
+    implementation (libs.recyclerview)
     implementation(libs.logging.interceptor)
     implementation(libs.picasso)
     implementation(libs.firebase.storage)
