@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Trạng thái khi button được nhấn -->
+    <item android:state_pressed="true" android:drawable="@color/pink1" />
+    <!-- Trạng thái khi button được chọn (focus hoặc selected) -->
+    <item android:state_focused="true" android:drawable="@color/pink1" />
+    <item android:state_selected="true" android:drawable="@color/pink1" />
+    <!-- Trạng thái mặc định khi button không được nhấn -->
+    <item android:drawable="@color/pink3" />
+</selector>

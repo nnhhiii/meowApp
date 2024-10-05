@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imgIcon"
+        android:src="@drawable/ic_logo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp" />
+
+    <TextView
+        android:id="@+id/txtQuestion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/imgIcon"
+        android:layout_alignBottom="@+id/imgIcon"
+        android:layout_marginStart="17dp"
+        android:gravity="center"
+        android:layout_toEndOf="@id/imgIcon"
+        android:text="Bạn muốn bắt đầu từ đâu nhỉ?"
+        android:textSize="18sp" />
+
+    <ListView
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/imgIcon"/>
+
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:text="Xong"
+        android:textSize="18dp"
+        android:background="@drawable/radius_4_goc"
+        android:layout_margin="25dp"/>
+
+</RelativeLayout>

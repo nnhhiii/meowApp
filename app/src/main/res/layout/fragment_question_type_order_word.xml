@@ -64,5 +64,6 @@
         android:layout_alignParentBottom="true"
         android:text="Kiểm tra"
         android:textSize="18dp"
+        android:background="@drawable/radius_4_goc"
         android:layout_margin="25dp"/>
 </RelativeLayout>

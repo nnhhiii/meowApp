@@ -87,6 +87,7 @@
         android:layout_margin="25dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:background="@drawable/radius_4_goc"
         android:padding="12dp" />
 
 </RelativeLayout>

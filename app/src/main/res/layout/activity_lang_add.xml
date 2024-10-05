@@ -66,6 +66,7 @@
         android:textColor="#FFFFFF"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
+        android:background="@drawable/radius_4_goc"
         android:layout_margin="25dp"
         android:padding="12dp" />
 
