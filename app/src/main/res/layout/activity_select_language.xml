@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <RelativeLayout
+        android:id="@+id/layout_tren"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF">
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@color/white"
+            android:onClick="navigatetoDetailsActivity"
+            android:src="@drawable/ic_arrow_back" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="250dp"
+            android:layout_height="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="20dp"
+            android:layout_toEndOf="@id/backButton"
+            android:layout_marginStart="20dp"
+            android:progress="50"
+            android:progressTint="#8bc34a" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/imgIcon"
+        android:src="@drawable/ic_logo"
+        android:layout_below="@id/layout_tren"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp" />
+
+    <TextView
+        android:id="@+id/txtQuestion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bạn muốn học gì nhỉ?"
+        android:textSize="18sp"
+        android:layout_toEndOf="@id/imgIcon"
+        android:layout_alignTop="@id/imgIcon"
+        android:layout_marginStart="20dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="40dp"
+        android:layout_below="@id/imgIcon">
+
+        <!-- Thay thế Button bằng TextView -->
+        <TextView
+            android:id="@+id/txtTiengAnh"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:text="Tiếng Anh"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:background="@drawable/button_background"
+            android:layout_marginTop="0dp" />
+
+        <TextView
+            android:id="@+id/txtTiengHoa"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:text="Tiếng Hoa"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:background="@drawable/button_background"
+            android:layout_marginTop="10dp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="50dp"
+        android:textSize="18dp"
+        android:text="Tiếp tục"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/radius_4_goc"/>
+
+</RelativeLayout>
