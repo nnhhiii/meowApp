@@ -26,10 +26,10 @@
         <!-- android:name=".questionType.start" -->
         <!-- android:exported="false" /> -->
         <activity
-            android:name=".user.Add"
+            android:name=".user.AddUserActivity"
             android:exported="false" />
         <activity
-            android:name=".user.Edit"
+            android:name=".user.EditUserActivity"
             android:exported="false" />
         <activity
             android:name=".user.Detail"
@@ -49,6 +49,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".admin.AdminActivity"/>
+
     </application>
 
 </manifest>
