@@ -1,6 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- Phần tiêu đề (Title) -->
     <RelativeLayout
@@ -10,7 +12,7 @@
         android:background="#FFFFFF">
 
         <ImageButton
-            android:id="@+id/btnCancel"
+            android:id="@+id/btnBack"
             android:layout_width="65dp"
             android:layout_height="65dp"
             android:background="@color/white"
@@ -36,7 +38,6 @@
         android:padding="25dp"
         android:layout_below="@id/layout_tren">
 
-        <!-- Trường nhập Tên ngôn ngữ -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -46,19 +47,42 @@
             android:layout_marginBottom="4dp" />
 
         <EditText
-            android:id="@+id/et_language_name"
+            android:id="@+id/etName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Nhập vào tên ngôn ngữ"
             android:padding="12dp"
-            android:background="@android:drawable/edit_text" />
+            android:background="@drawable/edit_text_background" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ảnh cờ:"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="4dp" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/image"
+            android:layout_width="160dp"
+            android:layout_height="120dp"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/moreRoundedImageStyle"
+            app:srcCompat="@color/pink3" />
+        <Button
+            android:id="@+id/btnImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:text="Tải ảnh"/>
 
 
     </LinearLayout>
 
     <!-- Nút Thêm -->
     <Button
-        android:id="@+id/btn_add_language"
+        android:id="@+id/btnSave"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Thêm"

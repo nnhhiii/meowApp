@@ -36,7 +36,7 @@ public class BlankActivity extends AppCompatActivity {
         loadData();
     }
     private void loadData() {
-        FirebaseApiService.apiService.getQuestionsByLessonId("\"lesson_id\"", 2).enqueue(new Callback<Map<String, Question>>() {
+        FirebaseApiService.apiService.getQuestionsByLessonId("\"lesson_id\"", 5).enqueue(new Callback<Map<String, Question>>() {
             @Override
             public void onResponse(Call<Map<String, Question>> call, Response<Map<String, Question>> response) {
                 if (response.isSuccessful() && response.body() != null) {

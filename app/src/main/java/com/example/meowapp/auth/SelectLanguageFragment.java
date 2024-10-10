@@ -1,16 +1,30 @@
-package com.example.meowapp.Auth;
+package com.example.meowapp.auth;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.meowapp.R;
+import com.example.meowapp.adapter.SelectLanguageAdapter;
+import com.example.meowapp.api.FirebaseApiService;
+import com.example.meowapp.model.Language;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,6 +32,8 @@ import com.example.meowapp.R;
  * create an instance of this fragment.
  */
 public class SelectLanguageFragment extends Fragment {
+    private SelectLanguageAdapter adapter;
+    private ListView listView;
     private Button button;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -66,8 +82,11 @@ public class SelectLanguageFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_select_language, container, false);
         button = view.findViewById(R.id.btnNext);
+        listView = view.findViewById(R.id.listView);
         button.setOnClickListener(v -> {
-            // Khởi tạo Fragment mới
+            if (getActivity() instanceof BlankActivity) {
+                ((BlankActivity) getActivity()).updateProgressBar(100);
+            }
             Fragment fragment = new SelectLevelFragment();
 
             FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
@@ -78,8 +97,35 @@ public class SelectLanguageFragment extends Fragment {
             // Thực thi giao dịch Fragment
             transaction.commit();
         });
+        loadData();
         return view;
     }
+
+
+    private void loadData() {
+        FirebaseApiService.apiService.getAllLanguage().enqueue(new Callback<Map<String, Language>>() {
+            @Override
+            public void onResponse(Call<Map<String, Language>> call, Response<Map<String, Language>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    // Chuyển đổi từ Map sang List
+                    Map<String, Language> languageMap = response.body();
+                    List<Language> languages = new ArrayList<>(languageMap.values());
+                    adapter = new SelectLanguageAdapter(getContext(), languages);
+                    listView.setAdapter(adapter);
+                } else {
+                    Toast.makeText(getContext(), "Failed to get info", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Map<String, Language>> call, Throwable t) {
+                Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("error:", t.getMessage(), t);
+            }
+        });
+    }
+
+
 
 
 

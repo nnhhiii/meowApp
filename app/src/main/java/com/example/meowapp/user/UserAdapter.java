@@ -10,14 +10,15 @@ import android.widget.TextView;
 
 import com.example.meowapp.R;
 import com.example.meowapp.model.Question;
+import com.example.meowapp.model.User;
 
 import java.util.List;
 
 public class UserAdapter extends BaseAdapter {
     private Context context;
-    private List<Question.User> userList;
+    private List<User> userList;
 
-    public UserAdapter(Context context, List<Question.User> userList) {
+    public UserAdapter(Context context, List<User> userList) {
         this.context = context;
         this.userList = userList;
     }
@@ -44,7 +45,7 @@ public class UserAdapter extends BaseAdapter {
         }
 
 
-        Question.User user = userList.get(position);
+        User user = userList.get(position);
 
         TextView tvName = convertView.findViewById(R.id.staff_name);
         TextView tvEmail = convertView.findViewById(R.id.staff_email);
@@ -61,7 +62,7 @@ public class UserAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private void deleteUser(Question.User user) {
+    private void deleteUser(User user) {
         userList.remove(user);
         notifyDataSetChanged();
     }

@@ -16,7 +16,7 @@
         app:shapeAppearanceOverlay="@style/roundedImageStyle"
         app:srcCompat="@drawable/ic_launcher_background" />
     <TextView
-        android:id="@+id/txtTiengAnh"
+        android:id="@+id/tvName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Tiếng Tây Ban Nha"

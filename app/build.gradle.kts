@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.picasso)
     implementation(libs.firebase.storage)
+    implementation(libs.google.firebase.storage)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

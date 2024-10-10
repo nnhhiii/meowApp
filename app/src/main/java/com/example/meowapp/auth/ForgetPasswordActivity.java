@@ -1,4 +1,4 @@
-package com.example.meowapp.Auth;
+package com.example.meowapp.auth;
 
 import android.os.Bundle;
 

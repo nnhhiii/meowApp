@@ -21,6 +21,7 @@ loggingInterceptor = "5.0.0-alpha.14"
 picasso = "2.71828"
 firebaseStorage = "21.0.0"
 recyclerview ="1.2.1"
+firebaseStorageVersion = "21.0.1"
 
 [libraries]
 recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
@@ -44,6 +45,7 @@ flexbox = { group = "com.google.android.flexbox", name = "flexbox", version.ref 
 logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "loggingInterceptor" }
 picasso = { group = "com.squareup.picasso", name = "picasso", version.ref = "picasso" }
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
+google-firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorageVersion" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

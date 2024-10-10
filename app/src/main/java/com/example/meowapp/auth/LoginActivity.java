@@ -1,5 +1,4 @@
-package com.example.meowapp.Auth;
-
+package com.example.meowapp.auth;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;

@@ -14,20 +14,35 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MeowApp"
         tools:targetApi="31">
+        <activity
+            android:name=".language.LanguageEditActivity"
+            android:exported="false" />
+        <activity
+            android:name=".language.LanguageCreateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".language.LanguageManagementActivity"
+            android:exported="true">
 
+             <intent-filter>
+             <action android:name="android.intent.action.MAIN" />
+             <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
+        </activity>
         <activity
             android:name=".Main.MainActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name=".Auth.ForgetPasswordActivity"
+            android:name=".auth.ForgetPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".Auth.BlankActivity"
+            android:name=".auth.BlankActivity"
             android:exported="false" />
         <activity
             android:name=".questionType.BlankActivity"
@@ -50,7 +65,7 @@
             android:name=".questionType.Start"
             android:exported="false" />
         <activity
-            android:name=".Auth.LoginActivity"
+            android:name=".auth.LoginActivity"
             android:exported="true">
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
@@ -58,9 +73,7 @@
 <!--                <category android:name="android.intent.category.LAUNCHER" />-->
 <!--            </intent-filter>-->
         </activity>
-
-        <activity android:name=".admin.AdminActivity"/>
-
+        <activity android:name=".admin.AdminActivity" />
     </application>
 
 </manifest>

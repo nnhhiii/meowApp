@@ -21,7 +21,7 @@
             android:layout_height="20dp"
             android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true"
-            android:progress="20"
+            android:progress="30"
             android:progressTint="#8bc34a" />
     </RelativeLayout>
     <RelativeLayout

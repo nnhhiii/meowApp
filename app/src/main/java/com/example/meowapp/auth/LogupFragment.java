@@ -1,4 +1,4 @@
-package com.example.meowapp.Auth;
+package com.example.meowapp.auth;
 
 import android.os.Bundle;
 
@@ -67,6 +67,9 @@ public class LogupFragment extends Fragment {
         View view = inflater.inflate(R.layout.activity_auth_logup, container, false);
         btnLogUp = view.findViewById(R.id.btnLogup);
         btnLogUp.setOnClickListener(v -> {
+            if (getActivity() instanceof BlankActivity) {
+                ((BlankActivity) getActivity()).updateProgressBar(65);
+            }
             Fragment fragment = new SelectLanguageFragment();
             FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
             transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);

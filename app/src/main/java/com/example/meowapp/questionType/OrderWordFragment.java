@@ -71,7 +71,7 @@ public class OrderWordFragment extends Fragment {
         FlexboxLayout wordContainer = view.findViewById(R.id.wordContainer);
 
         // Chuỗi order_word (ở đây bạn có thể lấy từ API hoặc cơ sở dữ liệu)
-        String orderWord = "Hello, world, this, is, a test";
+        String orderWord = "Bạn, gì?, Chào, tên, là, sữa, cà phê, Làm ơn";
 
         // Tách chuỗi thành các từ
         String[] words = orderWord.split(", ");

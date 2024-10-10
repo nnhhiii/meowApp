@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.meowapp.R;
 import com.example.meowapp.model.Question;
+import com.example.meowapp.model.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class UserManagementActivity extends AppCompatActivity {
     private ListView listViewUsers;
     private FloatingActionButton fabAddUser;
     private UserAdapter userAdapter;
-    private List<Question.User> userList;
+    private List<User> userList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +33,8 @@ public class UserManagementActivity extends AppCompatActivity {
 
 
         userList = new ArrayList<>();
-        userList.add(new Question.User("A", "a@example.com"));
-        userList.add(new Question.User("B", "b@example.com"));
+        userList.add(new User("A", "a@example.com"));
+        userList.add(new User("B", "b@example.com"));
 
 
         userAdapter = new UserAdapter(this, userList);
@@ -49,7 +50,7 @@ public class UserManagementActivity extends AppCompatActivity {
     }
 
     private void addUser() {
-        userList.add(new Question.User("New User", "newuser@example.com"));
+        userList.add(new User("New User", "newuser@example.com"));
         userAdapter.notifyDataSetChanged();
     }
 
