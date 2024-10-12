@@ -1,6 +1,7 @@
 package com.example.meowapp.api;
 
 import com.example.meowapp.model.Language;
+import com.example.meowapp.model.Level;
 import com.example.meowapp.model.Question;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -41,6 +42,17 @@ public interface FirebaseApiService {
     Call<Language> updateLanguage(@Path("id") String id, @Body Language language);
     @DELETE("languages/{id}.json")
     Call<Language> deleteLanguage(@Path("id") String id);
+
+    @GET("levels.json")
+    Call<Map<String, Level>> getAllLevel();
+    @GET("levels/{id}.json")
+    Call<Level> getLevelById(@Path("id") String id);
+    @POST("levels.json")
+    Call<Level> addLevel(@Body Level level);
+    @PUT("levels/{id}.json")
+    Call<Level> updateLevel(@Path("id") String id, @Body Level level);
+    @DELETE("levels/{id}.json")
+    Call<Level> deleteLevel(@Path("id") String id);
 
     @GET("questions.json")
     Call<Map<String, Question>> getQuestionsByLessonId(

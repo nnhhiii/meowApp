@@ -10,16 +10,16 @@ import android.widget.TextView;
 
 import com.example.meowapp.R;
 import com.example.meowapp.model.Language;
+import com.example.meowapp.model.Level;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class SelectLanguageAdapter extends BaseAdapter {
+public class SelectLevelAdapter extends BaseAdapter {
     private Context context;
-    private List<Language> list;
+    private List<Level> list;
 
-
-    public SelectLanguageAdapter(Context context, List<Language> list) {
+    public SelectLevelAdapter(Context context, List<Level> list) {
         this.context = context;
         this.list = list;
     }
@@ -39,29 +39,25 @@ public class SelectLanguageAdapter extends BaseAdapter {
     public long getItemId(int position) {
         return position;
     }
+
     public static class ViewHolder{
-        TextView tvName;
-        ImageView imageView;
+        TextView tvCB;
     }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
+        SelectLevelAdapter.ViewHolder holder;
         if (convertView ==null){
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_select_language, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_select_level, parent, false);
 
-            holder = new ViewHolder();
-            holder.tvName = convertView.findViewById(R.id.tvName);
-            holder.imageView = convertView.findViewById(R.id.image);
+            holder = new SelectLevelAdapter.ViewHolder();
+            holder.tvCB = convertView.findViewById(R.id.tvCB);
             convertView.setTag(holder);
         } else{
-            holder = (ViewHolder) convertView.getTag();
+            holder = (SelectLevelAdapter.ViewHolder) convertView.getTag();
         }
 
-        Language language = list.get(position);
-        holder.tvName.setText(language.getLanguage_name());
-        if(language.getLanguage_image() != null){
-            Picasso.get().load(language.getLanguage_image()).into(holder.imageView);
-        }
+        Level level = list.get(position);
+        holder.tvCB.setText(level.getLevel_name());
         return convertView;
     }
 }

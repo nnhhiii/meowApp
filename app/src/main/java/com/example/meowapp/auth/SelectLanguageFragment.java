@@ -14,7 +14,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.meowapp.R;
-import com.example.meowapp.adapter.SelectLanguageAdapter;
+import com.example.meowapp.Adapter.SelectLanguageAdapter;
 import com.example.meowapp.api.FirebaseApiService;
 import com.example.meowapp.model.Language;
 
