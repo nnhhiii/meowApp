@@ -1,6 +1,10 @@
 package com.example.meowapp.user;
 
+import static com.example.meowapp.user.UserManagementActivity.REQUEST_EDIT_USER;
+
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +13,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.meowapp.R;
-import com.example.meowapp.model.Question;
 import com.example.meowapp.model.User;
 
 import java.util.List;
@@ -40,23 +43,31 @@ public class UserAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder viewHolder;
+
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_user, parent, false);
+            viewHolder = new ViewHolder();
+            viewHolder.tvName = convertView.findViewById(R.id.staff_name);
+            viewHolder.tvEmail = convertView.findViewById(R.id.staff_email);
+            viewHolder.btnDelete = convertView.findViewById(R.id.btnDelete);
+            viewHolder.btnEditUser = convertView.findViewById(R.id.btn_edit_user);
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
         }
 
-
         User user = userList.get(position);
+        viewHolder.tvName.setText(user.getName());
+        viewHolder.tvEmail.setText(user.getEmail());
 
-        TextView tvName = convertView.findViewById(R.id.staff_name);
-        TextView tvEmail = convertView.findViewById(R.id.staff_email);
-        ImageButton btnDelete = convertView.findViewById(R.id.btnDelete);
-
-        tvName.setText(user.getName());
-        tvEmail.setText(user.getEmail());
-
-
-        btnDelete.setOnClickListener(v -> {
+        viewHolder.btnDelete.setOnClickListener(v -> {
             deleteUser(user);
+        });
+        viewHolder.btnEditUser.setOnClickListener(v -> {
+            Intent intent = new Intent(context, EditUserActivity.class);
+            intent.putExtra("user", user);
+            ((Activity) context).startActivityForResult(intent, REQUEST_EDIT_USER);
         });
 
         return convertView;
@@ -65,5 +76,12 @@ public class UserAdapter extends BaseAdapter {
     private void deleteUser(User user) {
         userList.remove(user);
         notifyDataSetChanged();
+    }
+
+    private static class ViewHolder {
+        TextView tvName;
+        TextView tvEmail;
+        ImageButton btnDelete;
+        ImageButton btnEditUser;
     }
 }

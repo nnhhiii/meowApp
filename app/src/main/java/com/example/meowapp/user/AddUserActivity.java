@@ -1,7 +1,10 @@
 package com.example.meowapp.user;
 
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -11,23 +14,35 @@ import com.example.meowapp.R;
 
 public class AddUserActivity extends AppCompatActivity {
 
-    private ImageButton btnCancel;
-    private Button btnSave;
+    private EditText editTextUsername;
+    private EditText editTextEmail;
+    private Button buttonAdd;
+    private ImageButton buttonCancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_add);
 
-        btnCancel = findViewById(R.id.btnCancel);
-        btnSave = findViewById(R.id.btnSave);
+        editTextUsername = findViewById(R.id.username);
+        editTextEmail = findViewById(R.id.email);
+        buttonAdd = findViewById(R.id.btnSave);
+        buttonCancel = findViewById(R.id.btnCancel);
 
-        btnCancel.setOnClickListener(v -> finish());
+        buttonAdd.setOnClickListener(v -> addUser());
+        buttonCancel.setOnClickListener(v -> finish());
+    }
 
-        btnSave.setOnClickListener(v -> {
+    private void addUser() {
+        String username = editTextUsername.getText().toString().trim();
+        String email = editTextEmail.getText().toString().trim();
 
-            Toast.makeText(this, "User added!", Toast.LENGTH_SHORT).show();
-            finish();
-        });
+        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(email)) {
+            Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Toast.makeText(this, "Thêm người dùng thành công!", Toast.LENGTH_SHORT).show();
+        finish();
     }
 }

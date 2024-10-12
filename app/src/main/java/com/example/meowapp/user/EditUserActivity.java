@@ -1,63 +1,84 @@
 package com.example.meowapp.user;
 
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.meowapp.R;
 
 public class EditUserActivity extends AppCompatActivity {
 
-    private EditText edtName, edtUsername, edtEmail, edtPassword;
-    private Button btnSave;
-    private ImageButton btnCancel;
+    private EditText editTextUsername;
+    private EditText editTextEmail;
+    private Button buttonSave;
+    private ImageButton buttonCancel;
+
+    private boolean isChanged = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_edit);
 
-        edtUsername = findViewById(R.id.edtUsername);
-        edtEmail = findViewById(R.id.edtEmail);
-        edtPassword = findViewById(R.id.edtPassword);
-        btnSave = findViewById(R.id.btnSave);
-        btnCancel = findViewById(R.id.btnCancel);
+        editTextUsername = findViewById(R.id.username);
+        editTextEmail = findViewById(R.id.email);
+        buttonSave = findViewById(R.id.btnSave);
+        buttonCancel = findViewById(R.id.btnCancel);
 
-        Intent intent = getIntent();
-        String name = intent.getStringExtra("name");
-        String username = intent.getStringExtra("username");
-        String email = intent.getStringExtra("email");
-
-        if (name != null) {
-            edtName.setText(name);
-        }
-        if (username != null) {
-            edtUsername.setText(username);
-        }
-        if (email != null) {
-            edtEmail.setText(email);
-        }
-
-        btnCancel.setOnClickListener(v -> {
-            finish();
-        });
-
-        btnSave.setOnClickListener(v -> {
-            String newName = edtName.getText().toString();
-            String newUsername = edtUsername.getText().toString();
-            String newEmail = edtEmail.getText().toString();
-            String newPassword = edtPassword.getText().toString();
-
-            if (newName.isEmpty() || newUsername.isEmpty() || newEmail.isEmpty() || newPassword.isEmpty()) {
-                Toast.makeText(EditUserActivity.this, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
-            } else {
-
-                Toast.makeText(EditUserActivity.this, "Đã lưu thông tin người dùng!", Toast.LENGTH_SHORT).show();
-                finish();
+        editTextUsername.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                isChanged = true;
             }
         });
+
+        editTextEmail.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                isChanged = true;
+            }
+        });
+
+        buttonSave.setOnClickListener(v -> saveUser());
+        buttonCancel.setOnClickListener(v -> showConfirmationDialog());
+    }
+
+    private void saveUser() {
+        String username = editTextUsername.getText().toString().trim();
+        String email = editTextEmail.getText().toString().trim();
+
+        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(email)) {
+            Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Toast.makeText(this, "Chỉnh sửa thành công!", Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    private void showConfirmationDialog() {
+        if (!isChanged) {
+            finish();
+            return;
+        }
+
+        new AlertDialog.Builder(this)
+                .setTitle("Xác nhận")
+                .setMessage("Bạn chắc chắn muốn thoát mà không lưu thay đổi?")
+                .setPositiveButton("Có", (dialog, which) -> finish())
+                .setNegativeButton("Không", null)
+                .show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        showConfirmationDialog();
+        super.onBackPressed();
     }
 }
