@@ -3,6 +3,7 @@ package com.example.meowapp.api;
 import com.example.meowapp.model.Language;
 import com.example.meowapp.model.Level;
 import com.example.meowapp.model.Question;
+import com.example.meowapp.model.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -61,4 +62,21 @@ public interface FirebaseApiService {
     );
     @GET("questions/{id}.json")
     Call<Question> getQuestionById(@Path("id") String id);
+
+    @GET("users.json")
+    Call<Map<String, User>> getAllUsers();
+
+    @DELETE("users/{id}.json")
+    Call<Void> deleteUser(@Path("id") String userId);
+
+    @GET("users/{id}.json")
+    Call<User> getUserById(@Path("id") String userId);
+
+    @PUT("users/{id}.json")
+    Call<User> updateUser(@Path("id") String userId, @Body User user);
+
+    @POST("users.json")
+    Call<User> addUser(@Body User user);
+
+
 }

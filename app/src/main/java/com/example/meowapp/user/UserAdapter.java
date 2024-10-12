@@ -1,39 +1,47 @@
 package com.example.meowapp.user;
 
-import static com.example.meowapp.user.UserManagementActivity.REQUEST_EDIT_USER;
-
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.cardview.widget.CardView;
 
 import com.example.meowapp.R;
+import com.example.meowapp.api.FirebaseApiService;
+import com.example.meowapp.user.EditUserActivity;
 import com.example.meowapp.model.User;
 
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class UserAdapter extends BaseAdapter {
     private Context context;
-    private List<User> userList;
+    private List<Pair<String, User>> list;
 
-    public UserAdapter(Context context, List<User> userList) {
+    public UserAdapter(Context context, List<Pair<String, User>> list) {
         this.context = context;
-        this.userList = userList;
+        this.list = list;
     }
 
     @Override
     public int getCount() {
-        return userList.size();
+        return list.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return userList.get(position);
+        return list.get(position).second; // Trả về User object
     }
 
     @Override
@@ -41,47 +49,66 @@ public class UserAdapter extends BaseAdapter {
         return position;
     }
 
+    public static class ViewHolder {
+        TextView tvUserName; // Giả sử User có tên
+        CardView cardView;
+        ImageButton btnDelete;
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
-
+        ViewHolder holder;
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_user, parent, false);
-            viewHolder = new ViewHolder();
-            viewHolder.tvName = convertView.findViewById(R.id.staff_name);
-            viewHolder.tvEmail = convertView.findViewById(R.id.staff_email);
-            viewHolder.btnDelete = convertView.findViewById(R.id.btnDelete);
-            viewHolder.btnEditUser = convertView.findViewById(R.id.btn_edit_user);
-            convertView.setTag(viewHolder);
+
+            holder = new ViewHolder();
+            holder.tvUserName = convertView.findViewById(R.id.username);
+            holder.cardView = convertView.findViewById(R.id.cardView);
+            holder.btnDelete = convertView.findViewById(R.id.btnDelete);
+            convertView.setTag(holder);
         } else {
-            viewHolder = (ViewHolder) convertView.getTag();
+            holder = (ViewHolder) convertView.getTag();
         }
 
-        User user = userList.get(position);
-        viewHolder.tvName.setText(user.getName());
-        viewHolder.tvEmail.setText(user.getEmail());
+        Pair<String, User> pair = list.get(position);
+        User user = pair.second;
+        String userId = pair.first;
 
-        viewHolder.btnDelete.setOnClickListener(v -> {
-            deleteUser(user);
-        });
-        viewHolder.btnEditUser.setOnClickListener(v -> {
+        holder.tvUserName.setText(user.getName());
+
+        holder.cardView.setOnClickListener(v -> {
             Intent intent = new Intent(context, EditUserActivity.class);
-            intent.putExtra("user", user);
-            ((Activity) context).startActivityForResult(intent, REQUEST_EDIT_USER);
+            intent.putExtra("userId", userId);
+            context.startActivity(intent);
         });
 
+        holder.btnDelete.setOnClickListener(v -> {
+            new AlertDialog.Builder(context)
+                    .setTitle("Xóa người dùng")
+                    .setMessage("Bạn có chắc chắn muốn xóa người dùng này không?")
+                    .setPositiveButton(android.R.string.yes, (dialog, which) -> deleteUser(userId, position))
+                    .setNegativeButton(android.R.string.no, null)
+                    .show();
+        });
         return convertView;
     }
 
-    private void deleteUser(User user) {
-        userList.remove(user);
-        notifyDataSetChanged();
-    }
+    private void deleteUser(String userId, int position) {
+        FirebaseApiService.apiService.deleteUser(userId).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(context, "Xóa người dùng thành công!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context, "Xóa người dùng thất bại!", Toast.LENGTH_SHORT).show();
+                }
+            }
 
-    private static class ViewHolder {
-        TextView tvName;
-        TextView tvEmail;
-        ImageButton btnDelete;
-        ImageButton btnEditUser;
+            @Override
+            public void onFailure(Call<Void> call, Throwable throwable) {
+                Toast.makeText(context, "Xóa người dùng thất bại!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 }
