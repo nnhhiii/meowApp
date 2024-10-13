@@ -2,6 +2,9 @@ package com.example.meowapp.api;
 
 import com.example.meowapp.model.Language;
 import com.example.meowapp.model.Question;
+import com.example.meowapp.model.Lesson;
+import com.example.meowapp.model.User;
+import com.example.meowapp.model.Leaderboard;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -30,6 +33,7 @@ public interface FirebaseApiService {
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build();
 
+
     FirebaseApiService apiService = retrofit.create(FirebaseApiService.class);
     @GET("languages.json")
     Call<Map<String, Language>> getAllLanguage();
@@ -49,4 +53,14 @@ public interface FirebaseApiService {
     );
     @GET("questions/{id}.json")
     Call<Question> getQuestionById(@Path("id") String id);
+
+    @GET("leaderboard.json")
+    Call<Map<String, Leaderboard>> getAllLeaderboard();
+    @GET("lessons.json")
+    Call<Map<String, Lesson>> getAllLessons();
+    @GET("users.json")
+    Call<Map<String, User>> getAllUsers();
+    @GET("users/{id}.json")
+    Call<User> getUserById(@Path("id") String userId);
+
 }

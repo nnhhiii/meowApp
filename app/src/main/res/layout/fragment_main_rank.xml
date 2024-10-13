@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Points Table"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/pink1"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/top3_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title">
+
+
+        <LinearLayout
+            android:id="@+id/top2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
+            <ImageView
+                android:id="@+id/imageView_user2"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_cat" />
+
+            <TextView
+                android:id="@+id/tvUserName2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="cho"
+            android:textColor="@color/pink1" />
+
+            <TextView
+                android:id="@+id/tvScore2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1200"
+            android:textColor="@color/blue2" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/top1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageView_user1"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:src="@drawable/ic_flagvn" />
+
+            <TextView
+                android:id="@+id/tvUserName1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="meo"
+                android:textSize="18dp"
+                android:textColor="@color/pink1" />
+
+            <TextView
+                android:id="@+id/tvScore1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1223"
+                android:textColor="@color/blue2" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/top3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
+            <ImageView
+                android:id="@+id/imageView_user3"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_home" />
+
+            <TextView
+                android:id="@+id/tvUserName3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ga"
+            android:textColor="@color/pink1" />
+
+            <TextView
+                android:id="@+id/tvScore3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1000"
+            android:textColor="@color/blue2" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/viewRank"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/top3_layout"
+        android:layout_marginTop="16dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

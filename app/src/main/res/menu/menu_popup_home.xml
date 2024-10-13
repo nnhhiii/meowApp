@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/tab_lang"
+        android:icon="@drawable/ic_flagvnn"
+        android:title="Language" />
+
+    <item
+        android:id="@+id/tab_point"
+        android:icon="@drawable/ic_star"
+        android:title="Point" />
+
+</menu>
