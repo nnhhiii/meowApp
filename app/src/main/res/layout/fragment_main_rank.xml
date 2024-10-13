@@ -11,7 +11,7 @@
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Points Table"
+        android:text="Bảng xếp hạng"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="@color/pink1"
@@ -55,7 +55,7 @@
                 android:id="@+id/tvUserName2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="cho"
+            android:text="gau"
             android:textColor="@color/pink1" />
 
             <TextView

@@ -3,16 +3,16 @@
     <item
         android:id="@+id/tab_home"
         android:icon="@drawable/ic_home"
-        android:title="Home"
+        android:title="Trang chủ"
         />
 
     <item
         android:id="@+id/tab_rank"
         android:icon="@drawable/ic_rankk"
-        android:title="Rank" />
+        android:title="Bảng xếp hạng" />
 
     <item
         android:id="@+id/tab_user"
         android:icon="@drawable/ic_cat1"
-    android:title="User" />
+    android:title="Cá nhân" />
 </menu>

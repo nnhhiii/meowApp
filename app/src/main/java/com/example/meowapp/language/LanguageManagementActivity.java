@@ -123,8 +123,6 @@ public class LanguageManagementActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged(); // Cập nhật lại danh sách hiển thị
         }
     }
-
-
     @Override
     protected void onResume() {
         super.onResume();

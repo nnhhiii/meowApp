@@ -32,8 +32,8 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
     public void onBindViewHolder(@NonNull LeaderboardViewHolder holder, int position) {
         Leaderboard leaderboard = leaderboardList.get(position);
         holder.tvRank.setText(String.valueOf(leaderboard.getRank()));
-        holder.tvScore.setText(String.valueOf(leaderboard.getTotalScore()));
-        holder.tvUserName.setText(leaderboard.getUserName());
+        holder.tvScore.setText(String.valueOf(leaderboard.getTotalScore())); // Hiển thị điểm
+        holder.tvUserName.setText(leaderboard.getUserName()); // Hiển thị tên người dùng
     }
 
     @Override

@@ -3,11 +3,11 @@
     <item
         android:id="@+id/tab_lang"
         android:icon="@drawable/ic_flagvnn"
-        android:title="Language" />
+        android:title="Ngôn ngữ" />
 
     <item
         android:id="@+id/tab_point"
         android:icon="@drawable/ic_star"
-        android:title="Point" />
+        android:title="Điểm" />
 
 </menu>

@@ -48,7 +48,6 @@ public class LanguageCreateActivity extends AppCompatActivity {
         imageView = findViewById(R.id.image);
         btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(v -> finish());
-
         btnImage = findViewById(R.id.btnImage);
         btnImage.setOnClickListener(v -> {
             Intent intent = new Intent();
@@ -56,17 +55,14 @@ public class LanguageCreateActivity extends AppCompatActivity {
             intent.setAction(Intent.ACTION_GET_CONTENT);
             activityResult.launch(intent);
         });
-
         btnSave = findViewById(R.id.btnSave);
         btnSave.setOnClickListener(v -> {
             String newName = etName.getText().toString().trim();
             if (!newName.isEmpty() && imgUri != null) {
                 language.setLanguage_name(newName);
-
                 // Lấy thời gian hiện tại
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String currentTime = sdf.format(new Date()); // Định dạng thời gian hiện tại
-
                 language.setCreated_at(currentTime);
                 language.setUpdated_at(currentTime);
                 uploadImageToFirebaseStorage(imgUri);
@@ -75,7 +71,6 @@ public class LanguageCreateActivity extends AppCompatActivity {
             }
         });
     }
-
     private final ActivityResultLauncher<Intent> activityResult = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {

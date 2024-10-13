@@ -47,7 +47,6 @@
             android:id="@+id/staffImage"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:background="@drawable/avt_border"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_add_image"
             app:shapeAppearanceOverlay="@style/roundedImageStyle" />
