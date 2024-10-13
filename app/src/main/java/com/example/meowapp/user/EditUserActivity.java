@@ -46,10 +46,9 @@ public class EditUserActivity extends AppCompatActivity {
 
         etName = findViewById(R.id.username);
         etEmail = findViewById(R.id.email);
-        etPassword = findViewById(R.id.password);
         imageView = findViewById(R.id.staffImage);
 
-        btnCancel = findViewById(R.id.btnCancel);
+        btnCancel = findViewById(R.id.btnBack);
         btnCancel.setOnClickListener(v -> finish());
 
         btnImage = findViewById(R.id.btnImage);
@@ -66,12 +65,12 @@ public class EditUserActivity extends AppCompatActivity {
             String newEmail = etEmail.getText().toString().trim(); // Lấy email từ trường
             String newPassword = etPassword.getText().toString().trim();
             if (!TextUtils.isEmpty(newName) && !TextUtils.isEmpty(newEmail)) {
-                user.setName(newName); // Đặt tên cho người dùng
+                user.setUsername(newName); // Đặt tên cho người dùng
                 user.setEmail(newEmail); // Đặt email cho người dùng
                 user.setPassword(newPassword);
                 // Cập nhật thời gian
                 String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-                user.setUpdatedAt(currentTime); // Đặt thời gian cập nhật
+                user.setUpdated_at(currentTime); // Đặt thời gian cập nhật
                 if (imgUri != null) {
                     uploadImageToFirebaseStorage(imgUri); // Tải ảnh lên Firebase
                 } else {
@@ -92,10 +91,10 @@ public class EditUserActivity extends AppCompatActivity {
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     user = response.body();
-                    etName.setText(user.getName());
+                    etName.setText(user.getUsername());
                     etEmail.setText(user.getEmail()); // Hiển thị email trong EditText
-                    if (user.getProfileImage() != null && !user.getProfileImage().isEmpty()) {
-                        Picasso.get().load(user.getProfileImage()).into(imageView);
+                    if (user.getAvatar() != null && !user.getAvatar().isEmpty()) {
+                        Picasso.get().load(user.getAvatar()).into(imageView);
                     }
                 } else {
                     Toast.makeText(EditUserActivity.this, "Không tải được dữ liệu!", Toast.LENGTH_SHORT).show();
@@ -129,7 +128,7 @@ public class EditUserActivity extends AppCompatActivity {
                     // Lấy đường dẫn của ảnh vừa upload
                     imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
                         String imageUrl = uri.toString();
-                        user.setProfileImage(imageUrl); // Đặt đường dẫn ảnh cho người dùng
+                        user.setAvatar(imageUrl); // Đặt đường dẫn ảnh cho người dùng
                         saveToFireBase(userId, user); // Lưu thông tin người dùng
                         Toast.makeText(EditUserActivity.this, "Upload thành công", Toast.LENGTH_SHORT).show();
                     });

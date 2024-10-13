@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,8 +17,8 @@ import androidx.cardview.widget.CardView;
 
 import com.example.meowapp.R;
 import com.example.meowapp.api.FirebaseApiService;
-import com.example.meowapp.user.EditUserActivity;
 import com.example.meowapp.model.User;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -50,9 +51,10 @@ public class UserAdapter extends BaseAdapter {
     }
 
     public static class ViewHolder {
-        TextView tvUserName; // Giả sử User có tên
+        TextView tvUserName, tvEmail, tvRole;
         CardView cardView;
-        ImageButton btnDelete;
+        ImageButton btnDelete, btnEdit;
+        ImageView imageView;
     }
 
     @Override
@@ -62,9 +64,14 @@ public class UserAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_user, parent, false);
 
             holder = new ViewHolder();
+            holder.imageView = convertView.findViewById(R.id.image);
             holder.tvUserName = convertView.findViewById(R.id.username);
+            holder.tvEmail = convertView.findViewById(R.id.email);
+            holder.tvRole = convertView.findViewById(R.id.role);
             holder.cardView = convertView.findViewById(R.id.cardView);
             holder.btnDelete = convertView.findViewById(R.id.btnDelete);
+            holder.btnEdit = convertView.findViewById(R.id.btnEdit);
+
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -74,9 +81,21 @@ public class UserAdapter extends BaseAdapter {
         User user = pair.second;
         String userId = pair.first;
 
-        holder.tvUserName.setText(user.getName());
+        holder.tvUserName.setText(user.getUsername());
+        holder.tvEmail.setText(user.getEmail());
+        holder.tvRole.setText(user.getRole());
+        if (user.getAvatar() != null) {
+            Picasso.get().load(user.getAvatar()).into(holder.imageView);
+        }
+
 
         holder.cardView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, DetailUserActivity.class);
+            intent.putExtra("userId", userId);
+            context.startActivity(intent);
+        });
+
+        holder.btnEdit.setOnClickListener(v -> {
             Intent intent = new Intent(context, EditUserActivity.class);
             intent.putExtra("userId", userId);
             context.startActivity(intent);
@@ -92,12 +111,13 @@ public class UserAdapter extends BaseAdapter {
         });
         return convertView;
     }
-
     private void deleteUser(String userId, int position) {
         FirebaseApiService.apiService.deleteUser(userId).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
+                    list.remove(position);
+                    notifyDataSetChanged();
                     Toast.makeText(context, "Xóa người dùng thành công!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(context, "Xóa người dùng thất bại!", Toast.LENGTH_SHORT).show();
@@ -109,6 +129,5 @@ public class UserAdapter extends BaseAdapter {
                 Toast.makeText(context, "Xóa người dùng thất bại!", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 }

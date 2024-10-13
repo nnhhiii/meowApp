@@ -36,6 +36,17 @@ public interface FirebaseApiService {
 
 
     FirebaseApiService apiService = retrofit.create(FirebaseApiService.class);
+    @GET("users.json")
+    Call<Map<String, User>> getAllUsers();
+    @GET("users/{id}.json")
+    Call<User> getUserById(@Path("id") String userId);
+    @POST("users.json")
+    Call<User> addUser(@Body User user);
+    @PUT("users/{id}.json")
+    Call<User> updateUser(@Path("id") String userId, @Body User user);
+    @DELETE("users/{id}.json")
+    Call<Void> deleteUser(@Path("id") String userId);
+
     @GET("languages.json")
     Call<Map<String, Language>> getAllLanguage();
     @GET("languages/{id}.json")
@@ -65,23 +76,16 @@ public interface FirebaseApiService {
     );
     @GET("questions/{id}.json")
     Call<Question> getQuestionById(@Path("id") String id);
+<<<<<<< HEAD
     @GET("leaderboard.json")
     Call<Map<String, Leaderboard>> getAllLeaderboard();
     @GET("lessons.json")
     Call<Map<String, Lesson>> getAllLessons();
     @GET("users.json")
     Call<Map<String, User>> getAllUsers();
+=======
 
-    @DELETE("users/{id}.json")
-    Call<Void> deleteUser(@Path("id") String userId);
+>>>>>>> d1e9ca90fe740eead41862b27fa5eaf7516e8be4
 
-    @GET("users/{id}.json")
-    Call<User> getUserById(@Path("id") String userId);
-
-    @PUT("users/{id}.json")
-    Call<User> updateUser(@Path("id") String userId, @Body User user);
-
-    @POST("users.json")
-    Call<User> addUser(@Body User user);
 
 }

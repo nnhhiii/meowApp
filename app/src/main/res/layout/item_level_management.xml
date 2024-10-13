@@ -42,7 +42,7 @@
             app:layout_constraintTop_toBottomOf="@+id/name" />
 
         <TextView
-            android:id="@+id/createdAt"
+            android:id="@+id/createdAt_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="28dp"
@@ -55,28 +55,29 @@
             app:layout_constraintTop_toBottomOf="@+id/name" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/createdAt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_marginTop="15dp"
             android:text="2024-09-29 10:00:00"
-            app:layout_constraintStart_toEndOf="@+id/createdAt"
+            app:layout_constraintStart_toEndOf="@+id/createdAt_label"
             app:layout_constraintTop_toBottomOf="@+id/name" />
 
         <TextView
+            android:id="@+id/updatedAt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="2024-09-29 10:00:00"
             android:layout_marginBottom="2dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/updatedAt"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:layout_constraintStart_toEndOf="@+id/updatedAt_label"
+            app:layout_constraintTop_toBottomOf="@+id/createdAt"
             app:layout_constraintVertical_bias="1.0" />
 
         <TextView
-            android:id="@+id/updatedAt"
+            android:id="@+id/updatedAt_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="28dp"
