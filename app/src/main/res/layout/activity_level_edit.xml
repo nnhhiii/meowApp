@@ -35,21 +35,38 @@
         android:orientation="vertical"
         android:padding="25dp"
         android:layout_below="@id/layout_tren">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chọn ngôn ngữ"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <Spinner
+            android:id="@+id/sp_language"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:spinnerMode="dropdown"
+            android:background="@android:drawable/edit_text" />
 
         <!-- Trường nhập Tên ngôn ngữ -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tên cấp độ"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="4dp" />
 
         <EditText
-            android:id="@+id/et_language_name"
+            android:id="@+id/et_level_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nhập vào tên cấp độ"
+            android:hint="Nhập cấp độ"
+            android:inputType="text"
             android:padding="12dp"
             android:background="@android:drawable/edit_text" />
 

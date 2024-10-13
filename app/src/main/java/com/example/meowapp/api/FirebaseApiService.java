@@ -33,6 +33,17 @@ public interface FirebaseApiService {
             .build();
 
     FirebaseApiService apiService = retrofit.create(FirebaseApiService.class);
+    @GET("users.json")
+    Call<Map<String, User>> getAllUsers();
+    @GET("users/{id}.json")
+    Call<User> getUserById(@Path("id") String userId);
+    @POST("users.json")
+    Call<User> addUser(@Body User user);
+    @PUT("users/{id}.json")
+    Call<User> updateUser(@Path("id") String userId, @Body User user);
+    @DELETE("users/{id}.json")
+    Call<Void> deleteUser(@Path("id") String userId);
+
     @GET("languages.json")
     Call<Map<String, Language>> getAllLanguage();
     @GET("languages/{id}.json")
@@ -63,20 +74,7 @@ public interface FirebaseApiService {
     @GET("questions/{id}.json")
     Call<Question> getQuestionById(@Path("id") String id);
 
-    @GET("users.json")
-    Call<Map<String, User>> getAllUsers();
 
-    @DELETE("users/{id}.json")
-    Call<Void> deleteUser(@Path("id") String userId);
-
-    @GET("users/{id}.json")
-    Call<User> getUserById(@Path("id") String userId);
-
-    @PUT("users/{id}.json")
-    Call<User> updateUser(@Path("id") String userId, @Body User user);
-
-    @POST("users.json")
-    Call<User> addUser(@Body User user);
 
 
 }

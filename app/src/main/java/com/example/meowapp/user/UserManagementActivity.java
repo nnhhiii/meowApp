@@ -45,7 +45,7 @@ public class UserManagementActivity extends AppCompatActivity {
 
         listView = findViewById(R.id.listViewStaff); // ID của ListView trong layout
         etSearch = findViewById(R.id.etSearch);
-        btnBack = findViewById(R.id.back_btn);
+        btnBack = findViewById(R.id.btnBack);
 
         // Sự kiện cho nút quay lại
         btnBack.setOnClickListener(v -> finish());
@@ -82,29 +82,24 @@ public class UserManagementActivity extends AppCompatActivity {
             public void onResponse(Call<Map<String, User>> call, Response<Map<String, User>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Map<String, User> userMap = response.body();
-
-                    // Xóa dữ liệu cũ trong danh sách chính và danh sách lọc
                     usersList.clear();
                     filteredUsersList.clear();
-
-                    // Chuyển đổi từ Map<String, User> thành List<Pair<String, User>>
                     for (Map.Entry<String, User> entry : userMap.entrySet()) {
                         Pair<String, User> pair = new Pair<>(entry.getKey(), entry.getValue());
                         usersList.add(pair);
                         filteredUsersList.add(pair); // Bắt đầu với toàn bộ danh sách
                     }
-
-                    // Truyền danh sách lọc cho Adapter
                     adapter = new UserAdapter(UserManagementActivity.this, filteredUsersList);
                     listView.setAdapter(adapter);
                 } else {
-                    Toast.makeText(UserManagementActivity.this, "Failed to get info", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UserManagementActivity.this, "Failed to get info",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public void onFailure(Call<Map<String, User>> call, Throwable t) {
-                Toast.makeText(UserManagementActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserManagementActivity.this, "Error: " + t.getMessage(),
+                        Toast.LENGTH_SHORT).show();
                 Log.e("error:", t.getMessage(), t);
             }
         });
@@ -117,7 +112,7 @@ public class UserManagementActivity extends AppCompatActivity {
         } else {
             for (Pair<String, User> pair : usersList) {
                 User user = pair.second; // Lấy đối tượng User từ cặp Pair
-                if (user.getName().toLowerCase().contains(keyword.toLowerCase())) { // Thay đổi theo thuộc tính tên của User
+                if (user.getUsername().toLowerCase().contains(keyword.toLowerCase())) { // Thay đổi theo thuộc tính tên của User
                     filteredUsersList.add(pair); // Thêm cặp Pair vào danh sách lọc
                 }
             }

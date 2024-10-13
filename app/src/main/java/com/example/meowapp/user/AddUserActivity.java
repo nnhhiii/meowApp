@@ -47,9 +47,9 @@ public class AddUserActivity extends AppCompatActivity {
         etEmail = findViewById(R.id.email);
         etPassword = findViewById(R.id.password);
         btnImage = findViewById(R.id.btnImage);
-        btnCancel = findViewById(R.id.btnCancel);
+        btnCancel = findViewById(R.id.btnBack);
         btnSave = findViewById(R.id.btnSave);
-        imageView = findViewById(R.id.staffImage);
+        imageView = findViewById(R.id.image);
 
         btnCancel.setOnClickListener(v -> finish());
 
@@ -64,7 +64,7 @@ public class AddUserActivity extends AppCompatActivity {
             String newEmail = etEmail.getText().toString().trim();
             String newPassword = etPassword.getText().toString().trim();
             if (!TextUtils.isEmpty(newName) && !TextUtils.isEmpty(newEmail) && !TextUtils.isEmpty(newPassword)) {
-                user.setName(newName);
+                user.setUsername(newName);
                 user.setEmail(newEmail);
                 user.setPassword(newPassword);
 
@@ -72,8 +72,8 @@ public class AddUserActivity extends AppCompatActivity {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String currentTime = sdf.format(new Date()); // Định dạng thời gian hiện tại
 
-                user.setCreatedAt(currentTime); // Đặt thời gian tạo
-                user.setUpdatedAt(currentTime); // Đặt thời gian cập nhật
+                user.setCreated_at(currentTime); // Đặt thời gian tạo
+                user.setUpdated_at(currentTime); // Đặt thời gian cập nhật
 
                 if (imgUri != null) {
                     uploadImageToFirebaseStorage(imgUri); // Tải ảnh lên Firebase
@@ -107,7 +107,7 @@ public class AddUserActivity extends AppCompatActivity {
                     // Lấy đường dẫn của ảnh vừa upload
                     imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
                         String imageUrl = uri.toString();
-                        user.setProfileImage(imageUrl); // Đặt đường dẫn ảnh cho người dùng
+                        user.setAvatar(imageUrl); // Đặt đường dẫn ảnh cho người dùng
                         saveToFireBase(user); // Lưu thông tin người dùng
                         Toast.makeText(AddUserActivity.this, "Upload thành công", Toast.LENGTH_SHORT).show();
                     });
