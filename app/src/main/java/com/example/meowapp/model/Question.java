@@ -1,5 +1,6 @@
 package com.example.meowapp.model;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 

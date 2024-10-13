@@ -1,6 +1,7 @@
 package com.example.meowapp.api;
 
 import com.example.meowapp.model.Language;
+import com.example.meowapp.model.Level;
 import com.example.meowapp.model.Question;
 import com.example.meowapp.model.Lesson;
 import com.example.meowapp.model.User;
@@ -46,6 +47,17 @@ public interface FirebaseApiService {
     @DELETE("languages/{id}.json")
     Call<Language> deleteLanguage(@Path("id") String id);
 
+    @GET("levels.json")
+    Call<Map<String, Level>> getAllLevel();
+    @GET("levels/{id}.json")
+    Call<Level> getLevelById(@Path("id") String id);
+    @POST("levels.json")
+    Call<Level> addLevel(@Body Level level);
+    @PUT("levels/{id}.json")
+    Call<Level> updateLevel(@Path("id") String id, @Body Level level);
+    @DELETE("levels/{id}.json")
+    Call<Level> deleteLevel(@Path("id") String id);
+
     @GET("questions.json")
     Call<Map<String, Question>> getQuestionsByLessonId(
             @Query("orderBy") String orderBy,
@@ -53,14 +65,23 @@ public interface FirebaseApiService {
     );
     @GET("questions/{id}.json")
     Call<Question> getQuestionById(@Path("id") String id);
-
     @GET("leaderboard.json")
     Call<Map<String, Leaderboard>> getAllLeaderboard();
     @GET("lessons.json")
     Call<Map<String, Lesson>> getAllLessons();
     @GET("users.json")
     Call<Map<String, User>> getAllUsers();
+
+    @DELETE("users/{id}.json")
+    Call<Void> deleteUser(@Path("id") String userId);
+
     @GET("users/{id}.json")
     Call<User> getUserById(@Path("id") String userId);
+
+    @PUT("users/{id}.json")
+    Call<User> updateUser(@Path("id") String userId, @Body User user);
+
+    @POST("users.json")
+    Call<User> addUser(@Body User user);
 
 }

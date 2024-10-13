@@ -18,9 +18,8 @@ public class AdminActivity extends AppCompatActivity {
         GridView gridView = findViewById(R.id.grid_view);
         List<GridItem> gridItems = new ArrayList<>();
 
-
         gridItems.add(new GridItem(R.drawable.ic_account, "Tài khoản"));
-        gridItems.add(new GridItem(R.drawable.ic_userr, "Người dùng"));
+        gridItems.add(new GridItem(R.drawable.ic_user, "Người dùng"));
         gridItems.add(new GridItem(R.drawable.ic_lang, "Ngôn ngữ"));
         gridItems.add(new GridItem(R.drawable.ic_level, "Cấp độ"));
         gridItems.add(new GridItem(R.drawable.ic_lession, "Bài học"));

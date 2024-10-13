@@ -11,8 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:padding="16dp">
 
         <ImageButton
             android:id="@+id/btnBack"
@@ -27,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="Thông tin user"
+            android:text="Thông tin người dùng"
             android:textSize="20sp"
             android:textStyle="bold" />
     </RelativeLayout>
@@ -38,11 +37,41 @@
         android:layout_height="200dp"
         android:src="@drawable/ic_customer"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/layout_tren"
+        android:layout_below="@id/layout_tren"
         android:scaleType="centerCrop"
         android:layout_marginTop="20dp"
         app:shapeAppearanceOverlay="@style/roundedImageStyle" />
 
+    <TextView
+        android:id="@+id/textViewUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/userImage"
+        android:layout_centerHorizontal="true"
+        android:text="Tên người dùng"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp"
+        android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/textViewEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewUsername"
+        android:layout_centerHorizontal="true"
+        android:text="email@example.com"
+        android:textSize="16sp"
+        android:layout_marginTop="8dp" />
 
+    <Button
+        android:id="@+id/btnEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewEmail"
+        android:layout_centerHorizontal="true"
+        android:text="Chỉnh sửa thông tin"
+        android:layout_marginTop="24dp"
+        android:padding="12dp"
+        android:background="@color/pink1"
+        android:textColor="@android:color/black" />
 </RelativeLayout>
