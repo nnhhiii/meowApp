@@ -1,7 +1,19 @@
 package com.example.meowapp.model;
 
 public class Level {
-    private String level_name, created_at, updated_at;
+    private String level_name;
+    private String created_at;
+    private String updated_at;
+
+    public String getLanguage_id() {
+        return language_id;
+    }
+
+    public void setLanguage_id(String language_id) {
+        this.language_id = language_id;
+    }
+
+    private String language_id;
 
     public String getLevel_name() {
         return level_name;

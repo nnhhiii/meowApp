@@ -102,7 +102,7 @@ public class SelectLevelFragment extends Fragment {
         return view;
     }
     private void loadData() {
-        FirebaseApiService.apiService.getAllLevel().enqueue(new Callback<Map<String, Level>>() {
+        FirebaseApiService.apiService.getAllLevelByLanguageId("\"language_id\"", "1").enqueue(new Callback<Map<String, Level>>() {
             @Override
             public void onResponse(Call<Map<String, Level>> call, Response<Map<String, Level>> response) {
                 if (response.isSuccessful() && response.body() != null) {
