@@ -18,6 +18,7 @@ import com.example.meowapp.Level.LevelEditActivity;
 import com.example.meowapp.model.Level;
 
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,10 +27,12 @@ import retrofit2.Response;
 public class LevelManagementAdapter extends BaseAdapter {
     private Context context;
     private List<Pair<String, Level>> list;
+    private String lang_name;
 
-    public LevelManagementAdapter(Context context, List<Pair<String, Level>> list) {
+    public LevelManagementAdapter(Context context, List<Pair<String, Level>> list, String lang_name) {
         this.context = context;
         this.list = list;
+        this.lang_name = lang_name;
     }
 
     @Override
@@ -74,13 +77,13 @@ public class LevelManagementAdapter extends BaseAdapter {
         String levelId = pair.first;
 
         holder.tvName.setText(level.getLevel_name());
-//        holder.tvLanguage.setText(level.getLanguage());
+        holder.tvLanguage.setText(lang_name);
         holder.tvCreatedAt.setText(level.getCreated_at());
         holder.tvUpdatedAt.setText(level.getUpdated_at());
 
         convertView.setOnClickListener(v -> {
             Intent intent = new Intent(context, LevelEditActivity.class);
-            intent.putExtra("LEVEL_ID", levelId);
+            intent.putExtra("levelId", levelId);
             context.startActivity(intent);
         });
 
