@@ -95,7 +95,6 @@ public class LevelManagementAdapter extends BaseAdapter {
 
         return convertView;
     }
-
     private void deleteLevel(String levelId, int position) {
         FirebaseApiService.apiService.deleteLevel(levelId).enqueue(new Callback<Level>() {
             @Override

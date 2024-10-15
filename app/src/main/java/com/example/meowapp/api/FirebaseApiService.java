@@ -76,16 +76,11 @@ public interface FirebaseApiService {
     );
     @GET("questions/{id}.json")
     Call<Question> getQuestionById(@Path("id") String id);
-<<<<<<< HEAD
+
     @GET("leaderboard.json")
     Call<Map<String, Leaderboard>> getAllLeaderboard();
     @GET("lessons.json")
     Call<Map<String, Lesson>> getAllLessons();
-    @GET("users.json")
-    Call<Map<String, User>> getAllUsers();
-=======
-
->>>>>>> d1e9ca90fe740eead41862b27fa5eaf7516e8be4
 
 
 }

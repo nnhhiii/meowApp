@@ -83,7 +83,7 @@ public class RankFragment extends Fragment {
 
                     Map<Integer, String> userMap = new HashMap<>(); // Create a map for quick access
                     for (Map.Entry<String, User> entry : response.body().entrySet()) {
-                        userMap.put(entry.getValue().getUserId(), entry.getValue().getName());
+                        userMap.put(entry.getValue().getUserId(), entry.getValue().getUsername());
                     }
 
                     for (Leaderboard leaderboard : leaderboardList) {

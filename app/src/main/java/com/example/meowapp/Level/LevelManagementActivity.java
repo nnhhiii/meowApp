@@ -84,11 +84,9 @@ public class LevelManagementActivity extends AppCompatActivity {
             public void onResponse(Call<Map<String, Level>> call, Response<Map<String, Level>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Map<String, Level> levelMap = response.body();
-
                     // Xóa dữ liệu cũ
                     levelList.clear();
                     filteredLevelList.clear();
-
                     // Chuyển đổi từ Map<String, Level> sang List<Pair<String, Level>>
                     for (Map.Entry<String, Level> entry : levelMap.entrySet()) {
                         Pair<String, Level> pair = new Pair<>(entry.getKey(), entry.getValue());

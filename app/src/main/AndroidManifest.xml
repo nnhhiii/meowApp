@@ -63,26 +63,18 @@
             android:exported="false" />
         <activity
             android:name=".questionType.BlankActivity"
-<<<<<<< HEAD
             android:exported="false" />
 <!--         <activity -->
 <!--         android:name=".questionType.start" -->
 <!--         android:exported="false" /> -->
 
-        <activity android:name=".user.UserManagementActivity"></activity>
-=======
-            android:exported="false" /> <!-- <activity -->
-        <!-- android:name=".questionType.start" -->
-        <!-- android:exported="false" /> -->
-        <activity
-            android:name=".user.UserManagementActivity"
+        <activity android:name=".user.UserManagementActivity"
             android:exported="true" >
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
 <!--                <category android:name="android.intent.category.LAUNCHER" />-->
 <!--            </intent-filter>-->
         </activity>
->>>>>>> d1e9ca90fe740eead41862b27fa5eaf7516e8be4
         <activity
             android:name=".user.AddUserActivity"
             android:exported="false" />
@@ -107,10 +99,10 @@
         <activity
             android:name=".admin.AdminActivity"
             android:exported="true">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

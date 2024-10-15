@@ -16,7 +16,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.meowapp.R;
-import com.example.meowapp.adapter.LanguageManagementAdapter;
+import com.example.meowapp.Adapter.LanguageManagementAdapter;
 import com.example.meowapp.api.FirebaseApiService;
 import com.example.meowapp.model.Language;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -123,6 +123,8 @@ public class LanguageManagementActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged(); // Cập nhật lại danh sách hiển thị
         }
     }
+
+
     @Override
     protected void onResume() {
         super.onResume();
