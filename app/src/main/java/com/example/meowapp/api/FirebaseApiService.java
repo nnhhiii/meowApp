@@ -59,7 +59,10 @@ public interface FirebaseApiService {
     Call<Language> deleteLanguage(@Path("id") String id);
 
     @GET("levels.json")
-    Call<Map<String, Level>> getAllLevel();
+    Call<Map<String, Level>> getAllLevelByLanguageId(
+            @Query("orderBy") String orderBy,
+            @Query("equalTo") String languageId
+    );
     @GET("levels/{id}.json")
     Call<Level> getLevelById(@Path("id") String id);
     @POST("levels.json")
@@ -72,7 +75,7 @@ public interface FirebaseApiService {
     @GET("questions.json")
     Call<Map<String, Question>> getQuestionsByLessonId(
             @Query("orderBy") String orderBy,
-            @Query("equalTo") int lessonId
+            @Query("equalTo") String lessonId
     );
     @GET("questions/{id}.json")
     Call<Question> getQuestionById(@Path("id") String id);

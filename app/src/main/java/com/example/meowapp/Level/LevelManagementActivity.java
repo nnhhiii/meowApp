@@ -7,9 +7,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Pair;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,10 +22,12 @@ import com.example.meowapp.adapter.LevelManagementAdapter;
 import com.example.meowapp.Level.LevelCreateActivity;
 import com.example.meowapp.R;
 import com.example.meowapp.api.FirebaseApiService;
+import com.example.meowapp.model.Language;
 import com.example.meowapp.model.Level;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,10 +39,12 @@ public class LevelManagementActivity extends AppCompatActivity {
     private LevelManagementAdapter adapter;
     private ListView listView;
     private FloatingActionButton btnAdd;
+    private Spinner spLanguage;
     private ImageButton btnBack;
     private EditText etSearch;
     private List<Pair<String, Level>> levelList = new ArrayList<>();
     private List<Pair<String, Level>> filteredLevelList = new ArrayList<>();
+    private final Map<String, String> languageMap = new HashMap<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,11 +54,9 @@ public class LevelManagementActivity extends AppCompatActivity {
         etSearch = findViewById(R.id.etSearch);
         btnBack = findViewById(R.id.back_btn);
         btnAdd = findViewById(R.id.add_button);
+        spLanguage = findViewById(R.id.sp_language);
 
-        // Quay lại màn hình trước đó
         btnBack.setOnClickListener(v -> finish());
-
-        // Mở activity tạo cấp độ mới
         btnAdd.setOnClickListener(v -> {
             Intent intent = new Intent(this, LevelCreateActivity.class);
             startActivity(intent);
@@ -73,13 +79,63 @@ public class LevelManagementActivity extends AppCompatActivity {
                 // Không cần làm gì
             }
         });
+        loadDataToSpinner();
+    }
+    private void loadDataToSpinner() {
+        FirebaseApiService.apiService.getAllLanguage().enqueue(new Callback<Map<String, Language>>() {
+            @Override
+            public void onResponse(Call<Map<String, Language>> call, Response<Map<String, Language>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Map<String, Language> responseMap = response.body();
 
-        loadLevelData(); // Tải dữ liệu cấp độ từ Firebase
+                    // Tạo danh sách các tên ngôn ngữ và lưu language_id tương ứng
+                    List<String> languageNames = new ArrayList<>();
+                    for (Map.Entry<String, Language> entry : responseMap.entrySet()) {
+                        languageMap.put(entry.getValue().getLanguage_name(), entry.getKey()); // Lưu cặp tên-ngôn ngữ với id
+                        languageNames.add(entry.getValue().getLanguage_name()); // Chỉ lấy tên ngôn ngữ
+                    }
+
+                    // Tạo Adapter cho Spinner
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(LevelManagementActivity.this, android.R.layout.simple_spinner_item, languageNames);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                    // Gán Adapter cho Spinner
+                    spLanguage.setAdapter(adapter);
+
+                    // Thiết lập OnItemSelectedListener cho Spinner
+                    spLanguage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            loadData();
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+                            // Không cần thực hiện hành động nào khi không có lựa chọn
+                        }
+                    });
+                } else {
+                    Toast.makeText(LevelManagementActivity.this, "Failed to get data", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Map<String, Language>> call, Throwable t) {
+                Toast.makeText(LevelManagementActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    // Tải tất cả cấp độ từ Firebase
-    private void loadLevelData() {
-        FirebaseApiService.apiService.getAllLevel().enqueue(new Callback<Map<String, Level>>() {
+    private void loadData() {
+        if (spLanguage.getSelectedItem() == null) {
+            Toast.makeText(this, "Vui lòng chọn một ngôn ngữ", Toast.LENGTH_SHORT).show();
+            return; // Trả về nếu không có ngôn ngữ được chọn
+        }
+        String selectedLanguageName = spLanguage.getSelectedItem().toString();
+        String selectedLanguageId = "\"" + languageMap.get(selectedLanguageName) + "\""; // Thêm dấu ngoặc kép
+
+        // Gọi API để lấy cấp độ theo language_id
+        FirebaseApiService.apiService.getAllLevelByLanguageId("\"language_id\"", selectedLanguageId).enqueue(new Callback<Map<String, Level>>() {
             @Override
             public void onResponse(Call<Map<String, Level>> call, Response<Map<String, Level>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -95,7 +151,7 @@ public class LevelManagementActivity extends AppCompatActivity {
                     }
 
                     // Cập nhật Adapter
-                    adapter = new LevelManagementAdapter(LevelManagementActivity.this, filteredLevelList);
+                    adapter = new LevelManagementAdapter(LevelManagementActivity.this, filteredLevelList, selectedLanguageName);
                     listView.setAdapter(adapter);
                 } else {
                     Toast.makeText(LevelManagementActivity.this, "Không thể tải dữ liệu cấp độ", Toast.LENGTH_SHORT).show();
@@ -109,6 +165,7 @@ public class LevelManagementActivity extends AppCompatActivity {
             }
         });
     }
+
 
     // Lọc danh sách cấp độ theo từ khóa
     private void filterLevelList(String keyword) {
@@ -132,6 +189,6 @@ public class LevelManagementActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadLevelData(); // Tải lại dữ liệu khi quay lại màn hình
+        loadData(); // Tải lại dữ liệu khi quay lại màn hình
     }
 }
