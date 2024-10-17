@@ -12,11 +12,11 @@ import com.example.meowapp.R;
 
 public class ButtonAdapter extends RecyclerView.Adapter<ButtonAdapter.ButtonViewHolder> {
 
-    private List<String> lessonIds; // Danh sách ID bài học
+    private List<String> lessonNames;
     private Context context;
 
-    public ButtonAdapter(List<String> lessonIds, Context context) {
-        this.lessonIds = lessonIds;
+    public ButtonAdapter(List<String> lessonNames, Context context) {
+        this.lessonNames = lessonNames;
         this.context = context;
     }
 
@@ -29,8 +29,8 @@ public class ButtonAdapter extends RecyclerView.Adapter<ButtonAdapter.ButtonView
 
     @Override
     public void onBindViewHolder(@NonNull ButtonViewHolder holder, int position) {
-        String lessonId = lessonIds.get(position);
-        holder.button.setText(lessonId); // Hiển thị ID của bài học
+        String lessonName = lessonNames.get(position); // Lấy tên bài học
+        holder.button.setText(lessonName); // Hiển thị tên bài học
 
         holder.button.setOnClickListener(v -> {
             // Xử lý click ở đây
@@ -39,7 +39,7 @@ public class ButtonAdapter extends RecyclerView.Adapter<ButtonAdapter.ButtonView
 
     @Override
     public int getItemCount() {
-        return lessonIds.size();
+        return lessonNames.size(); // Trả về kích thước của danh sách tên bài học
     }
 
     public static class ButtonViewHolder extends RecyclerView.ViewHolder {

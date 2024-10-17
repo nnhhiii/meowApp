@@ -4,7 +4,7 @@ public class Lesson {
     private int lesson_id;
     private String lesson_name;
     private int lesson_score;
-    private int level_id;
+    private String level_id;
     private String created_at;
     private String updated_at;
 
@@ -32,11 +32,11 @@ public class Lesson {
         this.lesson_score = lesson_score;
     }
 
-    public int getLevel_id() {
+    public String getLevel_id() {
         return level_id;
     }
 
-    public void setLevel_id(int level_id) {
+    public void setLevel_id(String level_id) {
         this.level_id = level_id;
     }
 

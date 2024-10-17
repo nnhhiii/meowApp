@@ -130,10 +130,13 @@
         </LinearLayout>
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
+    <ListView
         android:id="@+id/viewRank"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/top3_layout"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp"
+    />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,25 +1,45 @@
 package com.example.meowapp.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Leaderboard {
-    private int userId;
+    @SerializedName("user_id")
+    private String userId;
+
+    @SerializedName("username")
     private String userName;
-    private int totalScore;
+
     private int rank;
 
-    public int getUserId() {
+    @SerializedName("total_score")
+    private int totalScore;
+
+    @SerializedName("user_image_url")
+    private String userImageUrl;
+
+
+    public Leaderboard(String userId, int rank, int totalScore, String userImageUrl) {
+        this.userId = userId;
+        this.rank = rank;
+        this.totalScore = totalScore;
+        this.userImageUrl = userImageUrl;
+    }
+
+    // Getters và setters
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    public String getUserName() {
-        return userName;
+    public int getRank() {
+        return rank;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setRank(int rank) {
+        this.rank = rank;
     }
 
     public int getTotalScore() {
@@ -30,11 +50,20 @@ public class Leaderboard {
         this.totalScore = totalScore;
     }
 
-    public int getRank() {
-        return rank;
+    public String getUserImageUrl() {
+        return userImageUrl;
     }
 
-    public void setRank(int rank) {
-        this.rank = rank;
+    public void setUserImageUrl(String userImageUrl) {
+        this.userImageUrl = userImageUrl;
     }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
 }

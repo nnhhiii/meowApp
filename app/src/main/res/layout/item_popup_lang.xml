@@ -17,31 +17,13 @@
         android:layout_gravity="center" />
 
     <LinearLayout
+        android:id="@+id/buttonContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginTop="8dp">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center"
+    android:layout_marginTop="8dp">
 
-        <ImageButton
-            android:id="@+id/button_spain"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/ic_flagofspain"
-            android:background="?attr/selectableItemBackground"
-            android:contentDescription="Spain"
-            android:layout_marginEnd="8dp"/>
+  </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/button_english"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/ic_flagofusa"
-            android:background="?attr/selectableItemBackground"
-            android:contentDescription="English"
-            android:layout_marginStart="8dp"/>
     </LinearLayout>
-
-</LinearLayout>

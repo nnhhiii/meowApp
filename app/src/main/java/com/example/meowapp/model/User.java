@@ -1,16 +1,22 @@
 package com.example.meowapp.model;
+
+import com.google.gson.annotations.SerializedName;
+
 public class User {
 
 
-    private int userId;
+    @SerializedName("user_id")
+    private String userId;
+    
     private String username, email, password, role, avatar, language_id, created_at, updated_at;
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
+    @SerializedName("username")
     public String getUsername() {
         return username;
     }

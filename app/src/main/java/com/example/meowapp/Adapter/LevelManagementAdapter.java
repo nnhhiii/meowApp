@@ -1,4 +1,4 @@
-package com.example.meowapp.adapter;
+package com.example.meowapp.Adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
