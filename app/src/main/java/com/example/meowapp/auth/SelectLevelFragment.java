@@ -1,6 +1,5 @@
 package com.example.meowapp.auth;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,7 +13,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.meowapp.Adapter.SelectLevelAdapter;
+import com.example.meowapp.adapter.SelectLevelAdapter;
 import com.example.meowapp.R;
 import com.example.meowapp.api.FirebaseApiService;
 import com.example.meowapp.model.Level;

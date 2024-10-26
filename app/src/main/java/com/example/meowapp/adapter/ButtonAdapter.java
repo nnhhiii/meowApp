@@ -1,4 +1,4 @@
-package com.example.meowapp.Adapter;
+package com.example.meowapp.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

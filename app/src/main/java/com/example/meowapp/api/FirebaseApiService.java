@@ -1,6 +1,7 @@
 package com.example.meowapp.api;
 
 import com.example.meowapp.model.Language;
+import com.example.meowapp.model.Lesson;
 import com.example.meowapp.model.Level;
 import com.example.meowapp.model.Question;
 import com.example.meowapp.model.User;
@@ -56,6 +57,8 @@ public interface FirebaseApiService {
     Call<Language> deleteLanguage(@Path("id") String id);
 
     @GET("levels.json")
+    Call<Map<String, Level>> getAllLevel();
+    @GET("levels.json")
     Call<Map<String, Level>> getAllLevelByLanguageId(
             @Query("orderBy") String orderBy,
             @Query("equalTo") String languageId
@@ -68,6 +71,27 @@ public interface FirebaseApiService {
     Call<Level> updateLevel(@Path("id") String id, @Body Level level);
     @DELETE("levels/{id}.json")
     Call<Level> deleteLevel(@Path("id") String id);
+
+    @GET("lessons.json")
+    Call<Map<String, Lesson>> getAllLesson();
+    @GET("lessons.json")
+    Call<Map<String, Lesson>> getAllLessonByLanguageId(
+            @Query("orderBy") String orderBy,
+            @Query("equalTo") String languageId
+    );
+    @GET("lessons.json")
+    Call<Map<String, Lesson>> getAllLessonByLevelId(
+            @Query("orderBy") String orderBy,
+            @Query("equalTo") String levelId
+    );
+    @GET("lessons/{id}.json")
+    Call<Lesson> getLessonById(@Path("id") String id);
+    @POST("lessons.json")
+    Call<Lesson> addLesson(@Body Lesson lesson);
+    @PUT("lessons/{id}.json")
+    Call<Lesson> updateLesson(@Path("id") String id, @Body Lesson lesson);
+    @DELETE("lessons/{id}.json")
+    Call<Lesson> deleteLesson(@Path("id") String id);
 
     @GET("questions.json")
     Call<Map<String, Question>> getQuestionsByLessonId(
