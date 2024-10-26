@@ -8,10 +8,11 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavView"
+        app:itemIconTint="@null"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/pink3"
-        app:menu="@menu/menu_fragment_home" />
+        app:menu="@menu/menu_popup_home"
+       />
 
 
     <androidx.recyclerview.widget.RecyclerView

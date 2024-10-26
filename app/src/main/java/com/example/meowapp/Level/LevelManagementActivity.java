@@ -17,7 +17,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+<<<<<<< HEAD
 import com.example.meowapp.adapter.LevelManagementAdapter;
+=======
+import com.example.meowapp.Adapter.LevelManagementAdapter;
+import com.example.meowapp.Level.LevelCreateActivity;
+>>>>>>> 7d8f6b6614c6d07a776d772e2160e2667fe34a64
 import com.example.meowapp.R;
 import com.example.meowapp.api.FirebaseApiService;
 import com.example.meowapp.model.Language;
@@ -138,11 +143,9 @@ public class LevelManagementActivity extends AppCompatActivity {
             public void onResponse(Call<Map<String, Level>> call, Response<Map<String, Level>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Map<String, Level> levelMap = response.body();
-
                     // Xóa dữ liệu cũ
                     levelList.clear();
                     filteredLevelList.clear();
-
                     // Chuyển đổi từ Map<String, Level> sang List<Pair<String, Level>>
                     for (Map.Entry<String, Level> entry : levelMap.entrySet()) {
                         Pair<String, Level> pair = new Pair<>(entry.getKey(), entry.getValue());

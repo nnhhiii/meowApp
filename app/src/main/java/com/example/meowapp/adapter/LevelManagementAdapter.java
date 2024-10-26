@@ -1,4 +1,4 @@
-package com.example.meowapp.adapter;
+package com.example.meowapp.Adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -98,7 +98,6 @@ public class LevelManagementAdapter extends BaseAdapter {
 
         return convertView;
     }
-
     private void deleteLevel(String levelId, int position) {
         FirebaseApiService.apiService.deleteLevel(levelId).enqueue(new Callback<Level>() {
             @Override

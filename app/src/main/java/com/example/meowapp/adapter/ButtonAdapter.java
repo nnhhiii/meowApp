@@ -10,14 +10,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import com.example.meowapp.R;
 
-
 public class ButtonAdapter extends RecyclerView.Adapter<ButtonAdapter.ButtonViewHolder> {
 
-    private List<String> buttonList;
+    private List<String> lessonNames;
     private Context context;
 
-    public ButtonAdapter(List<String> buttonList, Context context) {
-        this.buttonList = buttonList;
+    public ButtonAdapter(List<String> lessonNames, Context context) {
+        this.lessonNames = lessonNames;
         this.context = context;
     }
 
@@ -30,17 +29,17 @@ public class ButtonAdapter extends RecyclerView.Adapter<ButtonAdapter.ButtonView
 
     @Override
     public void onBindViewHolder(@NonNull ButtonViewHolder holder, int position) {
-        String buttonText = buttonList.get(position);
-        holder.button.setText(buttonText);
+        String lessonName = lessonNames.get(position); // Lấy tên bài học
+        holder.button.setText(lessonName); // Hiển thị tên bài học
 
         holder.button.setOnClickListener(v -> {
-
+            // Xử lý click ở đây
         });
     }
 
     @Override
     public int getItemCount() {
-        return buttonList.size();
+        return lessonNames.size(); // Trả về kích thước của danh sách tên bài học
     }
 
     public static class ButtonViewHolder extends RecyclerView.ViewHolder {

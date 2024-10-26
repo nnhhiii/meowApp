@@ -88,8 +88,8 @@
 
         <ImageButton
             android:id="@+id/btnDelete"
-            android:layout_width="49dp"
-            android:layout_height="42dp"
+            android:layout_width="39dp"
+            android:layout_height="29dp"
             android:background="@null"
             android:src="@drawable/ic_close"
             app:layout_constraintBottom_toBottomOf="parent"

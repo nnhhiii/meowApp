@@ -1,4 +1,4 @@
-package com.example.meowapp.adapter;
+package com.example.meowapp.Adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -95,15 +95,14 @@ public class LanguageManagementAdapter extends BaseAdapter {
 
         holder.btnDelete.setOnClickListener(v -> {
             new AlertDialog.Builder(context)
-                    .setTitle("Delete Product")
-                    .setMessage("Are you sure you want to delete this product?")
+                    .setTitle("Xóa ngôn ngữ")
+                    .setMessage("Bạn có chắc chắn muốn xóa ngôn ngữ này không?")
                     .setPositiveButton(android.R.string.yes, (dialog, which) -> deleteLanguage(languageId, position))
                     .setNegativeButton(android.R.string.no, null)
                     .show();
         });
         return convertView;
     }
-
     private void deleteLanguage(String languageId, int position) {
         // Gọi API để xóa ngôn ngữ
         FirebaseApiService.apiService.deleteLanguage(languageId).enqueue(new Callback<Language>() {

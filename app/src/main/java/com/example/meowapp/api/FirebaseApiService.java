@@ -4,7 +4,9 @@ import com.example.meowapp.model.Language;
 import com.example.meowapp.model.Lesson;
 import com.example.meowapp.model.Level;
 import com.example.meowapp.model.Question;
+import com.example.meowapp.model.Lesson;
 import com.example.meowapp.model.User;
+import com.example.meowapp.model.Leaderboard;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -32,6 +34,7 @@ public interface FirebaseApiService {
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build();
+
 
     FirebaseApiService apiService = retrofit.create(FirebaseApiService.class);
     @GET("users.json")
@@ -101,7 +104,10 @@ public interface FirebaseApiService {
     @GET("questions/{id}.json")
     Call<Question> getQuestionById(@Path("id") String id);
 
-
+    @GET("leaderboard.json")
+    Call<Map<String, Leaderboard>> getAllLeaderboard();
+    @GET("lessons.json")
+    Call<Map<String, Lesson>> getAllLessons();
 
 
 }
