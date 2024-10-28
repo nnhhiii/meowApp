@@ -17,12 +17,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-<<<<<<< HEAD
-import com.example.meowapp.adapter.LevelManagementAdapter;
-=======
+//import com.example.meowapp.adapter.LevelManagementAdapter;
 import com.example.meowapp.Adapter.LevelManagementAdapter;
 import com.example.meowapp.Level.LevelCreateActivity;
->>>>>>> 7d8f6b6614c6d07a776d772e2160e2667fe34a64
 import com.example.meowapp.R;
 import com.example.meowapp.api.FirebaseApiService;
 import com.example.meowapp.model.Language;

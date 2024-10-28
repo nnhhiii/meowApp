@@ -16,11 +16,7 @@ import android.util.Log;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-<<<<<<< HEAD
 import com.example.meowapp.adapter.ButtonAdapter;
-=======
-import com.example.meowapp.Adapter.ButtonAdapter;
->>>>>>> 7d8f6b6614c6d07a776d772e2160e2667fe34a64
 import com.example.meowapp.R;
 import com.example.meowapp.api.FirebaseApiService;
 import com.example.meowapp.model.Language;

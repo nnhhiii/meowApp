@@ -16,21 +16,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MeowApp"
         tools:targetApi="31">
-        <activity
-            android:name=".lesson.LessonManagementActivity"
-            android:exported="true" >
-            <intent-filter>-->
-                        <action android:name="android.intent.action.MAIN" />
-                        <category android:name="android.intent.category.LAUNCHER" />
-                    </intent-filter>
-        </activity>
+<!--        <activity-->
+<!--            android:name=".lesson.LessonManagementActivity"-->
+<!--            android:exported="true" >-->
+<!--            <intent-filter>&ndash;&gt;-->
+<!--                        <action android:name="android.intent.action.MAIN" />-->
+<!--                        <category android:name="android.intent.category.LAUNCHER" />-->
+<!--                    </intent-filter>-->
+<!--        </activity>-->
         <activity
             android:name=".lesson.LessonEditActivity"
             android:exported="true" >
-<!--        <intent-filter>-->
-<!--            <action android:name="android.intent.action.MAIN" />-->
-<!--            <category android:name="android.intent.category.LAUNCHER" />-->
-<!--        </intent-filter>-->
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
         </activity>
         <activity
             android:name=".lesson.LessonCreateActivity"
@@ -65,7 +65,6 @@
         <activity
             android:name=".Level.LevelManagementActivity"
             android:exported="true">
-<<<<<<< HEAD
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -77,24 +76,20 @@
 <!--                    <action android:name="android.intent.action.MAIN" />-->
 <!--                    <category android:name="android.intent.category.LAUNCHER" />-->
 <!--                </intent-filter>-->
->>>>>>> 7d8f6b6614c6d07a776d772e2160e2667fe34a64
         </activity>
         <activity
             android:name=".Main.MainActivity"
             android:exported="true">
 
-<<<<<<< HEAD
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
-=======
              <intent-filter>
              <action android:name="android.intent.action.MAIN" />
              <category android:name="android.intent.category.LAUNCHER" />
              </intent-filter>
 
->>>>>>> 7d8f6b6614c6d07a776d772e2160e2667fe34a64
         </activity>
         <activity
             android:name=".auth.ForgetPasswordActivity"
@@ -104,31 +99,29 @@
             android:exported="false" />
         <activity
             android:name=".questionType.BlankActivity"
-<<<<<<< HEAD
             android:exported="false" /> <!-- <activity -->
         <!-- android:name=".questionType.start" -->
         <!-- android:exported="false" /> -->
         <activity
             android:name=".user.UserManagementActivity"
             android:exported="true">
+        </activity>
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
-=======
-            android:exported="false" />
 <!--         <activity -->
 <!--         android:name=".questionType.start" -->
 <!--         android:exported="false" /> -->
 
         <activity android:name=".user.UserManagementActivity"
-            android:exported="true" >
+            android:exported="true"
+            tools:ignore="DuplicateActivity">
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
 <!--                <category android:name="android.intent.category.LAUNCHER" />-->
 <!--            </intent-filter>-->
->>>>>>> 7d8f6b6614c6d07a776d772e2160e2667fe34a64
         </activity>
         <activity
             android:name=".user.AddUserActivity"
@@ -154,18 +147,15 @@
         <activity
             android:name=".admin.AdminActivity"
             android:exported="true">
-<<<<<<< HEAD
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
-=======
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
->>>>>>> 7d8f6b6614c6d07a776d772e2160e2667fe34a64
         </activity>
     </application>
 

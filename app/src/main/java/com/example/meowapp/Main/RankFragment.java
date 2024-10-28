@@ -19,7 +19,7 @@ import androidx.fragment.app.Fragment;
 import com.example.meowapp.R;
 import com.example.meowapp.model.Leaderboard;
 import com.example.meowapp.model.User;
-import com.example.meowapp.Adapter.LeaderboardAdapter;
+import com.example.meowapp.adapter.LeaderboardAdapter;
 import com.example.meowapp.api.FirebaseApiService;
 
 import java.util.ArrayList;
