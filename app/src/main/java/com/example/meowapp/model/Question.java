@@ -5,13 +5,21 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public class Question {
-    private String question_text, lesson_id, correct_answer,
+    private String question_text, lesson_id, correct_answer, order_words,
             option_a, option_b,option_c,option_d, question_type,
             image_option_a, image_option_b, image_option_c, image_option_d;
-    private List<String> order_word;
     private Timestamp created_at, updated_at;
     public Question() {
     }
+
+    public String getOrder_words() {
+        return order_words;
+    }
+
+    public void setOrder_words(String order_words) {
+        this.order_words = order_words;
+    }
+
     public String getQuestion_text() {
         return question_text;
     }
@@ -90,14 +98,6 @@ public class Question {
 
     public void setOption_d(String option_d) {
         this.option_d = option_d;
-    }
-
-    public List<String> getOrder_word() {
-        return order_word;
-    }
-
-    public void setOrder_word(List<String> order_word) {
-        this.order_word = order_word;
     }
 
     public String getImage_option_a() {

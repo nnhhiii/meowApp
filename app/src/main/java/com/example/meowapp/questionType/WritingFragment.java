@@ -4,12 +4,22 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.meowapp.R;
+import com.example.meowapp.api.FirebaseApiService;
+import com.example.meowapp.model.Question;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,6 +27,10 @@ import com.example.meowapp.R;
  * create an instance of this fragment.
  */
 public class WritingFragment extends Fragment {
+    private TextView questionTv;
+    private EditText et_answer;
+    private Button submitButton;
+    private String correct_answer;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -64,18 +78,46 @@ public class WritingFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_question_type_writing, container, false);
 
-        Button submitButton = view.findViewById(R.id.btnSubmit);
+        questionTv = view.findViewById(R.id.question);
+        et_answer = view.findViewById(R.id.answer);
+        submitButton = view.findViewById(R.id.btnSubmit);
         submitButton.setOnClickListener(v -> {
-            boolean isCorrect = checkAnswer();
-            String explanation = "Giải thích lý do vì sao đáp án này đúng hoặc sai.";
-
-            ResultBottomSheet bottomSheet = new ResultBottomSheet(isCorrect, explanation);
-            bottomSheet.show(getParentFragmentManager(), "ResultBottomSheet");
+            String answer = et_answer.getText().toString();
+            if(answer!=null) {
+                boolean isCorrect = checkAnswer(answer);
+                ResultBottomSheet bottomSheet = new ResultBottomSheet(isCorrect, correct_answer);
+                bottomSheet.show(getParentFragmentManager(), "ResultBottomSheet");
+            }else{
+                Toast.makeText(getContext(), "Vui lòng nhập câu trả lời!", Toast.LENGTH_SHORT).show();
+            }
         });
-
+        loadData();
         return view;
     }
-    private boolean checkAnswer() {
-        return true;
+    private boolean checkAnswer(String answer) {
+        return answer.equals(correct_answer);
+    }
+
+    private void loadData(){
+        // Nhận Bundle
+        String questionId = getArguments().getString("questionId");
+        FirebaseApiService.apiService.getQuestionById(questionId).enqueue(new Callback<Question>() {
+            @Override
+            public void onResponse(Call<Question> call, Response<Question> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Question question = response.body();
+                    questionTv.setText(question.getQuestion_text());
+                    correct_answer = question.getCorrect_answer();
+                } else {
+                    Toast.makeText(getContext(), "Failed to get info", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Question> call, Throwable t) {
+                Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("error:", t.getMessage(), t);
+            }
+        });
     }
 }

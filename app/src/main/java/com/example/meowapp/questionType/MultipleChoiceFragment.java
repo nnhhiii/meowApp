@@ -116,27 +116,13 @@ public class MultipleChoiceFragment extends Fragment {
         submitButton.setOnClickListener(v -> {
             if(selectedAnswer!=null) {
                 boolean isCorrect = checkAnswer(selectedAnswer);
-                String explanation = correct_answer;
-
-                ResultBottomSheet bottomSheet = new ResultBottomSheet(isCorrect, explanation);
+                ResultBottomSheet bottomSheet = new ResultBottomSheet(isCorrect, correct_answer);
                 bottomSheet.show(getParentFragmentManager(), "ResultBottomSheet");
             }else{
                 Toast.makeText(getContext(), "Vui lòng chọn đáp án!", Toast.LENGTH_SHORT).show();
             }
         });
         return view;
-    }
-    private void setBackground(CardView selectedCardView) {
-        selectedCardView.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.pink3));
-
-        for (CardView cardView : new CardView[]{cardViewA, cardViewB, cardViewC, cardViewD}) {
-            if (cardView != selectedCardView) {
-                cardView.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), android.R.color.white));
-            }
-        }
-    }
-    private boolean checkAnswer(String selectedAnswer) {
-        return selectedAnswer.equals(correct_answer);
     }
     private void loadData(){
         // Nhận Bundle
@@ -163,5 +149,17 @@ public class MultipleChoiceFragment extends Fragment {
                 Log.e("error:", t.getMessage(), t);
             }
         });
+    }
+    private void setBackground(CardView selectedCardView) {
+        selectedCardView.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.pink3));
+
+        for (CardView cardView : new CardView[]{cardViewA, cardViewB, cardViewC, cardViewD}) {
+            if (cardView != selectedCardView) {
+                cardView.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), android.R.color.white));
+            }
+        }
+    }
+    private boolean checkAnswer(String selectedAnswer) {
+        return selectedAnswer.equals(correct_answer);
     }
 }

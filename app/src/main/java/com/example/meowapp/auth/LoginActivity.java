@@ -7,7 +7,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.meowapp.R;
-import com.example.meowapp.questionType.Start;
+import com.example.meowapp.questionType.StartActivity;
 
 public class LoginActivity extends AppCompatActivity {
     private Button btnLogin, btnLogUp, btnForget;
@@ -28,7 +28,7 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
         });
         btnLogin.setOnClickListener(v -> {
-            Intent intent = new Intent(this, Start.class);
+            Intent intent = new Intent(this, StartActivity.class);
             startActivity(intent);
         });
     }

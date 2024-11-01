@@ -3,6 +3,7 @@ package com.example.meowapp.questionType;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -95,10 +96,36 @@ public class MultipleChoiceImageFragment extends Fragment {
         optionC = view.findViewById(R.id.option_c);
         optionD = view.findViewById(R.id.option_d);
         submitButton = view.findViewById(R.id.btnSubmit);
+
         loadData();
+
+        cardViewA.setOnClickListener(v -> {
+            setBackground(cardViewA);
+            selectedAnswer = optionA.getText().toString();
+        });
+        cardViewB.setOnClickListener(v -> {
+            setBackground(cardViewB);
+            selectedAnswer = optionB.getText().toString();
+        });
+        cardViewC.setOnClickListener(v -> {
+            setBackground(cardViewC);
+            selectedAnswer = optionC.getText().toString();
+        });
+        cardViewD.setOnClickListener(v -> {
+            setBackground(cardViewD);
+            selectedAnswer = optionD.getText().toString();
+        });
+        submitButton.setOnClickListener(v -> {
+            if(selectedAnswer!=null) {
+                boolean isCorrect = checkAnswer(selectedAnswer);
+                ResultBottomSheet bottomSheet = new ResultBottomSheet(isCorrect, correct_answer);
+                bottomSheet.show(getParentFragmentManager(), "ResultBottomSheet");
+            }else{
+                Toast.makeText(getContext(), "Vui lòng chọn đáp án!", Toast.LENGTH_SHORT).show();
+            }
+        });
         return view;
     }
-
     private void loadData(){
         // Nhận Bundle
         String questionId = getArguments().getString("questionId");
@@ -134,5 +161,17 @@ public class MultipleChoiceImageFragment extends Fragment {
                 Log.e("error:", t.getMessage(), t);
             }
         });
+    }
+    private void setBackground(CardView selectedCardView) {
+        selectedCardView.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.pink3));
+
+        for (CardView cardView : new CardView[]{cardViewA, cardViewB, cardViewC, cardViewD}) {
+            if (cardView != selectedCardView) {
+                cardView.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), android.R.color.white));
+            }
+        }
+    }
+    private boolean checkAnswer(String selectedAnswer) {
+        return selectedAnswer.equals(correct_answer);
     }
 }

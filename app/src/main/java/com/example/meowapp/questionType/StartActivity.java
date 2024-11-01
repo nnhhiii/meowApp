@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.meowapp.R;
 
-public class Start extends AppCompatActivity {
+public class StartActivity extends AppCompatActivity {
     private Button btn;
 
     @Override

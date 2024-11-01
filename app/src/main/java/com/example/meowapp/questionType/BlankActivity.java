@@ -1,5 +1,6 @@
 package com.example.meowapp.questionType;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -36,7 +37,7 @@ public class BlankActivity extends AppCompatActivity {
         loadData();
     }
     private void loadData() {
-        FirebaseApiService.apiService.getQuestionsByLessonId("\"lesson_id\"", "1").enqueue(new Callback<Map<String, Question>>() {
+        FirebaseApiService.apiService.getQuestionsByLessonId("\"lesson_id\"", "\"1\"").enqueue(new Callback<Map<String, Question>>() {
             @Override
             public void onResponse(Call<Map<String, Question>> call, Response<Map<String, Question>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -99,6 +100,10 @@ public class BlankActivity extends AppCompatActivity {
                         .replace(R.id.fragment_container, fragment)
                         .commit();
             }
+        }else {
+            Intent  intent = new Intent(this, FinishActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 
@@ -142,6 +147,10 @@ public class BlankActivity extends AppCompatActivity {
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
+        }else {
+            Intent  intent = new Intent(this, FinishActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 
