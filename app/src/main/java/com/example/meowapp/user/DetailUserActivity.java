@@ -1,6 +1,9 @@
 package com.example.meowapp.user;
 
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,6 +25,7 @@ public class DetailUserActivity extends AppCompatActivity {
     private String userId;
     private User user;
     private ImageButton btnBack;
+    private Button btnDelete, btnEdit;
     private ImageView imgUser; // Nếu bạn có hình ảnh của người dùng
 
     @Override
@@ -37,11 +41,29 @@ public class DetailUserActivity extends AppCompatActivity {
         imgUser = findViewById(R.id.image);
         btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(v -> finish());
+
+        userId = getIntent().getStringExtra("userId");
+
+        btnEdit = findViewById(R.id.btnEdit);
+        btnEdit.setOnClickListener(v ->{
+            Intent intent = new Intent(this, EditUserActivity.class);
+            intent.putExtra("userId", userId);
+            startActivity(intent);
+        });
+
+        btnDelete = findViewById(R.id.btnDelete);
+        btnDelete.setOnClickListener(v ->{
+            new AlertDialog.Builder(this)
+                    .setTitle("Xóa người dùng")
+                    .setMessage("Bạn có chắc chắn muốn xóa người dùng này không?")
+                    .setPositiveButton(android.R.string.yes, (dialog, which) -> deleteUser(userId))
+                    .setNegativeButton(android.R.string.no, null)
+                    .show();
+        });
         loadData();
     }
 
     private void loadData() {
-        userId = getIntent().getStringExtra("userId");
         FirebaseApiService.apiService.getUserById(userId).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -65,5 +87,29 @@ public class DetailUserActivity extends AppCompatActivity {
                 Toast.makeText(DetailUserActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void deleteUser(String userId) {
+        FirebaseApiService.apiService.deleteUser(userId).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    finish();
+                    Toast.makeText(DetailUserActivity.this, "Xóa người dùng thành công!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(DetailUserActivity.this, "Xóa người dùng thất bại!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable throwable) {
+                Toast.makeText(DetailUserActivity.this, "Xóa người dùng thất bại!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadData();
     }
 }

@@ -6,7 +6,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Pair;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -41,7 +40,7 @@ public class LanguageManagementActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_lang_managerment);
+        setContentView(R.layout.activity_lang_management);
         listView = findViewById(R.id.listView);
         etSearch = findViewById(R.id.etSearch);
         btnBack = findViewById(R.id.btnBack);

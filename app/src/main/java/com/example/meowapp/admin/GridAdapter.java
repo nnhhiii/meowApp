@@ -11,7 +11,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.meowapp.Level.LevelManagementActivity;
 import com.example.meowapp.R;
+import com.example.meowapp.language.LanguageManagementActivity;
+import com.example.meowapp.lesson.LessonManagementActivity;
 import com.example.meowapp.user.EditUserActivity;
 import com.example.meowapp.user.UserManagementActivity;
 
@@ -57,6 +60,15 @@ public class GridAdapter extends BaseAdapter {
         convertView.setOnClickListener(v -> {
             if (gridItem.getText().equals("Người dùng")) {
                 Intent intent = new Intent(context, UserManagementActivity.class);
+                context.startActivity(intent);
+            }else if (gridItem.getText().equals("Ngôn ngữ")) {
+                Intent intent = new Intent(context, LanguageManagementActivity.class);
+                context.startActivity(intent);
+            }else if (gridItem.getText().equals("Cấp độ")) {
+                Intent intent = new Intent(context, LevelManagementActivity.class);
+                context.startActivity(intent);
+            }else if (gridItem.getText().equals("Bài học")) {
+                Intent intent = new Intent(context, LessonManagementActivity.class);
                 context.startActivity(intent);
             }
         });

@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,7 +22,6 @@ import com.example.meowapp.model.Language;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -64,7 +62,7 @@ public class LanguageManagementAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_lang_managerment, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_lang_management, parent, false);
 
             holder = new ViewHolder();
             holder.tvName = convertView.findViewById(R.id.tvName);
@@ -97,15 +95,14 @@ public class LanguageManagementAdapter extends BaseAdapter {
 
         holder.btnDelete.setOnClickListener(v -> {
             new AlertDialog.Builder(context)
-                    .setTitle("Delete Product")
-                    .setMessage("Are you sure you want to delete this product?")
+                    .setTitle("Xóa ngôn ngữ")
+                    .setMessage("Bạn có chắc chắn muốn xóa ngôn ngữ này không?")
                     .setPositiveButton(android.R.string.yes, (dialog, which) -> deleteLanguage(languageId, position))
                     .setNegativeButton(android.R.string.no, null)
                     .show();
         });
         return convertView;
     }
-
     private void deleteLanguage(String languageId, int position) {
         // Gọi API để xóa ngôn ngữ
         FirebaseApiService.apiService.deleteLanguage(languageId).enqueue(new Callback<Language>() {

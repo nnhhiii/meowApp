@@ -30,7 +30,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class EditUserActivity extends AppCompatActivity {
-    private EditText etName, etEmail, etPassword;
+    private EditText etName, etEmail;
     private Button btnImage, btnSave;
     private ImageButton btnCancel;
     private ImageView imageView;
@@ -46,7 +46,7 @@ public class EditUserActivity extends AppCompatActivity {
 
         etName = findViewById(R.id.username);
         etEmail = findViewById(R.id.email);
-        imageView = findViewById(R.id.staffImage);
+        imageView = findViewById(R.id.image);
 
         btnCancel = findViewById(R.id.btnBack);
         btnCancel.setOnClickListener(v -> finish());
@@ -59,15 +59,15 @@ public class EditUserActivity extends AppCompatActivity {
             activityResult.launch(intent);
         });
 
+        userId = getIntent().getStringExtra("userId");
+
         btnSave = findViewById(R.id.btnSave);
         btnSave.setOnClickListener(v -> {
             String newName = etName.getText().toString().trim();
             String newEmail = etEmail.getText().toString().trim(); // Lấy email từ trường
-            String newPassword = etPassword.getText().toString().trim();
             if (!TextUtils.isEmpty(newName) && !TextUtils.isEmpty(newEmail)) {
                 user.setUsername(newName); // Đặt tên cho người dùng
                 user.setEmail(newEmail); // Đặt email cho người dùng
-                user.setPassword(newPassword);
                 // Cập nhật thời gian
                 String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
                 user.setUpdated_at(currentTime); // Đặt thời gian cập nhật
@@ -85,7 +85,6 @@ public class EditUserActivity extends AppCompatActivity {
     }
 
     private void loadData() {
-        userId = getIntent().getStringExtra("userId");
         FirebaseApiService.apiService.getUserById(userId).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {

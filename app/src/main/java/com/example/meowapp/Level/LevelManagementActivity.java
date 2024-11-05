@@ -1,6 +1,5 @@
 package com.example.meowapp.Level;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -18,7 +17,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.meowapp.adapter.LevelManagementAdapter;
+//import com.example.meowapp.adapter.LevelManagementAdapter;
+import com.example.meowapp.Adapter.LevelManagementAdapter;
 import com.example.meowapp.Level.LevelCreateActivity;
 import com.example.meowapp.R;
 import com.example.meowapp.api.FirebaseApiService;
@@ -48,7 +48,7 @@ public class LevelManagementActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_level_managerment);
+        setContentView(R.layout.activity_level_management);
 
         listView = findViewById(R.id.listView);
         etSearch = findViewById(R.id.etSearch);
@@ -140,11 +140,9 @@ public class LevelManagementActivity extends AppCompatActivity {
             public void onResponse(Call<Map<String, Level>> call, Response<Map<String, Level>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Map<String, Level> levelMap = response.body();
-
                     // Xóa dữ liệu cũ
                     levelList.clear();
                     filteredLevelList.clear();
-
                     // Chuyển đổi từ Map<String, Level> sang List<Pair<String, Level>>
                     for (Map.Entry<String, Level> entry : levelMap.entrySet()) {
                         Pair<String, Level> pair = new Pair<>(entry.getKey(), entry.getValue());

@@ -2,17 +2,17 @@
 
     <item
         android:id="@+id/tab_home"
-        android:icon="@android:drawable/ic_menu_sort_by_size"
-        android:title="Home" />
+        android:icon="@drawable/ic_home"
+        android:title="Trang chủ"
+        />
 
     <item
         android:id="@+id/tab_rank"
-        android:icon="@android:drawable/ic_menu_sort_by_size"
-        android:title="Rank" />
+        android:icon="@drawable/ic_rankk"
+        android:title="Bảng xếp hạng" />
 
     <item
         android:id="@+id/tab_user"
-        android:icon="@android:drawable/ic_menu_my_calendar"
-        android:title="User" />
-
+        android:icon="@drawable/ic_cat1"
+    android:title="Cá nhân" />
 </menu>

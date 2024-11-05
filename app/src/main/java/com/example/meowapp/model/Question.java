@@ -7,8 +7,8 @@ import java.util.List;
 public class Question {
     private String question_text, lesson_id, correct_answer, order_words,
             option_a, option_b,option_c,option_d, question_type,
-            image_option_a, image_option_b, image_option_c, image_option_d;
-    private Timestamp created_at, updated_at;
+            image_option_a, image_option_b, image_option_c, image_option_d,
+            created_at, updated_at;
     public Question() {
     }
 
@@ -52,19 +52,19 @@ public class Question {
         this.question_type = question_type;
     }
 
-    public Timestamp getCreated_at() {
+    public String getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at(Timestamp created_at) {
+    public void setCreated_at(String created_at) {
         this.created_at = created_at;
     }
 
-    public Timestamp getUpdated_at() {
+    public String getUpdated_at() {
         return updated_at;
     }
 
-    public void setUpdated_at(Timestamp updated_at) {
+    public void setUpdated_at(String updated_at) {
         this.updated_at = updated_at;
     }
 

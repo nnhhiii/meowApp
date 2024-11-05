@@ -14,7 +14,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.meowapp.Adapter.SelectLevelAdapter;
+import com.example.meowapp.Main.MainActivity;
+import com.example.meowapp.adapter.SelectLevelAdapter;
 import com.example.meowapp.R;
 import com.example.meowapp.api.FirebaseApiService;
 import com.example.meowapp.model.Level;
@@ -88,21 +89,15 @@ public class SelectLevelFragment extends Fragment {
             if (getActivity() instanceof BlankActivity) {
                 ((BlankActivity) getActivity()).updateProgressBar(100);
             }
-            Fragment fragment = new SelectLanguageFragment();
-
-            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-            transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
-            transaction.replace(R.id.fragment_container, fragment);
-            transaction.addToBackStack(null);
-
-            // Thực thi giao dịch Fragment
-            transaction.commit();
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            startActivity(intent);
         });
         loadData();
         return view;
     }
     private void loadData() {
-        FirebaseApiService.apiService.getAllLevelByLanguageId("\"language_id\"", "1").enqueue(new Callback<Map<String, Level>>() {
+        String languageId = "1";
+        FirebaseApiService.apiService.getAllLevelByLanguageId("\"language_id\"", "\"" + languageId + "\"").enqueue(new Callback<Map<String, Level>>() {
             @Override
             public void onResponse(Call<Map<String, Level>> call, Response<Map<String, Level>> response) {
                 if (response.isSuccessful() && response.body() != null) {

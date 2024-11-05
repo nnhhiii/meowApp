@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:backgroundTint="@color/white"
+    app:cardCornerRadius="12dp"
+    android:layout_margin="10dp"
+    app:strokeColor="@color/pink3"
+    app:strokeWidth="1dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Loại câu hỏi"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="4dp" />
+
+        <Spinner
+            android:id="@+id/spQuestionType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:enabled="false"
+            android:spinnerMode="dropdown"
+            android:background="@drawable/edit_text_background" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Câu hỏi"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp" />
+
+        <EditText
+            android:id="@+id/etQuestion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nhập câu hỏi"
+            android:focusable="false"
+            android:inputType="text"
+            android:padding="12dp"
+            android:background="@drawable/edit_text_background" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Đáp án"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp" />
+
+        <EditText
+            android:id="@+id/etAnswer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nhập câu trả lời"
+            android:padding="12dp"
+            android:focusable="false"
+            android:background="@drawable/edit_text_background"/>
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/layoutOrderWords"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sắp xếp chữ"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="4dp"/>
+
+                <EditText
+                    android:id="@+id/etOrderWords"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ví dụ: mưa., trời, Hôm, nay"
+                    android:padding="12dp"
+                    android:background="@drawable/edit_text_background"/>
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/layoutOptionA"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đáp án A"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="4dp" />
+
+                <EditText
+                    android:id="@+id/etOptionA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Nhập đáp án A"
+                    android:padding="12dp"
+                    android:background="@drawable/edit_text_background"/>
+            </LinearLayout>
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/layoutImageA"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="15dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hình A"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="4dp" />
+
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imageA"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_add_image"
+                    app:shapeAppearanceOverlay="@style/roundedImageStyle" />
+                <Button
+                    android:visibility="gone"
+                    android:id="@+id/btnImageA"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:backgroundTint="#E9EA9EAD"
+                    android:text="Chọn"
+                    android:layout_gravity="center"
+                    android:textColor="#FFF"
+                    android:textSize="14sp"
+                    android:gravity="center" />
+            </LinearLayout>
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/layoutOptionB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đáp án B"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="4dp" />
+
+                <EditText
+                    android:id="@+id/etOptionB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Nhập đáp án B"
+                    android:padding="12dp"
+                    android:background="@drawable/edit_text_background"/>
+            </LinearLayout>
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/layoutImageB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="15dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hình B"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="4dp" />
+
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imageB"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_add_image"
+                    app:shapeAppearanceOverlay="@style/roundedImageStyle" />
+                <Button
+                    android:visibility="gone"
+                    android:id="@+id/btnImageB"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:backgroundTint="#E9EA9EAD"
+                    android:text="Chọn"
+                    android:layout_gravity="center"
+                    android:textColor="#FFF"
+                    android:textSize="14sp"
+                    android:gravity="center" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/layoutOptionC"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đáp án C"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="4dp" />
+
+                <EditText
+                    android:id="@+id/etOptionC"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Nhập đáp án C"
+                    android:padding="12dp"
+                    android:background="@drawable/edit_text_background"/>
+            </LinearLayout>
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/layoutImageC"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="15dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hình C"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="4dp" />
+
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imageC"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_add_image"
+                    app:shapeAppearanceOverlay="@style/roundedImageStyle" />
+                <Button
+                    android:visibility="gone"
+                    android:id="@+id/btnImageC"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:backgroundTint="#E9EA9EAD"
+                    android:text="Chọn"
+                    android:layout_gravity="center"
+                    android:textColor="#FFF"
+                    android:textSize="14sp"
+                    android:gravity="center" />
+            </LinearLayout>
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/layoutOptionD"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đáp án D"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="4dp" />
+
+                <EditText
+                    android:id="@+id/etOptionD"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Nhập đáp án D"
+                    android:padding="12dp"
+                    android:background="@drawable/edit_text_background"/>
+            </LinearLayout>
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/layoutImageD"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="15dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hình D"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="4dp" />
+
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imageD"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_add_image"
+                    app:shapeAppearanceOverlay="@style/roundedImageStyle" />
+                <Button
+                    android:visibility="gone"
+                    android:id="@+id/btnImageD"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:backgroundTint="#E9EA9EAD"
+                    android:text="Chọn"
+                    android:layout_gravity="center"
+                    android:textColor="#FFF"
+                    android:textSize="14sp"
+                    android:gravity="center" />
+            </LinearLayout>
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:visibility="gone"
+            android:id="@+id/layoutBtnEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/btnSaveQuestion"
+                android:layout_width="80dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:backgroundTint="@color/green2"
+                android:layout_marginTop="10dp"
+                android:text="Lưu"/>
+            <Button
+                android:id="@+id/btnDeleteQuestion"
+                android:layout_width="80dp"
+                android:layout_height="50dp"
+                android:layout_toStartOf="@+id/btnSaveQuestion"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/red4"
+                android:text="Xóa"/>
+            <Button
+                android:id="@+id/btnCancel"
+                android:layout_width="80dp"
+                android:layout_height="50dp"
+                android:layout_toStartOf="@+id/btnDeleteQuestion"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/dark_gray"
+                android:text="Hủy"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btnEdit"
+            android:layout_width="49dp"
+            android:layout_height="42dp"
+            android:padding="12dp"
+            android:background="@null"
+            android:src="@drawable/ic_edit"
+            android:scaleType="centerCrop"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="20dp"
+            android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+</com.google.android.material.card.MaterialCardView>

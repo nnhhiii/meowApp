@@ -1,0 +1,174 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!-- Phần tiêu đề (Title) -->
+    <RelativeLayout
+        android:id="@+id/layout_tren"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:background="@color/white"
+            android:src="@drawable/ic_arrow_back" />
+
+        <TextView
+            android:id="@+id/headerTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="Chỉnh sửa bài học"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/layout_tren"
+        android:paddingStart="25dp"
+        android:paddingEnd="25dp">
+        <ImageButton
+            android:id="@+id/btnEdit"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:padding="3dp"
+            android:background="@null"
+            android:scaleType="centerCrop"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_edit" />
+        <!-- Trường nhập Tên ngôn ngữ -->
+        <TextView
+            android:id="@+id/tvLevelName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên cấp độ"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="4dp" />
+
+        <Spinner
+            android:id="@+id/sp_level"
+            android:enabled="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:layout_below="@+id/tvLevelName"
+            android:spinnerMode="dropdown"
+            android:background="@drawable/edit_text_background" />
+        <TextView
+            android:id="@+id/tvLessonName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên bài học"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_below="@+id/sp_level"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp" />
+
+        <EditText
+            android:id="@+id/etLessonName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nhập tên bài học"
+            android:focusable="false"
+            android:layout_below="@+id/tvLessonName"
+            android:padding="12dp"
+            android:background="@drawable/edit_text_background" />
+        <TextView
+            android:id="@+id/tvScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Điểm"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_below="@+id/etLessonName"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp" />
+
+        <EditText
+            android:id="@+id/etScore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nhập điểm"
+            android:layout_below="@+id/tvScore"
+            android:inputType="number"
+            android:focusable="false"
+            android:padding="12dp"
+            android:background="@drawable/edit_text_background"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/layoutBtnEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout">
+        <Button
+            android:id="@+id/btnSaveLesson"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:backgroundTint="@color/green2"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Lưu"/>
+        <Button
+            android:id="@+id/btnDeleteLesson"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:layout_toStartOf="@+id/btnSaveLesson"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/red4"
+            android:text="Xóa"/>
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:layout_toStartOf="@+id/btnDeleteLesson"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/dark_gray"
+            android:text="Hủy"/>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Các câu hỏi"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_below="@+id/layoutBtnEdit"
+        android:layout_margin="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="4dp" />
+    <Button
+        android:id="@+id/btnAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:text="Thêm câu hỏi"
+        android:layout_below="@+id/layoutBtnEdit"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_alignParentEnd="true"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/btnAdd"/>
+</RelativeLayout>
+</ScrollView>
+

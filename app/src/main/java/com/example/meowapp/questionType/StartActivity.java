@@ -16,8 +16,10 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_type_start);
         btn = findViewById(R.id.btnStart);
+        String lessonId = getIntent().getStringExtra("LESSON_ID");
         btn.setOnClickListener(v -> {
             Intent intent = new Intent(this, BlankActivity.class);
+            intent.putExtra("LESSON_ID", lessonId);
             startActivity(intent);
             finish();
         });

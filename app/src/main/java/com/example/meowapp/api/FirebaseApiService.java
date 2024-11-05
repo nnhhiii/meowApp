@@ -1,9 +1,15 @@
 package com.example.meowapp.api;
 
 import com.example.meowapp.model.Language;
+import com.example.meowapp.model.LanguagePreference;
+import com.example.meowapp.model.Lesson;
 import com.example.meowapp.model.Level;
 import com.example.meowapp.model.Question;
+import com.example.meowapp.model.Lesson;
+import com.example.meowapp.model.QuestionType;
 import com.example.meowapp.model.User;
+import com.example.meowapp.model.Leaderboard;
+import com.example.meowapp.model.UserProgress;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -15,6 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -32,6 +39,7 @@ public interface FirebaseApiService {
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build();
 
+
     FirebaseApiService apiService = retrofit.create(FirebaseApiService.class);
     @GET("users.json")
     Call<Map<String, User>> getAllUsers();
@@ -41,8 +49,12 @@ public interface FirebaseApiService {
     Call<User> addUser(@Body User user);
     @PUT("users/{id}.json")
     Call<User> updateUser(@Path("id") String userId, @Body User user);
+    @PATCH("users/{id}.json")
+    Call<User> updateUserScore(@Path("id") String userId, @Body Map<String, Object> scoreField);
     @DELETE("users/{id}.json")
     Call<Void> deleteUser(@Path("id") String userId);
+
+
 
     @GET("languages.json")
     Call<Map<String, Language>> getAllLanguage();
@@ -55,6 +67,15 @@ public interface FirebaseApiService {
     @DELETE("languages/{id}.json")
     Call<Language> deleteLanguage(@Path("id") String id);
 
+
+    @GET("language_preferences.json")
+    Call<Map<String, LanguagePreference>> getAllLanguagePreferenceByUserId(
+            @Query("orderBy") String orderBy,
+            @Query("equalTo") String userId
+    );
+
+    @GET("levels.json")
+    Call<Map<String, Level>> getAllLevel();
     @GET("levels.json")
     Call<Map<String, Level>> getAllLevelByLanguageId(
             @Query("orderBy") String orderBy,
@@ -69,6 +90,32 @@ public interface FirebaseApiService {
     @DELETE("levels/{id}.json")
     Call<Level> deleteLevel(@Path("id") String id);
 
+
+    @GET("lessons.json")
+    Call<Map<String, Lesson>> getAllLessons();
+    @GET("lessons.json")
+    Call<Map<String, Lesson>> getAllLessonByLanguageId(
+            @Query("orderBy") String orderBy,
+            @Query("equalTo") String languageId
+    );
+    @GET("lessons.json")
+    Call<Map<String, Lesson>> getAllLessonByLevelId(
+            @Query("orderBy") String orderBy,
+            @Query("equalTo") String levelId
+    );
+    @GET("lessons/{id}.json")
+    Call<Lesson> getLessonById(@Path("id") String id);
+    @POST("lessons.json")
+    Call<Lesson> addLesson(@Body Lesson lesson);
+    @PUT("lessons/{id}.json")
+    Call<Lesson> updateLesson(@Path("id") String id, @Body Lesson lesson);
+    @DELETE("lessons/{id}.json")
+    Call<Lesson> deleteLesson(@Path("id") String id);
+
+
+
+    @GET("question_type.json")
+    Call<Map<String, QuestionType>> getAllQuestionType();
     @GET("questions.json")
     Call<Map<String, Question>> getQuestionsByLessonId(
             @Query("orderBy") String orderBy,
@@ -76,8 +123,24 @@ public interface FirebaseApiService {
     );
     @GET("questions/{id}.json")
     Call<Question> getQuestionById(@Path("id") String id);
+    @POST("questions.json")
+    Call<Question> addQuestion(@Body Question question);
+    @PUT("questions/{id}.json")
+    Call<Question> updateQuestion(@Path("id") String id, @Body Question question);
+    @DELETE("questions/{id}.json")
+    Call<Question> deleteQuestion(@Path("id") String id);
 
 
 
+    @GET("leaderboard.json")
+    Call<Map<String, Leaderboard>> getAllLeaderboard();
+
+    @GET("user_progress.json")
+    Call<Map<String, UserProgress>> getAllUserProgressByUserId(
+            @Query("orderBy") String orderBy,
+            @Query("equalTo") String userId
+    );
+    @POST("user_progress.json")
+    Call<UserProgress> addUserProgress(@Body UserProgress userProgress);
 
 }

@@ -61,7 +61,7 @@ public class LanguageEditActivity extends AppCompatActivity {
         btnSave = findViewById(R.id.btnSave);
         btnSave.setOnClickListener(v -> {
             String newName = etName.getText().toString().trim();
-            if (!newName.isEmpty() && imgUri != null) {
+            if (!newName.isEmpty()) {
                 language.setLanguage_name(newName);
 
                 // Lấy thời gian hiện tại
@@ -69,11 +69,17 @@ public class LanguageEditActivity extends AppCompatActivity {
                 String currentTime = sdf.format(new Date()); // Định dạng thời gian hiện tại
 
                 language.setUpdated_at(currentTime);
-                uploadImageToFirebaseStorage(imgUri);
-            }else {
+
+                if (imgUri != null) {
+                    uploadImageToFirebaseStorage(imgUri);
+                } else {
+                    saveToFireBase(languageId, language);
+                }
+            } else {
                 Toast.makeText(this, "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
             }
         });
+
         loadData();
     }
 
