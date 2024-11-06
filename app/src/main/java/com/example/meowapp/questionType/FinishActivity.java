@@ -94,7 +94,6 @@ public class FinishActivity extends AppCompatActivity {
         newScore = scoreUser + scoreLesson;
         Map<String, Object> scoreField = new HashMap<>();
         scoreField.put("score", newScore);
-
         FirebaseApiService.apiService.updateUserScore(userId, scoreField).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -114,7 +113,8 @@ public class FinishActivity extends AppCompatActivity {
     }
 
     private void checkUserProgress() {
-        FirebaseApiService.apiService.getAllUserProgressByUserId("\"user_id\"", "\""+ userId +"\"").enqueue(new Callback<Map<String, UserProgress>>() {
+        FirebaseApiService.apiService.getAllUserProgressByUserId("\"user_id\"", "\""+ userId +"\"")
+                .enqueue(new Callback<Map<String, UserProgress>>() {
             @Override
             public void onResponse(Call<Map<String, UserProgress>> call, Response<Map<String, UserProgress>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -134,7 +134,6 @@ public class FinishActivity extends AppCompatActivity {
                         addUserProgress(userId, lessonId);
                     }else {
                         goToMainActivity();
-                        Log.d("FinishActivity", "User đã học bài này rồi.");
                     }
                 } else {
                     // Nếu không có dữ liệu user progress nào, thêm luôn tiến trình học mới

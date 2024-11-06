@@ -60,8 +60,6 @@ public class LevelCreateActivity extends AppCompatActivity {
             public void onResponse(Call<Map<String, Language>> call, Response<Map<String, Language>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Map<String, Language> responseMap = response.body();
-
-                    // Tạo danh sách các tên ngôn ngữ và lưu language_id tương ứng
                     List<String> languageNames = new ArrayList<>();
                     for (Map.Entry<String, Language> entry : responseMap.entrySet()) {
                         languageMap.put(entry.getValue().getLanguage_name(), entry.getKey()); // Lưu cặp tên-ngôn ngữ với id
@@ -69,10 +67,9 @@ public class LevelCreateActivity extends AppCompatActivity {
                     }
 
                     // Tạo Adapter cho Spinner
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(LevelCreateActivity.this, android.R.layout.simple_spinner_item, languageNames);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(LevelCreateActivity.this,
+                            android.R.layout.simple_spinner_item, languageNames);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-                    // Gán Adapter cho Spinner
                     spLanguage.setAdapter(adapter);
                 } else {
                     Toast.makeText(LevelCreateActivity.this, "Failed to get data", Toast.LENGTH_SHORT).show();

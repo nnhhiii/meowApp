@@ -104,7 +104,6 @@ public class LanguageManagementAdapter extends BaseAdapter {
         return convertView;
     }
     private void deleteLanguage(String languageId, int position) {
-        // Gọi API để xóa ngôn ngữ
         FirebaseApiService.apiService.deleteLanguage(languageId).enqueue(new Callback<Language>() {
             @Override
             public void onResponse(Call<Language> call, Response<Language> response) {
@@ -116,7 +115,6 @@ public class LanguageManagementAdapter extends BaseAdapter {
                     Toast.makeText(context, "Xóa thất bại!", Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public void onFailure(Call<Language> call, Throwable t) {
                 Toast.makeText(context, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();

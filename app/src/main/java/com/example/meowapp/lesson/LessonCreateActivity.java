@@ -87,7 +87,8 @@ public class LessonCreateActivity extends AppCompatActivity {
                     }
 
                     // Tạo Adapter cho Spinner
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(LessonCreateActivity.this, android.R.layout.simple_spinner_item, languageNames);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(LessonCreateActivity.this,
+                            android.R.layout.simple_spinner_item, languageNames);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
                     // Gán Adapter cho Spinner
@@ -96,7 +97,6 @@ public class LessonCreateActivity extends AppCompatActivity {
                     Toast.makeText(LessonCreateActivity.this, "Failed to get data", Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public void onFailure(Call<Map<String, Language>> call, Throwable t) {
                 Toast.makeText(LessonCreateActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
@@ -105,7 +105,8 @@ public class LessonCreateActivity extends AppCompatActivity {
     }
 
     private void loadLevelsByLanguageId(String languageId) {
-        FirebaseApiService.apiService.getAllLevelByLanguageId("\"language_id\"", "\"" + languageId + "\"").enqueue(new Callback<Map<String, Level>>() {
+        FirebaseApiService.apiService.getAllLevelByLanguageId("\"language_id\"", "\"" + languageId + "\"")
+                .enqueue(new Callback<Map<String, Level>>() {
             @Override
             public void onResponse(Call<Map<String, Level>> call, Response<Map<String, Level>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -120,7 +121,8 @@ public class LessonCreateActivity extends AppCompatActivity {
                     }
 
                     // Tạo Adapter cho Spinner cấp độ
-                    ArrayAdapter<String> levelAdapter = new ArrayAdapter<>(LessonCreateActivity.this, android.R.layout.simple_spinner_item, levelNames);
+                    ArrayAdapter<String> levelAdapter = new ArrayAdapter<>(LessonCreateActivity.this,
+                            android.R.layout.simple_spinner_item, levelNames);
                     levelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
                     // Gán Adapter cho Spinner cấp độ

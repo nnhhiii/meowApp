@@ -79,9 +79,7 @@ public class OrderWordFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_question_type_order_word, container, false);
 
         wordContainer = view.findViewById(R.id.wordContainer);
@@ -95,18 +93,12 @@ public class OrderWordFragment extends Fragment {
             for (String word : selectedWords) {
                 selectedSentence.append(word).append(" ");
             }
-
-            // Xóa khoảng trắng cuối cùng
             String userAnswer = selectedSentence.toString().trim();
-
-            // Kiểm tra xem câu của người dùng có khớp với đáp án đúng không
             boolean isCorrect = checkAnswer(userAnswer);
 
-            // Hiển thị kết quả
             ResultBottomSheet bottomSheet = new ResultBottomSheet(isCorrect, correctAnswer);
             bottomSheet.show(getParentFragmentManager(), "ResultBottomSheet");
         });
-
         loadData();
         return view;
     }

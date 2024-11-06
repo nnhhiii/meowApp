@@ -135,7 +135,8 @@ public class QuestionCreateActivity extends AppCompatActivity {
                     }
 
                     // Tạo Adapter cho Spinner
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(QuestionCreateActivity.this, android.R.layout.simple_spinner_item, questionTypeNames);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(QuestionCreateActivity.this,
+                            android.R.layout.simple_spinner_item, questionTypeNames);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
                     // Gán Adapter cho Spinner
@@ -286,7 +287,8 @@ public class QuestionCreateActivity extends AppCompatActivity {
 
             if (imageUri != null) {
                 // Đặt tên file và tạo thư mục trong Firebase Storage
-                StorageReference imageRef = storageReference.child("questions/" + option + "_" + System.currentTimeMillis() + ".jpg");
+                StorageReference imageRef = storageReference.child("questions/" + option + "_" +
+                        System.currentTimeMillis() + ".jpg");
 
                 // Upload từng file
                 imageRef.putFile(imageUri)
@@ -303,12 +305,14 @@ public class QuestionCreateActivity extends AppCompatActivity {
                                     question.setImage_option_d(imageUrls.get("optionD"));
 
                                     saveToFirebase(question); // Lưu câu hỏi vào Firebase sau khi tất cả ảnh đã được tải lên
-                                    Toast.makeText(QuestionCreateActivity.this, "Tải lên tất cả ảnh thành công!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(QuestionCreateActivity.this,
+                                            "Tải lên tất cả ảnh thành công!", Toast.LENGTH_SHORT).show();
                                 }
                             });
                         })
                         .addOnFailureListener(e -> {
-                            Toast.makeText(QuestionCreateActivity.this, "Tải lên thất bại cho " + option, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(QuestionCreateActivity.this, "Tải lên thất bại cho " + option,
+                                    Toast.LENGTH_SHORT).show();
                         });
             }
         }

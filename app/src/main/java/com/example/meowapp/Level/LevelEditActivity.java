@@ -82,7 +82,6 @@ public class LevelEditActivity extends AppCompatActivity {
                     List<String> languageNames = new ArrayList<>();
                     int selectedIndex = -1;
                     int index = 0;
-
                     // Lấy tất cả tên ngôn ngữ và lưu vào languageMap
                     for (Map.Entry<String, Language> entry : languageMapResponse.entrySet()) {
                         String languageName = entry.getValue().getLanguage_name();
@@ -96,14 +95,10 @@ public class LevelEditActivity extends AppCompatActivity {
                         }
                         index++;
                     }
-
-                    // Tạo Adapter cho Spinner
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(LevelEditActivity.this, android.R.layout.simple_spinner_item, languageNames);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(LevelEditActivity.this,
+                            android.R.layout.simple_spinner_item, languageNames);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-                    // Gán Adapter cho Spinner
                     spLanguage.setAdapter(adapter);
-
                     // Đặt Spinner vào vị trí ngôn ngữ tương ứng
                     if (selectedIndex != -1) {
                         spLanguage.setSelection(selectedIndex);

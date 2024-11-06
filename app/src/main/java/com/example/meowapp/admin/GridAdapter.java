@@ -55,8 +55,6 @@ public class GridAdapter extends BaseAdapter {
         GridItem gridItem = gridItems.get(position);
         icon.setImageResource(gridItem.getIconResId());
         text.setText(gridItem.getText());
-
-
         convertView.setOnClickListener(v -> {
             if (gridItem.getText().equals("Người dùng")) {
                 Intent intent = new Intent(context, UserManagementActivity.class);

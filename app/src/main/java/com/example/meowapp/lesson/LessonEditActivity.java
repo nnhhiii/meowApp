@@ -141,7 +141,8 @@ public class LessonEditActivity extends AppCompatActivity{
         });
     }
     private void loadLevelNameById(String languageId, String levelId) {
-        FirebaseApiService.apiService.getAllLevelByLanguageId("\"language_id\"","\"" + languageId + "\"").enqueue(new Callback<Map<String, Level>>() {
+        FirebaseApiService.apiService.getAllLevelByLanguageId("\"language_id\"","\"" + languageId + "\"")
+                .enqueue(new Callback<Map<String, Level>>() {
             @Override
             public void onResponse(Call<Map<String, Level>> call, Response<Map<String, Level>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -164,7 +165,8 @@ public class LessonEditActivity extends AppCompatActivity{
                     }
 
                     // Tạo Adapter cho Spinner
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(LessonEditActivity.this, android.R.layout.simple_spinner_item, levelNames);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(LessonEditActivity.this,
+                            android.R.layout.simple_spinner_item, levelNames);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
                     // Gán Adapter cho Spinner
@@ -175,7 +177,7 @@ public class LessonEditActivity extends AppCompatActivity{
                         spLevel.setSelection(selectedIndex);
                     }
                 } else {
-                    Toast.makeText(LessonEditActivity.this, "Không thể tải thông tin ngôn ngữ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LessonEditActivity.this, "Không thể tải", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -188,7 +190,8 @@ public class LessonEditActivity extends AppCompatActivity{
 
     private void loadQuestionsByLessonId(String lessonId){
         questionList.clear();
-        FirebaseApiService.apiService.getQuestionsByLessonId("\"lesson_id\"","\"" + lessonId + "\"").enqueue(new Callback<Map<String, Question>>() {
+        FirebaseApiService.apiService.getQuestionsByLessonId("\"lesson_id\"","\"" + lessonId + "\"")
+                .enqueue(new Callback<Map<String, Question>>() {
             @Override
             public void onResponse(Call<Map<String, Question>> call, Response<Map<String, Question>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -199,7 +202,7 @@ public class LessonEditActivity extends AppCompatActivity{
                     }
                     getAllQuestionType();
                 } else {
-                    Toast.makeText(LessonEditActivity.this, "Không thể tải thông tin ngôn ngữ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LessonEditActivity.this, "Không thể tải", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -221,10 +224,11 @@ public class LessonEditActivity extends AppCompatActivity{
                         Pair<String, QuestionType> pair = new Pair<>(entry.getKey(), entry.getValue());
                         questionTypeList.add(pair);
                     }
-                    adapter = new QuestionAdapter(recyclerView,LessonEditActivity.this, questionList, questionTypeList, lessonId);
+                    adapter = new QuestionAdapter(recyclerView,
+                            LessonEditActivity.this, questionList, questionTypeList, lessonId);
                     recyclerView.setAdapter(adapter);
                 } else {
-                    Toast.makeText(LessonEditActivity.this, "Không thể tải thông tin ngôn ngữ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LessonEditActivity.this, "Không thể tải", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -280,5 +284,11 @@ public class LessonEditActivity extends AppCompatActivity{
                 Toast.makeText(LessonEditActivity.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadData(); // Tải lại dữ liệu khi quay lại màn hình
     }
 }

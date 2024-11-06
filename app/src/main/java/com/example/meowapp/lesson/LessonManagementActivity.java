@@ -194,7 +194,7 @@ public class LessonManagementActivity extends AppCompatActivity {
                     // Lấy tất cả ngôn ngữ và cấp độ
                     getAllLanguagesAndLevels(lessonMap);
                 } else {
-                    Toast.makeText(LessonManagementActivity.this, "Không thể tải dữ liệu bài học", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LessonManagementActivity.this, "Không thể tải", Toast.LENGTH_SHORT).show();
                 }
             }
 

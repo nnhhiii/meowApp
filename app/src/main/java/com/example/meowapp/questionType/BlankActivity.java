@@ -44,26 +44,30 @@ public class BlankActivity extends AppCompatActivity {
         lessonId = getIntent().getStringExtra("LESSON_ID");
         loadData();
     }
+
     private void loadData() {
-        FirebaseApiService.apiService.getQuestionsByLessonId("\"lesson_id\"", "\"" + lessonId + "\"").enqueue(new Callback<Map<String, Question>>() {
-            @Override
-            public void onResponse(Call<Map<String, Question>> call, Response<Map<String, Question>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    questionMap = response.body();
-                    questionIds.addAll(questionMap.keySet());
-                    getAllQuestionType();
-                } else {
-                    Toast.makeText(BlankActivity.this, "Failed to get info", Toast.LENGTH_SHORT).show();
-                }
-            }
-            @Override
-            public void onFailure(Call<Map<String, Question>> call, Throwable t) {
-                Toast.makeText(BlankActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e("error:", t.getMessage(), t);
-            }
-        });
+        FirebaseApiService.apiService.getQuestionsByLessonId("\"lesson_id\"", "\"" + lessonId + "\"")
+                .enqueue(new Callback<Map<String, Question>>() {
+                    @Override
+                    public void onResponse(Call<Map<String, Question>> call, Response<Map<String, Question>> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            questionMap = response.body();
+                            questionIds.addAll(questionMap.keySet());
+                            getAllQuestionType();
+                        } else {
+                            Toast.makeText(BlankActivity.this, "Failed to get info", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Map<String, Question>> call, Throwable t) {
+                        Toast.makeText(BlankActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.e("error:", t.getMessage(), t);
+                    }
+                });
     }
-    private void getAllQuestionType(){
+
+    private void getAllQuestionType() {
         questionTypeList.clear();
         FirebaseApiService.apiService.getAllQuestionType().enqueue(new Callback<Map<String, QuestionType>>() {
             @Override
@@ -74,9 +78,10 @@ public class BlankActivity extends AppCompatActivity {
                         Pair<String, QuestionType> pair = new Pair<>(entry.getKey(), entry.getValue());
                         questionTypeList.add(pair);
                     }
-                    loadFirstFragment();
+                    loadFragment(currentQuestionIndex);
                 } else {
-                    Toast.makeText(BlankActivity.this, "Không thể tải thông tin ngôn ngữ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BlankActivity.this, "Không thể tải thông tin ngôn ngữ", Toast.LENGTH_SHORT)
+                            .show();
                 }
             }
 
@@ -86,19 +91,21 @@ public class BlankActivity extends AppCompatActivity {
             }
         });
     }
-    private void loadFirstFragment() {
-        if (currentQuestionIndex < questionIds.size()) {
-            String questionId = questionIds.get(currentQuestionIndex); // Lấy ID
+
+    private void loadFragment(int index) {
+        if (index < questionIds.size()) {
+            String questionId = questionIds.get(index); // Lấy ID
             Question currentQuestion = questionMap.get(questionId); // Lấy câu hỏi từ questionMap
 
             if (currentQuestion != null) {
                 Bundle bundle = new Bundle();
                 bundle.putString("questionId", questionId);
 
-                Fragment fragment;
+                Fragment fragment = null;
                 String questionTypeKey = currentQuestion.getQuestion_type(); // Lấy question type key từ câu hỏi
                 QuestionType questionType = questionTypeMap.get(questionTypeKey); // Lấy QuestionType từ map
 
+                // Tạo fragment dựa trên loại câu hỏi
                 switch (questionType.getQuestion_type_name()) {
                     case "order_words":
                         fragment = new OrderWordFragment();
@@ -120,63 +127,18 @@ public class BlankActivity extends AppCompatActivity {
                 fragment.setArguments(bundle); // Gán Bundle cho fragment
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, fragment)
+                        .addToBackStack(null)
                         .commit();
             }
-        }else {
+        } else {
             Intent intent = new Intent(this, FinishActivity.class);
             intent.putExtra("LESSON_ID", lessonId);
             startActivity(intent);
             finish();
         }
     }
-
     public void onQuestionCompleted() {
         currentQuestionIndex++;
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
-
-        loadNextFragment(transaction); // Tải câu hỏi mới
-    }
-    private void loadNextFragment(FragmentTransaction transaction) {
-        if (currentQuestionIndex < questionIds.size()) {
-            String questionId = questionIds.get(currentQuestionIndex); // Lấy ID
-            Question currentQuestion = questionMap.get(questionId); // Lấy câu hỏi từ questionMap
-
-            if (currentQuestion != null) {
-                Bundle bundle = new Bundle();
-                bundle.putString("questionId", questionId);
-
-                Fragment fragment;
-                String questionTypeKey = currentQuestion.getQuestion_type(); // Lấy question type key từ câu hỏi
-                QuestionType questionType = questionTypeMap.get(questionTypeKey); // Lấy QuestionType từ map
-                switch (questionType.getQuestion_type_name()) {
-                    case "order_words":
-                        fragment = new OrderWordFragment();
-                        break;
-                    case "writing":
-                        fragment = new WritingFragment();
-                        break;
-                    case "multiple_choice":
-                        fragment = new MultipleChoiceFragment();
-                        break;
-                    case "multiple_choice_image":
-                        fragment = new MultipleChoiceImageFragment();
-                        break;
-                    default:
-                        Toast.makeText(BlankActivity.this, "Unknown question type", Toast.LENGTH_SHORT).show();
-                        return;
-                }
-
-                fragment.setArguments(bundle); // Gán Bundle cho fragment
-                transaction.replace(R.id.fragment_container, fragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        }else {
-            Intent  intent = new Intent(this, FinishActivity.class);
-            intent.putExtra("LESSON_ID", lessonId);
-            startActivity(intent);
-            finish();
-        }
+        loadFragment(currentQuestionIndex);
     }
 }
