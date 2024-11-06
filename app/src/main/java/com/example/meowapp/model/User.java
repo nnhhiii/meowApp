@@ -1,10 +1,14 @@
 package com.example.meowapp.model;
 
+import android.widget.EditText;
+import android.widget.RadioGroup;
+
 import com.google.gson.annotations.SerializedName;
 
 public class User {
     private String username, email, password, role, avatar, language_id, created_at, updated_at;
     private int score;
+
     public String getUsername() {
         return username;
     }
