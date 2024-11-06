@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.meowapp.R;
-import com.example.meowapp.model.Leaderboard;
+import com.example.meowapp.model.User;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -17,11 +17,13 @@ import java.util.List;
 public class LeaderboardAdapter extends BaseAdapter {
 
     private Context context;
-    private List<Leaderboard> leaderboardList;
+    private List<User> leaderboardList;
+    private int startingRank;
 
-    public LeaderboardAdapter(Context context, List<Leaderboard> leaderboardList) {
+    public LeaderboardAdapter(Context context, List<User> leaderboardList, int startingRank) {
         this.context = context;
         this.leaderboardList = leaderboardList;
+        this.startingRank = startingRank;
     }
 
     @Override
@@ -50,18 +52,16 @@ public class LeaderboardAdapter extends BaseAdapter {
         TextView userNameView = convertView.findViewById(R.id.tvUserName);
         TextView scoreView = convertView.findViewById(R.id.tvScore);
 
-        Leaderboard leaderboard = leaderboardList.get(position);
+        User user = leaderboardList.get(position);
 
-        // Cập nhật dữ liệu
-        rankView.setText(String.valueOf(position + 1)); // Cập nhật thứ hạng
-        userNameView.setText(leaderboard.getUserName() != null ? leaderboard.getUserName() : "Unknown"); // Cập nhật tên người dùng
-        scoreView.setText(leaderboard.getTotalScore() + " points"); // Cập nhật điểm số
+        rankView.setText(String.valueOf(startingRank + position)); // Rank starts from the value of startingRank
+        userNameView.setText(user.getUsername() != null ? user.getUsername() : "Unknown");
+        scoreView.setText(user.getScore() + " points");
 
-        // Cập nhật ảnh của người dùng (sử dụng URL từ API nếu có, nếu không hiển thị ảnh mặc định)
-        if (leaderboard.getUserImageUrl() != null) {
-            Picasso.get().load(leaderboard.getUserImageUrl()).into(userImageView); // Tải ảnh bằng Picasso
+        if (user.getAvatar() != null) {
+            Picasso.get().load(user.getAvatar()).into(userImageView);
         } else {
-            userImageView.setImageResource(R.drawable.ic_account); // Ảnh mặc định nếu không có URL
+            userImageView.setImageResource(R.drawable.ic_account);
         }
 
         return convertView;
