@@ -100,9 +100,12 @@ public class RankFragment extends Fragment {
     private void setTopUserView(View rootView, int layoutId, User user) {
         View layout = rootView.findViewById(layoutId);
 
-        TextView userName = layout.findViewById(layoutId == R.id.top1 ? R.id.tvUserName1 : (layoutId == R.id.top2 ? R.id.tvUserName2 : R.id.tvUserName3));
-        TextView userScore = layout.findViewById(layoutId == R.id.top1 ? R.id.tvScore1 : (layoutId == R.id.top2 ? R.id.tvScore2 : R.id.tvScore3));
-        ImageView userImage = layout.findViewById(layoutId == R.id.top1 ? R.id.imageView_user1 : (layoutId == R.id.top2 ? R.id.imageView_user2 : R.id.imageView_user3));
+        TextView userName = layout.findViewById(layoutId == R.id.top1 ? R.id.tvUserName1 :
+                (layoutId == R.id.top2 ? R.id.tvUserName2 : R.id.tvUserName3));
+        TextView userScore = layout.findViewById(layoutId == R.id.top1 ? R.id.tvScore1 :
+                (layoutId == R.id.top2 ? R.id.tvScore2 : R.id.tvScore3));
+        ImageView userImage = layout.findViewById(layoutId == R.id.top1 ? R.id.imageView_user1 :
+                (layoutId == R.id.top2 ? R.id.imageView_user2 : R.id.imageView_user3));
 
         userName.setText(user.getUsername());
         userScore.setText(user.getScore() + " points");
