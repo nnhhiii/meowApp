@@ -52,7 +52,7 @@ public class UserManagementActivity extends AppCompatActivity {
 
         btnAdd = findViewById(R.id.add_user_btn);
         btnAdd.setOnClickListener(v -> {
-            Intent intent = new Intent(this, AddUserActivity.class); // Đảm bảo UserCreateActivity tồn tại
+            Intent intent = new Intent(this, AddUserActivity.class);
             startActivity(intent);
         });
 
