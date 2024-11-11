@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_background"
+    android:padding="30dp">
+        <RelativeLayout
+            android:id="@+id/layout_diamond"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_toStartOf="@+id/tvDiamond"
+                android:src="@drawable/ic_volume" />
+            <TextView
+                android:id="@+id/tvDiamond"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:textColor="#1CB0F6"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:layout_centerVertical="true"
+                android:text="5046" />
+        </RelativeLayout>
+        
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bạn đã hết tim!"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            android:layout_below="@+id/layout_diamond"
+            android:layout_centerHorizontal="true"/>
+        <RelativeLayout
+            android:id="@+id/btnRefill"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_background"
+            android:layout_marginTop="20dp"
+            android:paddingHorizontal="25dp"
+            android:paddingVertical="20dp"
+            android:layout_below="@+id/title">
+            <ImageView
+                android:id="@+id/imgIcon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_heart_refill" />
+            <TextView
+                android:id="@+id/tvRefill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/imgIcon"
+                android:layout_centerVertical="true"
+                android:textSize="18dp"
+                android:text="Nạp"/>
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/tvDiamond1"
+                android:layout_marginEnd="5dp"
+                android:src="@drawable/ic_volume" />
+            <TextView
+                android:id="@+id/tvDiamond1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:textStyle="bold"
+                android:textColor="#1CB0F6"
+                android:textSize="18dp"
+                android:layout_centerVertical="true"
+                android:text="450" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layoutBtnRefill"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_refill"
+            android:layout_below="@+id/btnRefill"
+            android:layout_marginTop="20dp"
+            android:paddingVertical="10dp">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true">
+                <TextView
+                    android:id="@+id/tv1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/feather_bold"
+                    android:text="NẠP VỚI"/>
+
+                <ImageView
+                    android:id="@+id/imgIcon1"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/tv1"
+                    android:layout_marginStart="5dp"
+                    android:src="@drawable/ic_heart_refill" />
+                <TextView
+                    android:id="@+id/tvDiamond2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:layout_toEndOf="@+id/imgIcon1"
+                    android:fontFamily="@font/feather_bold"
+                    android:layout_centerVertical="true"
+                    android:text="450" />
+            </RelativeLayout>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/layoutBtnNoTks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layoutBtnRefill"
+            android:layout_marginTop="10dp"
+            android:paddingVertical="15dp">
+                <TextView
+                    android:id="@+id/tv2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textColor="#1cb0f6"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/feather_bold"
+                    android:text="KHÔNG, CẢM ƠN"/>
+        </RelativeLayout>
+</RelativeLayout>

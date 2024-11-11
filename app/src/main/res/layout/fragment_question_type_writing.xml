@@ -16,20 +16,38 @@
         android:layout_margin="25dp"
         android:textStyle="bold"/>
 
-    <TextView
-        android:id="@+id/question"
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/imgIcon"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_below="@+id/header_title"
+        android:src="@drawable/cat1"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello, what is your name?"
-        android:textSize="20dp"
-        android:layout_marginLeft="25dp"
-        android:layout_below="@+id/header_title"/>
-
+        android:layout_below="@+id/header_title"
+        android:layout_toEndOf="@+id/imgIcon"
+        android:padding="10dp"
+        android:background="@drawable/edit_text_background">
+        <ImageButton
+            android:id="@+id/btnVolume"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/ic_volume"/>
+        <TextView
+            android:id="@+id/question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hello, what is your name?"
+            android:textSize="20dp"
+            android:layout_marginEnd="25dp" />
+    </LinearLayout>
     <EditText
         android:id="@+id/answer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/question"
+        android:layout_below="@+id/imgIcon"
         android:layout_margin="25dp"
         android:hint="Nhập câu trả lời..." />
 

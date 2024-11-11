@@ -1,5 +1,8 @@
 package com.example.meowapp.Main;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -98,7 +101,6 @@ public class HomeFragment extends Fragment {
                     lessonNames.clear();
                     for (Map.Entry<String, Lesson> entry : response.body().entrySet()) {
                         String lessonName = entry.getValue().getLesson_name();
-                        // Sử dụng biểu thức chính quy để lấy số từ tên bài học
                         String lessonNumber = lessonName.replaceAll("[^0-9]", "");
                         lessonIds.add(entry.getKey());
                         lessonNames.add(lessonNumber);
@@ -215,6 +217,11 @@ public class HomeFragment extends Fragment {
                 popupWindow.dismiss(); // Đóng popup khi nhấn
                 String languageId = languageIdMap.get(language.getLanguage_name());
                 fetchLessonsByLanguageId(languageId); // Gọi hàm để lấy bài học
+
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyPref", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("languageId", languageId);
+                editor.apply();
             });
         }
     }

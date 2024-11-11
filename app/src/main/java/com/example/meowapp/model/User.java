@@ -7,7 +7,39 @@ import com.google.gson.annotations.SerializedName;
 
 public class User {
     private String username, email, password, role, avatar, language_id, created_at, updated_at;
-    private int score;
+    private int score, heart, lessons, user80PercentLessons, user100PercentLessons ;
+
+    public int getLessons() {
+        return lessons;
+    }
+
+    public void setLessons(int lessons) {
+        this.lessons = lessons;
+    }
+
+    public int getUser80PercentLessons() {
+        return user80PercentLessons;
+    }
+
+    public void setUser80PercentLessons(int user80PercentLessons) {
+        this.user80PercentLessons = user80PercentLessons;
+    }
+
+    public int getUser100PercentLessons() {
+        return user100PercentLessons;
+    }
+
+    public void setUser100PercentLessons(int user100PercentLessons) {
+        this.user100PercentLessons = user100PercentLessons;
+    }
+
+    public int getHeart() {
+        return heart;
+    }
+
+    public void setHeart(int heart) {
+        this.heart = heart;
+    }
 
     public String getUsername() {
         return username;

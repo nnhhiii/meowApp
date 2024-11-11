@@ -4,18 +4,22 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.meowapp.R;
 import com.example.meowapp.api.FirebaseApiService;
 import com.example.meowapp.model.Question;
+
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,6 +35,9 @@ public class WritingFragment extends Fragment {
     private EditText et_answer;
     private Button submitButton;
     private String correct_answer;
+    private ImageButton playButton;
+    private TextToSpeech tts;
+    private Question question;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -92,8 +99,26 @@ public class WritingFragment extends Fragment {
             }
         });
         loadData();
+
+        tts = new TextToSpeech(getContext(), status -> {
+            if (status == TextToSpeech.SUCCESS) {
+                // Default language, can be changed later based on detection
+                tts.setLanguage(Locale.US);
+            }
+        });
+
+        playButton = view.findViewById(R.id.btnVolume);
+        playButton.setOnClickListener(v -> {
+            if (question != null) {
+                BlankActivity activity = (BlankActivity) getActivity();
+                activity.handleTextToSpeech(question.getQuestion_text());
+            } else {
+                Toast.makeText(getContext(), "Câu hỏi không hợp lệ", Toast.LENGTH_SHORT).show();
+            }
+        });
         return view;
     }
+
     private boolean checkAnswer(String answer) {
         return answer.equals(correct_answer);
     }
@@ -105,7 +130,7 @@ public class WritingFragment extends Fragment {
             @Override
             public void onResponse(Call<Question> call, Response<Question> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Question question = response.body();
+                    question = response.body();
                     questionTv.setText(question.getQuestion_text());
                     correct_answer = question.getCorrect_answer();
                 } else {

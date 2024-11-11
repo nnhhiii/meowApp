@@ -85,7 +85,7 @@ public class SelectLanguageFragment extends Fragment {
         listView = view.findViewById(R.id.listView);
         button.setOnClickListener(v -> {
             if (getActivity() instanceof BlankActivity) {
-                ((BlankActivity) getActivity()).updateProgressBar(100);
+                ((BlankActivity) getActivity()).updateProgressBar(90);
             }
             Fragment fragment = new SelectLevelFragment();
 

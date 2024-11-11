@@ -8,11 +8,13 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import com.example.meowapp.R;
 import com.example.meowapp.api.FirebaseApiService;
 import com.example.meowapp.model.Question;
 
+import java.util.Locale;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -36,6 +39,9 @@ public class MultipleChoiceFragment extends Fragment {
     private String correct_answer, selectedAnswer;
     private CardView cardViewA, cardViewB, cardViewC, cardViewD;
     private Button submitButton;
+    private ImageButton playButton;
+    private TextToSpeech tts;
+    private Question question;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -96,6 +102,22 @@ public class MultipleChoiceFragment extends Fragment {
 
         loadData();
 
+        tts = new TextToSpeech(getContext(), status -> {
+            if (status == TextToSpeech.SUCCESS) {
+                tts.setLanguage(Locale.US);
+            }
+        });
+
+        playButton = view.findViewById(R.id.btnVolume);
+        playButton.setOnClickListener(v -> {
+            if (question != null) {
+                BlankActivity activity = (BlankActivity) getActivity();
+                activity.handleTextToSpeech(question.getQuestion_text());
+            } else {
+                Toast.makeText(getContext(), "Câu hỏi không hợp lệ", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         cardViewA.setOnClickListener(v -> {
             setBackground(cardViewA);
             selectedAnswer = optionA.getText().toString();
@@ -131,7 +153,7 @@ public class MultipleChoiceFragment extends Fragment {
             @Override
             public void onResponse(Call<Question> call, Response<Question> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Question question = response.body();
+                    question = response.body();
                     questionTv.setText(question.getQuestion_text());
                     optionA.setText(question.getOption_a());
                     optionB.setText(question.getOption_b());

@@ -12,25 +12,45 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="25dp"
-        android:text="Chọn hình ảnh đúng"
+        android:text="Chọn ảnh đúng"
         android:layout_marginStart="25dp"
         android:layout_marginBottom="15dp"
         android:textStyle="bold"/>
 
-    <TextView
-        android:id="@+id/question"
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/imgIcon"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_below="@+id/header_title"
+        android:src="@drawable/cat4"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Milk"
-        android:textSize="20dp"
-        android:layout_marginLeft="25dp"
-        android:layout_below="@+id/header_title"/>
+        android:layout_below="@+id/header_title"
+        android:layout_toEndOf="@+id/imgIcon"
+        android:padding="10dp"
+        android:background="@drawable/edit_text_background">
+        <ImageButton
+            android:id="@+id/btnVolume"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/ic_volume"/>
+        <TextView
+            android:id="@+id/question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Milk"
+            android:layout_gravity="center"
+            android:textSize="20dp"
+            android:layout_marginEnd="25dp" />
+    </LinearLayout>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView1"
         android:layout_width="150dp"
         android:layout_height="200dp"
-        android:layout_below="@+id/question"
+        android:layout_below="@+id/imgIcon"
         android:layout_alignParentStart="true"
         android:layout_marginTop="20dp"
         android:layout_marginStart="40dp"
@@ -65,7 +85,7 @@
         android:id="@+id/cardView2"
         android:layout_width="150dp"
         android:layout_height="200dp"
-        android:layout_below="@+id/question"
+        android:layout_below="@+id/imgIcon"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="40dp"

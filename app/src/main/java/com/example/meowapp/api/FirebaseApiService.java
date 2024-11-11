@@ -8,7 +8,6 @@ import com.example.meowapp.model.Question;
 import com.example.meowapp.model.Lesson;
 import com.example.meowapp.model.QuestionType;
 import com.example.meowapp.model.User;
-import com.example.meowapp.model.Leaderboard;
 import com.example.meowapp.model.UserProgress;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -50,7 +49,7 @@ public interface FirebaseApiService {
     @PUT("users/{id}.json")
     Call<User> updateUser(@Path("id") String userId, @Body User user);
     @PATCH("users/{id}.json")
-    Call<User> updateUserScore(@Path("id") String userId, @Body Map<String, Object> scoreField);
+    Call<User> updateUserField(@Path("id") String userId, @Body Map<String, Object> field);
     @DELETE("users/{id}.json")
     Call<Void> deleteUser(@Path("id") String userId);
 
@@ -73,6 +72,11 @@ public interface FirebaseApiService {
             @Query("orderBy") String orderBy,
             @Query("equalTo") String userId
     );
+    @POST("language_preferences.json")
+    Call<LanguagePreference> addLanguagePreference(@Body LanguagePreference language);
+    @PATCH("language_preferences/{id}.json")
+    Call<LanguagePreference> updateLanguageScore(@Path("id") String userId, @Body Map<String, Object> scoreField);
+
 
     @GET("levels.json")
     Call<Map<String, Level>> getAllLevel();
@@ -132,8 +136,6 @@ public interface FirebaseApiService {
 
 
 
-    @GET("leaderboard.json")
-    Call<Map<String, Leaderboard>> getAllLeaderboard();
 
     @GET("user_progress.json")
     Call<Map<String, UserProgress>> getAllUserProgressByUserId(
@@ -142,5 +144,8 @@ public interface FirebaseApiService {
     );
     @POST("user_progress.json")
     Call<UserProgress> addUserProgress(@Body UserProgress userProgress);
+
+    @PATCH("user_progress/{id}.json")
+    Call<UserProgress> updateFieldUserProgress(@Path("id") String id, @Body Map<String, Object> field);
 
 }

@@ -8,7 +8,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
                 <ImageButton
-                    android:id="@+id/back_btn"
+                    android:id="@+id/btnBack"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:background="@color/white"
@@ -20,9 +20,25 @@
                     android:layout_width="250dp"
                     android:layout_height="20dp"
                     android:layout_marginTop="20dp"
-                    android:layout_centerHorizontal="true"
-                    android:progress="20"
+                    android:layout_toEndOf="@+id/btnBack"
                     android:progressTint="#8bc34a" />
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_toStartOf="@+id/tvHeart"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/ic_volume"/>
+                <TextView
+                    android:id="@+id/tvHeart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="24dp"
+                    android:layout_marginEnd="20dp"
+                    android:textStyle="bold"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"
+                    android:text="he"/>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/fragment_container"
