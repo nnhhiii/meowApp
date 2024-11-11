@@ -32,7 +32,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_title">
 
-
         <LinearLayout
             android:id="@+id/top2"
             android:layout_width="0dp"
@@ -47,24 +46,28 @@
 
             <ImageView
                 android:id="@+id/imageView_user2"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/ic_cat" />
+                android:background="@drawable/avt_border"
+                android:layout_width="48dp"
+                android:scaleType="centerCrop"
+                android:clipToOutline="true"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_cat" />
 
             <TextView
                 android:id="@+id/tvUserName2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="gau"
-            android:textColor="@color/pink1" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="gau"
+                android:textColor="@color/pink1" />
 
             <TextView
                 android:id="@+id/tvScore2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1200"
-            android:textColor="@color/blue2" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1200"
+                android:textColor="@color/black" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/top1"
             android:layout_width="0dp"
@@ -77,7 +80,9 @@
                 android:id="@+id/imageView_user1"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:src="@drawable/ic_flagvn" />
+                android:scaleType="centerCrop"
+                android:clipToOutline="true"
+                android:background="@drawable/avt_border"/>
 
             <TextView
                 android:id="@+id/tvUserName1"
@@ -92,9 +97,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1223"
-                android:textColor="@color/blue2" />
+                android:textColor="@color/black" />
         </LinearLayout>
-
 
         <LinearLayout
             android:id="@+id/top3"
@@ -110,23 +114,25 @@
 
             <ImageView
                 android:id="@+id/imageView_user3"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/ic_home" />
+                android:layout_width="48dp"
+                android:background="@drawable/avt_border"
+                android:layout_height="48dp"
+                android:scaleType="centerCrop"
+                android:clipToOutline="true" />
 
             <TextView
                 android:id="@+id/tvUserName3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ga"
-            android:textColor="@color/pink1" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ga"
+                android:textColor="@color/pink1" />
 
             <TextView
                 android:id="@+id/tvScore3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1000"
-            android:textColor="@color/blue2" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1000"
+                android:textColor="@color/black" />
         </LinearLayout>
     </LinearLayout>
 
@@ -136,7 +142,56 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/top3_layout"
         android:layout_marginTop="16dp"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="10dp"
-    />
+        android:divider="@android:color/transparent" />
+
+    <LinearLayout
+        android:id="@+id/user_rank_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:background="@color/pink3"
+        android:layout_marginTop="56dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/tvrankx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_marginEnd="16dp" />
+
+        <ImageView
+            android:id="@+id/imageView_userx"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/avt_border"
+            android:src="@drawable/ic_flagofusa"
+            android:scaleType="centerCrop"
+            android:clipToOutline="true"
+            android:layout_marginEnd="16dp" />
+
+        <TextView
+            android:id="@+id/tvUserNamex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User Name"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/tvScorex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0 points"
+            android:textColor="@color/black"
+            android:gravity="end"
+            android:layout_marginEnd="16dp" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

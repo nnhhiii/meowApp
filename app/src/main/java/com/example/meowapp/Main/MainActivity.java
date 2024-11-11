@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottomNavView);
         frameLayout = findViewById(R.id.frameLayout);
+        bottomNavigationView.setItemIconTintList(null);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -38,7 +39,12 @@ public class MainActivity extends AppCompatActivity {
                     selectedFragment = new RankFragment();
                 } else if (itemId == R.id.tab_user) {
                     selectedFragment = new UserFragment();
+                }  else if (itemId == R.id.tab_practice) {
+                    selectedFragment = new PracticeFragment();
+                } else if (itemId == R.id.tab_award) {
+                    selectedFragment = new AwardFragment();
                 }
+
 
                 if (selectedFragment != null) {
                     loadFragment(selectedFragment, false);

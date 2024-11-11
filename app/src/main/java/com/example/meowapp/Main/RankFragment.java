@@ -71,10 +71,11 @@ public class RankFragment extends Fragment {
                     leaderboardAdapter = new LeaderboardAdapter(getContext(), remainingUsers, 4);
                     listView.setAdapter(leaderboardAdapter);
                     leaderboardAdapter.notifyDataSetChanged();
+                    loadCurrentUserInfo(view, "1");
                 } else {
                     Log.e("RankFragment", "Failed to load users: " + response.message());
                     Toast.makeText(getContext(), "Failed to load leaderboard data", Toast.LENGTH_SHORT).show();
-                }
+                }                                                                                                                                  
             }
 
             @Override
@@ -113,4 +114,40 @@ public class RankFragment extends Fragment {
             userImage.setImageResource(R.drawable.ic_account);
         }
     }
+    private void loadCurrentUserInfo(View rootView, String userId) {
+        apiService.getUserById(userId).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    User currentUser = response.body();
+
+
+                    TextView userName = rootView.findViewById(R.id.tvUserNamex);
+                    TextView userScore = rootView.findViewById(R.id.tvScorex);
+                    ImageView userImage = rootView.findViewById(R.id.imageView_userx);
+                    TextView userRank = rootView.findViewById(R.id.tvrankx);
+
+                    userName.setText(currentUser.getUsername());
+                    userScore.setText(currentUser.getScore() + " points");
+
+
+                    if (currentUser.getAvatar() != null) {
+                        Picasso.get().load(currentUser.getAvatar()).into(userImage);
+                    } else {
+                        userImage.setImageResource(R.drawable.ic_account);
+                    }
+
+                    int rank = leaderboardList.indexOf(currentUser) + 1;
+                    userRank.setText(String.valueOf(rank));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.e("RankFragment", "Failed to load user info: " + t.getMessage());
+                Toast.makeText(getContext(), "Failed to load user info", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }
