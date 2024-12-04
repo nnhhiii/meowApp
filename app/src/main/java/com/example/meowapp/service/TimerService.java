@@ -2,6 +2,7 @@ package com.example.meowapp.service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.widget.Toast;
@@ -22,12 +23,17 @@ import retrofit2.Response;
 public class TimerService extends Service {
     private CountDownTimer countDownTimer;
     private int hearts = 2;
-    private String userId = "2";
+    private String userId;
     private int duration;
+
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         duration = intent.getIntExtra("duration", 0);
+
+        SharedPreferences sharedPreferences = this.getSharedPreferences("MyPref", MODE_PRIVATE);
+        userId = sharedPreferences.getString("userId", null);
+
         startCountDownTimer();
 
         return START_STICKY;

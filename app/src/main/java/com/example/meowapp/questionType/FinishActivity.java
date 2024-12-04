@@ -60,14 +60,20 @@ public class FinishActivity extends AppCompatActivity {
         tvPercent.setText(percentScore + "%");
 
         lessonId = getIntent().getStringExtra("LESSON_ID");
+
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPref", MODE_PRIVATE);
+        languageId = sharedPreferences.getString("languageId", null);
+        languageScore = sharedPreferences.getInt("languagePreferenceScore", 0);
+        previousStreaks = sharedPreferences.getInt("streaks", 0);
+        streaks = sharedPreferences.getInt("streaks", 0);
+        scoreUser = sharedPreferences.getInt("score", 0);
+
         userId = "2";
-        previousStreaks = 1;
-        streaks = 1;
 
         loadData();
         btnFinish.setOnClickListener(v -> {
-            getUserScore();
-            getLanguageScore();
+            updateUserScore();
+            updateLanguageScore();
         });
     }
     private void loadData() {
@@ -89,54 +95,6 @@ public class FinishActivity extends AppCompatActivity {
             }
         });
     }
-
-    private void getUserScore(){
-        FirebaseApiService.apiService.getUserById(userId).enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    User user = response.body();
-                    scoreUser = user.getScore();
-                    updateUserScore();
-                } else {
-                    Toast.makeText(FinishActivity.this, "Không lấy được điểm", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(FinishActivity.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-    private void getLanguageScore() {
-        FirebaseApiService.apiService.getAllLanguagePreferenceByUserId("\"user_id\"", "\"" + userId + "\"").enqueue(new Callback<Map<String, LanguagePreference>>() {
-            @Override
-            public void onResponse(Call<Map<String, LanguagePreference>> call, Response<Map<String, LanguagePreference>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    // Lấy languageId từ SharedPreferences
-                    SharedPreferences sharedPreferences = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
-                    String saveLanguageId = sharedPreferences.getString("languageId", "default");
-
-                    for (Map.Entry<String, LanguagePreference> entry : response.body().entrySet()) {
-                        if (entry.getValue().getLanguage_id().equals(saveLanguageId)) {
-                            languageId = entry.getKey();
-                            languageScore = entry.getValue().getLanguage_score();
-                            break;
-                        }
-                    }
-                    updateLanguageScore();
-                }else{
-                    Toast.makeText(FinishActivity.this, "No language preference available", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Map<String, LanguagePreference>> call, Throwable t) {
-                Log.e("HomeFragment", "Error fetching languages", t);
-            }
-        });
-    }
     private void updateUserScore(){
         int newScore;
         newScore = scoreUser + (int) (scoreLesson * (percentScore / 100.0f));
@@ -146,6 +104,11 @@ public class FinishActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful() && response.body() != null) {
+                    SharedPreferences sharedPreferences = getSharedPreferences("MyPref", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putInt("score", newScore);
+                    editor.apply();
+
                     Toast.makeText(FinishActivity.this, "Điểm đã được cập nhật: " + newScore, Toast.LENGTH_SHORT).show();
                     checkUserProgress();
                 } else {
@@ -273,7 +236,12 @@ public class FinishActivity extends AppCompatActivity {
         FirebaseApiService.apiService.updateUserField(userId, field).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                if (!response.isSuccessful() && response.body() == null) {
+                if (response.isSuccessful() && response.body() != null) {
+                    SharedPreferences sharedPreferences = getSharedPreferences("MyPref", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putInt("streaks", streaks);
+                    editor.apply();
+                }else {
                     Toast.makeText(FinishActivity.this, "Không update được streaks", Toast.LENGTH_SHORT).show();
                 }
             }

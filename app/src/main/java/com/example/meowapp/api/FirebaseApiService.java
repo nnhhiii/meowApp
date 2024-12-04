@@ -4,6 +4,7 @@ import com.example.meowapp.model.Language;
 import com.example.meowapp.model.LanguagePreference;
 import com.example.meowapp.model.Lesson;
 import com.example.meowapp.model.Level;
+import com.example.meowapp.model.Mission;
 import com.example.meowapp.model.Question;
 import com.example.meowapp.model.Lesson;
 import com.example.meowapp.model.QuestionType;
@@ -148,4 +149,7 @@ public interface FirebaseApiService {
     @PATCH("user_progress/{id}.json")
     Call<UserProgress> updateFieldUserProgress(@Path("id") String id, @Body Map<String, Object> field);
 
+
+    @GET("missions.json")
+    Call<Map<String, Mission>> getAllMission();
 }

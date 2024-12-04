@@ -5,7 +5,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
@@ -36,7 +37,7 @@ public class ButtonAdapter extends RecyclerView.Adapter<ButtonAdapter.ButtonView
         String lessonName = lessonNames.get(position); // Lấy tên bài học
         String lessonKey = lessonIds.get(position);
 
-        holder.button.setText(lessonName); // Hiển thị tên bài học
+        holder.textView.setText(lessonName); // Hiển thị tên bài học trong TextView
 
         holder.button.setOnClickListener(v -> {
             // Tạo intent để chuyển đến Activity khác
@@ -52,11 +53,13 @@ public class ButtonAdapter extends RecyclerView.Adapter<ButtonAdapter.ButtonView
     }
 
     public static class ButtonViewHolder extends RecyclerView.ViewHolder {
-        Button button;
+        ImageButton button; // Sử dụng ImageButton thay cho Button
+        TextView textView;  // TextView hiển thị tên bài học
 
         public ButtonViewHolder(@NonNull View itemView) {
             super(itemView);
             button = itemView.findViewById(R.id.item_button);
+            textView = itemView.findViewById(R.id.item_text); // Lấy TextView
         }
     }
 }

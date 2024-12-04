@@ -5,11 +5,14 @@ import static android.content.Context.MODE_PRIVATE;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Pair;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-
+import java.util.Collections;
+import java.util.Comparator;
 import com.example.meowapp.model.LanguagePreference;
+import com.example.meowapp.model.User;
 import com.example.meowapp.questionType.BlankActivity;
 import com.squareup.picasso.Picasso;
 import android.graphics.drawable.ColorDrawable;
@@ -48,10 +51,11 @@ public class HomeFragment extends Fragment {
     private BottomNavigationView bottomNavigationView;
     private RecyclerView recyclerView;
     private ButtonAdapter buttonAdapter;
-    private List<String> lessonIds,lessonNames;
-    private List<Language> languages; // Danh sách ngôn ngữ
-    private Map<String, String> languageIdMap = new HashMap<>(); // Lưu trữ mối quan hệ giữa ngôn ngữ và languageId
+    private List<String> lessonIds, lessonNames;
+    private List<Language> languages;
+    private Map<String, Pair<String, Integer>> languageIdMap = new HashMap<>();
     private String userId, languageId;
+    private int language_score;
 
     @Nullable
     @Override
@@ -63,14 +67,15 @@ public class HomeFragment extends Fragment {
 
         lessonIds = new ArrayList<>();
         lessonNames = new ArrayList<>();
-        languages = new ArrayList<>(); // Khởi tạo danh sách ngôn ngữ
-        buttonAdapter = new ButtonAdapter(lessonNames,lessonIds, getContext());
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        languages = new ArrayList<>();
+        buttonAdapter = new ButtonAdapter(lessonNames, lessonIds, getContext());
+        recyclerView.setLayoutManager(new CurvedLayoutManager(getContext()));
         recyclerView.setAdapter(buttonAdapter);
+        bottomNavigationView.setItemIconTintList(null);
 
-
-        fetchLanguagePreference(); // Lấy danh sách ngôn ngữ từ API
-
+        userId = "1";
+        fetchUserById();
+        fetchLanguagePreference(); // Fetch language preference from API
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -80,7 +85,7 @@ public class HomeFragment extends Fragment {
                 if (itemId == R.id.tab_lang) {
                     showLanguagePopup();
                     return true;
-                } else if (itemId == R.id.tab_point) {
+                } else if (itemId == R.id.tab_heart) {
                     showPointPopup("Point", "298484");
                     return true;
                 }
@@ -99,13 +104,27 @@ public class HomeFragment extends Fragment {
                 if (response.isSuccessful() && response.body() != null) {
                     lessonIds.clear();
                     lessonNames.clear();
-                    for (Map.Entry<String, Lesson> entry : response.body().entrySet()) {
+                    List<Map.Entry<String, Lesson>> entries = new ArrayList<>(response.body().entrySet());
+
+                    Collections.sort(entries, new Comparator<Map.Entry<String, Lesson>>() {
+                        @Override
+                        public int compare(Map.Entry<String, Lesson> entry1, Map.Entry<String, Lesson> entry2) {
+                            String lessonName1 = entry1.getValue().getLesson_name();
+                            String lessonName2 = entry2.getValue().getLesson_name();
+
+                            int number1 = Integer.parseInt(lessonName1.replaceAll("[^0-9]", ""));
+                            int number2 = Integer.parseInt(lessonName2.replaceAll("[^0-9]", ""));
+                            return Integer.compare(number1, number2);
+                        }
+                    });
+
+                    for (Map.Entry<String, Lesson> entry : entries) {
                         String lessonName = entry.getValue().getLesson_name();
                         String lessonNumber = lessonName.replaceAll("[^0-9]", "");
                         lessonIds.add(entry.getKey());
                         lessonNames.add(lessonNumber);
                     }
-                    buttonAdapter.notifyDataSetChanged(); // Cập nhật adapter
+                    buttonAdapter.notifyDataSetChanged(); // Update adapter
                     Log.d("HomeFragment", "Lesson Numbers: " + lessonIds);
                 }
             }
@@ -118,18 +137,17 @@ public class HomeFragment extends Fragment {
     }
 
     private void fetchLanguagePreference() {
-        userId = "1";
         FirebaseApiService.apiService.getAllLanguagePreferenceByUserId("\"user_id\"", "\"" + userId + "\"").enqueue(new Callback<Map<String, LanguagePreference>>() {
             @Override
             public void onResponse(Call<Map<String, LanguagePreference>> call, Response<Map<String, LanguagePreference>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     for (Map.Entry<String, LanguagePreference> entry : response.body().entrySet()) {
                         languageId = entry.getValue().getLanguage_id();
-                        fetchLanguageById(languageId);
+                        language_score = entry.getValue().getLanguage_score();
+                        fetchLanguageById(languageId, language_score);
                         fetchLessonsByLanguageId(languageId);
                     }
-
-                }else{
+                } else {
                     Toast.makeText(getContext(), "No language preference available", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -141,18 +159,48 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void fetchLanguageById(String languageId) {
+    private void fetchLanguageById(String languageId, int languagePreferenceScore) {
         FirebaseApiService.apiService.getLanguageById(languageId).enqueue(new Callback<Language>() {
             @Override
             public void onResponse(Call<Language> call, Response<Language> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     languages.add(response.body());
-                    languageIdMap.put(response.body().getLanguage_name(), languageId); // Lưu trữ languageId
+                    languageIdMap.put(response.body().getLanguage_name(), new Pair<>(languageId, languagePreferenceScore));
                 }
             }
+
             @Override
             public void onFailure(Call<Language> call, Throwable t) {
                 Log.e("HomeFragment", "Error fetching language by ID: " + languageId, t);
+            }
+        });
+    }
+
+    private void fetchUserById() {
+        FirebaseApiService.apiService.getUserById(userId).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    User user = response.body();
+                    int score = user.getScore();
+                    int streaks = user.getStreaks();
+                    int diamonds = user.getDiamonds();
+                    int hearts = user.getHearts();
+
+                    SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyPref", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("userId", userId);
+                    editor.putInt("score", score);
+                    editor.putInt("streak", streaks);
+                    editor.apply();
+                } else {
+                    Toast.makeText(getContext(), "No user available", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.e("HomeFragment", "Error fetching languages", t);
             }
         });
     }
@@ -174,7 +222,6 @@ public class HomeFragment extends Fragment {
         ViewGroup buttonContainer = popupView.findViewById(R.id.buttonContainer);
 
         for (Language language : languages) {
-            // Tạo LinearLayout dọc để chứa cả ImageButton và TextView
             LinearLayout languageLayout = new LinearLayout(getContext());
             languageLayout.setOrientation(LinearLayout.VERTICAL);
             ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(
@@ -184,48 +231,40 @@ public class HomeFragment extends Fragment {
             params.setMargins(16, 0, 0, 0);
             languageLayout.setLayoutParams(params);
 
-            // Tạo ImageButton để hiển thị ảnh ngôn ngữ
             ImageButton languageButton = new ImageButton(getContext());
             languageButton.setLayoutParams(new ViewGroup.MarginLayoutParams(250, 200));
             languageButton.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-            Picasso.get()
-                    .load(language.getLanguage_image())
-                    .into(languageButton);
+            Picasso.get().load(language.getLanguage_image()).into(languageButton);
 
-            languageButton.setOnClickListener(v -> popupWindow.dismiss());
-
-            // Tạo TextView để hiển thị tên ngôn ngữ
             TextView languageName = new TextView(getContext());
             languageName.setText(language.getLanguage_name());
             languageName.setGravity(Gravity.CENTER);
             languageName.setTextSize(16);
             languageName.setPadding(0, 8, 0, 0);
-            languageName.setMaxLines(2); // Giới hạn tối đa 2 dòng
-            languageName.setEllipsize(TextUtils.TruncateAt.END); // Thêm dấu "..." nếu quá dài
-            languageName.setWidth(200); // Giới hạn chiều rộng của TextView để đảm bảo xuống dòng
+            languageName.setMaxLines(2);
+            languageName.setEllipsize(TextUtils.TruncateAt.END);
+            languageName.setWidth(200);
 
-
-            // Thêm ImageButton và TextView vào LinearLayout
             languageLayout.addView(languageButton);
             languageLayout.addView(languageName);
-
-            // Thêm LinearLayout vào buttonContainer
             buttonContainer.addView(languageLayout);
 
             languageButton.setOnClickListener(v -> {
-                popupWindow.dismiss(); // Đóng popup khi nhấn
-                String languageId = languageIdMap.get(language.getLanguage_name());
+                popupWindow.dismiss();
+                Pair<String, Integer> pair = languageIdMap.get(language.getLanguage_name());
+                String languageId = pair.first;
+                int language_score = pair.second;
                 fetchLessonsByLanguageId(languageId); // Gọi hàm để lấy bài học
 
                 SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyPref", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("languageId", languageId);
+                editor.putInt("languagePreferenceScore", language_score);
                 editor.apply();
             });
         }
     }
-
 
     private void showPointPopup(String titleText, String messageText) {
         LayoutInflater inflater = getLayoutInflater();
@@ -248,6 +287,7 @@ public class HomeFragment extends Fragment {
         popupWindow.showAsDropDown(bottomNavigationView);
         popupWindow.setOutsideTouchable(true);
         popupWindow.setFocusable(true);
+
         popupView.setOnTouchListener((v, event) -> {
             popupWindow.dismiss();
             return true;

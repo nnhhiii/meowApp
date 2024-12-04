@@ -2,17 +2,25 @@
 
     <item
         android:id="@+id/tab_home"
-        android:icon="@drawable/ic_home"
+        android:icon="@drawable/home"
         android:title="Trang chủ"
         />
-
+    <item
+        android:id="@+id/tab_practice"
+        android:icon="@drawable/practice"
+        android:title="Luyện tập"
+        />
     <item
         android:id="@+id/tab_rank"
-        android:icon="@drawable/ic_rankk"
+        android:icon="@drawable/rank"
         android:title="Bảng xếp hạng" />
 
     <item
+        android:id="@+id/tab_award"
+        android:icon="@drawable/award"
+        android:title="Phần thưởng" />
+    <item
         android:id="@+id/tab_user"
-        android:icon="@drawable/ic_cat1"
-    android:title="Cá nhân" />
+        android:icon="@drawable/user"
+        android:title="Cá nhân" />
 </menu>

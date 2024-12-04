@@ -3,7 +3,7 @@ package com.example.meowapp.model;
 public class Mission {
     private String missionName;
     private String rewardType;
-    private int rewardAmount, requiredScore, required100PercentLessons, required80PercentLessons, requiredLessons, requiredStreaks;
+    private int rewardAmount, requiredScore, requiredPerfectLessons, requiredEightyLessons, requiredLessons, requiredStreaks;
 
     public String getMissionName() {
         return missionName;
@@ -37,20 +37,20 @@ public class Mission {
         this.requiredScore = requiredScore;
     }
 
-    public int getRequired100PercentLessons() {
-        return required100PercentLessons;
+    public int getRequiredPerfectLessons() {
+        return requiredPerfectLessons;
     }
 
-    public void setRequired100PercentLessons(int required100PercentLessons) {
-        this.required100PercentLessons = required100PercentLessons;
+    public void setRequiredPerfectLessons(int requiredPerfectLessons) {
+        this.requiredPerfectLessons = requiredPerfectLessons;
     }
 
-    public int getRequired80PercentLessons() {
-        return required80PercentLessons;
+    public int getRequiredEightyLessons() {
+        return requiredEightyLessons;
     }
 
-    public void setRequired80PercentLessons(int required80PercentLessons) {
-        this.required80PercentLessons = required80PercentLessons;
+    public void setRequiredEightyLessons(int requiredEightyLessons) {
+        this.requiredEightyLessons = requiredEightyLessons;
     }
 
     public int getRequiredLessons() {

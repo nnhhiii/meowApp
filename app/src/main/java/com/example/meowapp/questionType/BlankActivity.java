@@ -3,6 +3,7 @@ package com.example.meowapp.questionType;
 import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -66,19 +67,35 @@ public class BlankActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_blank);
         tvHeart = findViewById(R.id.tvHeart);
-        hearts = 2;
-        tvHeart.setText(String.valueOf(hearts));
-        diamonds = 500;
-
         progressBar = findViewById(R.id.progressBar);
-        progressBar.setMax(100);
 
-        userId = "2";
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPref", MODE_PRIVATE);
+        userId = sharedPreferences.getString("userId", null);
 
         lessonId = getIntent().getStringExtra("LESSON_ID");
+        fetchUserById();
         loadData();
     }
+    private void fetchUserById() {
+        FirebaseApiService.apiService.getUserById(userId).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    User user = response.body();
+                    diamonds = user.getDiamonds();
+                    hearts = user.getHearts();
+                    tvHeart.setText(String.valueOf(hearts));
+                } else {
+                    Toast.makeText(BlankActivity.this, "No user available", Toast.LENGTH_SHORT).show();
+                }
+            }
 
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.e("HomeFragment", "Error fetching languages", t);
+            }
+        });
+    }
     private void loadData() {
         FirebaseApiService.apiService.getQuestionsByLessonId("\"lesson_id\"", "\"" + lessonId + "\"")
                 .enqueue(new Callback<Map<String, Question>>() {

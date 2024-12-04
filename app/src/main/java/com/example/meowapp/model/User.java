@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class User {
     private String username, email, password, role, avatar, language_id, created_at, updated_at;
-    private int score, heart, lessons, user80PercentLessons, user100PercentLessons ;
+    private int score, streaks, diamonds, hearts, lessons, eightyLessons, perfectLessons ;
 
     public int getLessons() {
         return lessons;
@@ -17,28 +17,44 @@ public class User {
         this.lessons = lessons;
     }
 
-    public int getUser80PercentLessons() {
-        return user80PercentLessons;
+    public int getEightyLessons() {
+        return eightyLessons;
     }
 
-    public void setUser80PercentLessons(int user80PercentLessons) {
-        this.user80PercentLessons = user80PercentLessons;
+    public void setEightyLessons(int eightyLessons) {
+        this.eightyLessons = eightyLessons;
     }
 
-    public int getUser100PercentLessons() {
-        return user100PercentLessons;
+    public int getPerfectLessons() {
+        return perfectLessons;
     }
 
-    public void setUser100PercentLessons(int user100PercentLessons) {
-        this.user100PercentLessons = user100PercentLessons;
+    public void setPerfectLessons(int perfectLessons) {
+        this.perfectLessons = perfectLessons;
     }
 
-    public int getHeart() {
-        return heart;
+    public int getStreaks() {
+        return streaks;
     }
 
-    public void setHeart(int heart) {
-        this.heart = heart;
+    public void setStreaks(int streaks) {
+        this.streaks = streaks;
+    }
+
+    public int getDiamonds() {
+        return diamonds;
+    }
+
+    public void setDiamonds(int diamonds) {
+        this.diamonds = diamonds;
+    }
+
+    public int getHearts() {
+        return hearts;
+    }
+
+    public void setHearts(int hearts) {
+        this.hearts = hearts;
     }
 
     public String getUsername() {

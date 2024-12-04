@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottomNavView);
         frameLayout = findViewById(R.id.frameLayout);
+        bottomNavigationView.setItemIconTintList(null);
 
         Intent serviceIntent = new Intent(this, TimerService.class);
         serviceIntent.putExtra("duration", 2 * 1000); // 5 phút
@@ -45,7 +46,12 @@ public class MainActivity extends AppCompatActivity {
                     selectedFragment = new RankFragment();
                 } else if (itemId == R.id.tab_user) {
                     selectedFragment = new UserFragment();
+                }  else if (itemId == R.id.tab_practice) {
+                    selectedFragment = new PracticeFragment();
+                } else if (itemId == R.id.tab_award) {
+                    selectedFragment = new RewardFragment();
                 }
+
 
                 if (selectedFragment != null) {
                     loadFragment(selectedFragment, false);
@@ -62,11 +68,15 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        if (!isAppInitialized) {
-            fragmentTransaction.replace(R.id.frameLayout, fragment);
-        } else {
+        // If app is initialized, use add, otherwise replace
+        if (isAppInitialized) {
             fragmentTransaction.add(R.id.frameLayout, fragment);
+        } else {
+            fragmentTransaction.replace(R.id.frameLayout, fragment);
         }
+
+        // Optionally add to back stack
+        fragmentTransaction.addToBackStack(null);
 
         fragmentTransaction.commit();
     }

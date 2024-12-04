@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/btnAward" xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/edit_text_background"
+    android:layout_margin="10dp"
+    android:paddingHorizontal="25dp"
+    android:paddingVertical="20dp">
+    <ImageView
+        android:id="@+id/imgIcon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="center"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_goal" />
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:layout_marginStart="10dp"
+        android:layout_alignEnd="@+id/award"
+        android:layout_toEndOf="@+id/imgIcon"
+        android:layout_marginBottom="5dp"
+        android:textSize="18dp"
+        android:text="Hoàn thành xuất sắc 2 bài học"/>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_below="@+id/tvName"
+        android:layout_toStartOf="@+id/award"
+        android:layout_marginVertical="10dp"
+        android:layout_alignStart="@+id/tvName"
+        android:layout_marginEnd="2dp"
+        android:progressDrawable="@drawable/progress_bar" />
+    <ImageView
+        android:id="@+id/award"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/tvName"
+        android:src="@drawable/award_bronze" />
+</RelativeLayout>

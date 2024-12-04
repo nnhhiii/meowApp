@@ -1,7 +1,15 @@
 package com.example.meowapp.model;
 
 public class UserProgress {
-    private String user_id, lesson_id, completed_at;
+    private String user_id, lesson_id, completed_at, mission_id;
+
+    public String getMission_id() {
+        return mission_id;
+    }
+
+    public void setMission_id(String mission_id) {
+        this.mission_id = mission_id;
+    }
 
     public String getUser_id() {
         return user_id;

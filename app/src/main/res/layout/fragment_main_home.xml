@@ -8,9 +8,11 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavView"
+        android:background="@drawable/menu_borderbot"
         app:itemIconTint="@null"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:itemTextColor="@color/pink1"
         app:menu="@menu/menu_popup_home"
        />
 
