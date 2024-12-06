@@ -28,7 +28,7 @@
                     android:layout_toStartOf="@+id/tvHeart"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="10dp"
-                    android:src="@drawable/ic_volume"/>
+                    android:src="@drawable/heart"/>
                 <TextView
                     android:id="@+id/tvHeart"
                     android:layout_width="wrap_content"

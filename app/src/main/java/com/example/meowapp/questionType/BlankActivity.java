@@ -155,6 +155,12 @@ public class BlankActivity extends AppCompatActivity {
                 case "order_words":
                     fragment = new OrderWordFragment();
                     break;
+                case "listening":
+                    fragment = new ListeningFragment();
+                    break;
+                case "speaking":
+                    fragment = new SpeakingFragment();
+                    break;
                 case "writing":
                     fragment = new WritingFragment();
                     break;
@@ -256,7 +262,7 @@ public class BlankActivity extends AppCompatActivity {
     public void updateUserHeart(){
         Map<String, Object> field = new HashMap<>();
         field.put("hearts", hearts);
-        if(hearts == 0){
+        if(hearts <= 0){
             showHeartDepletedDialog();
         }
         FirebaseApiService.apiService.updateUserField(userId, field).enqueue(new Callback<User>() {

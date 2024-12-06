@@ -1,14 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true"
     tools:context=".questionType.ListeningFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/header_title"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:textSize="25dp"
+        android:text="Chọn những gì bạn nghe thấy"
+        android:layout_margin="25dp"
+        android:textStyle="bold"/>
 
-</FrameLayout>
+    <ImageView
+        android:id="@+id/btnVolume"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:scaleType="centerCrop"
+        android:layout_below="@+id/header_title"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_volume"/>
+
+    <TextView
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnVolume"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/edittext_with_lines" />
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/answerContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view"
+        app:flexWrap="wrap"
+        app:justifyContent="center"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp">
+    </com.google.android.flexbox.FlexboxLayout>
+    <TextView
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/answerContainer"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:background="@drawable/edittext_with_lines" />
+    <TextView
+        android:id="@+id/view3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view2"
+        android:layout_margin="25dp"
+        android:background="@drawable/edittext_with_lines" />
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/wordContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view3"
+        app:flexWrap="wrap"
+        app:justifyContent="center"
+        android:layout_margin="25dp">
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:text="Kiểm tra"
+        android:textSize="18dp"
+        android:background="@drawable/radius_4_goc"
+        android:layout_margin="25dp"/>
+</RelativeLayout>
