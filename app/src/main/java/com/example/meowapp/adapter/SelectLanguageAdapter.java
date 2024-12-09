@@ -13,55 +13,61 @@ import com.example.meowapp.model.Language;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.Map;
 
 public class SelectLanguageAdapter extends BaseAdapter {
+
     private Context context;
-    private List<Language> list;
+    private List<Map.Entry<String, Language>> languageEntryList;
 
-
-    public SelectLanguageAdapter(Context context, List<Language> list) {
+    public SelectLanguageAdapter(Context context, List<Map.Entry<String, Language>> languageEntryList) {
         this.context = context;
-        this.list = list;
+        this.languageEntryList = languageEntryList;
     }
-
 
     @Override
     public int getCount() {
-        return list.size();
+        return languageEntryList.size();
     }
 
     @Override
-    public Object getItem(int position) {
-        return list.get(position);
+    public Map.Entry<String, Language> getItem(int position) {
+        return languageEntryList.get(position);
     }
 
     @Override
     public long getItemId(int position) {
         return position;
     }
-    public static class ViewHolder{
-        TextView tvName;
-        ImageView imageView;
-    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
-        if (convertView ==null){
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_select_language, parent, false);
-
-            holder = new ViewHolder();
-            holder.tvName = convertView.findViewById(R.id.tvName);
-            holder.imageView = convertView.findViewById(R.id.image);
+        if (convertView == null) {
+            convertView = LayoutInflater.from(context)
+                    .inflate(R.layout.item_select_language, parent, false);
+            holder = new ViewHolder(convertView);
             convertView.setTag(holder);
-        } else{
+        } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        Language language = list.get(position);
+        Map.Entry<String, Language> currentEntry = getItem(position);
+        Language language = currentEntry.getValue();
         holder.tvName.setText(language.getLanguage_name());
-        if(language.getLanguage_image() != null){
+        if (language.getLanguage_image() != null) {
             Picasso.get().load(language.getLanguage_image()).into(holder.imageView);
         }
         return convertView;
+    }
+
+    public static class ViewHolder {
+        private final TextView tvName;
+        private final ImageView imageView;
+
+        public ViewHolder(View view) {
+            tvName = view.findViewById(R.id.tvName);
+            imageView = view.findViewById(R.id.image);
+        }
     }
 }

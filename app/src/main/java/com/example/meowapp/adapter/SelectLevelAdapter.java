@@ -11,25 +11,26 @@ import com.example.meowapp.R;
 import com.example.meowapp.model.Level;
 
 import java.util.List;
+import java.util.Map;
 
 public class SelectLevelAdapter extends BaseAdapter {
+
     private Context context;
-    private List<Level> list;
+    private List<Map.Entry<String, Level>> levelEntryLevel;
 
-    public SelectLevelAdapter(Context context, List<Level> list) {
+    public SelectLevelAdapter(Context context, List<Map.Entry<String, Level>> levelEntryLevel) {
         this.context = context;
-        this.list = list;
+        this.levelEntryLevel = levelEntryLevel;
     }
-
 
     @Override
     public int getCount() {
-        return list.size();
+        return levelEntryLevel.size();
     }
 
     @Override
-    public Object getItem(int position) {
-        return list.get(position);
+    public Map.Entry<String, Level> getItem(int position) {
+        return levelEntryLevel.get(position);
     }
 
     @Override
@@ -37,24 +38,27 @@ public class SelectLevelAdapter extends BaseAdapter {
         return position;
     }
 
-    public static class ViewHolder{
-        TextView tvCB;
-    }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        SelectLevelAdapter.ViewHolder holder;
-        if (convertView ==null){
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_select_level, parent, false);
-
-            holder = new SelectLevelAdapter.ViewHolder();
-            holder.tvCB = convertView.findViewById(R.id.tvCB);
+        ViewHolder holder;
+        if (convertView == null) {
+            convertView = LayoutInflater.from(context)
+                    .inflate(R.layout.item_select_level, parent, false);
+            holder = new ViewHolder(convertView);
             convertView.setTag(holder);
-        } else{
-            holder = (SelectLevelAdapter.ViewHolder) convertView.getTag();
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
-
-        Level level = list.get(position);
-        holder.tvCB.setText(level.getLevel_name());
+        Map.Entry<String, Level> currentEntry = getItem(position);
+        holder.tvLevel.setText(currentEntry.getValue().getLevel_name());
         return convertView;
+    }
+
+    public static class ViewHolder {
+        private final TextView tvLevel;
+
+        public ViewHolder(View view) {
+            tvLevel = view.findViewById(R.id.tvLevel);
+        }
     }
 }
