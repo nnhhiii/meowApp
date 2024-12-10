@@ -1,5 +1,6 @@
 package com.example.meowapp.auth;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -9,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
-
+import android.content.SharedPreferences;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -31,7 +32,7 @@ import retrofit2.Response;
 public class SelectLanguageFragment extends Fragment {
 
     private static final String TAG = SelectLanguageFragment.class.getSimpleName();
-
+    private int selectedPosition = -1;
     private Bundle args;
     private Button btnNext;
     private ListView listView;
@@ -64,10 +65,22 @@ public class SelectLanguageFragment extends Fragment {
             getParentFragmentManager().popBackStack();
             return;
         }
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear(); // Xóa hết dữ liệu
+        editor.apply();
 
         loadLanguageSelections();
-        listView.setOnItemClickListener((parent, convertView, position, id) -> processingSelectedItem(position));
-        btnNext.setOnClickListener(v -> processingNextOnClick());
+        btnNext.setOnClickListener(v -> {
+            String selectedLanguageId = sharedPreferences.getString("selected_language_id", null);
+
+            if (selectedLanguageId != null) {
+                args.putString("language_id", selectedLanguageId);
+                processingNextOnClick();
+            } else {
+                Toast.makeText(requireContext(), "Vui lòng chọn ngôn ngữ!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void loadLanguageSelections() {
@@ -80,7 +93,7 @@ public class SelectLanguageFragment extends Fragment {
                     adapter = new SelectLanguageAdapter(requireContext(), entryList);
                     listView.setAdapter(adapter);
                 } else {
-                    Toast.makeText(getContext(), "Lỗi hệ thống cơ sở dữ liệu!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Không tìm thấy dữ liệu ngôn ngữ!", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -89,21 +102,6 @@ public class SelectLanguageFragment extends Fragment {
                 Log.e(TAG, "Can't get data from server!", t);
             }
         });
-    }
-
-    private void processingSelectedItem(int position) {
-        Map.Entry<String, Language> selectedEntry = adapter.getItem(position);
-        if (!TextUtils.isEmpty(selectedEntry.getKey())) {
-            args.putString("language_id", selectedEntry.getKey());
-        } else {
-            Log.e(TAG, "Can't get selected language id");
-            Toast.makeText(
-                    requireContext(),
-                    "Lỗi hệ thống, vui lòng thử lại sau!",
-                    Toast.LENGTH_SHORT
-            ).show();
-            btnNext.setEnabled(false);
-        }
     }
 
     private void processingNextOnClick() {

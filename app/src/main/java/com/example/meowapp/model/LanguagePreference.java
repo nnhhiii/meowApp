@@ -31,11 +31,11 @@ public class LanguagePreference {
         this.user_id = user_id;
     }
 
-    public String getId() {
+    public String getLevel_id() {
         return level_id;
     }
 
-    public void setId(String id) {
+    public void setLevel_id(String level_id) {
         this.level_id = level_id;
     }
 

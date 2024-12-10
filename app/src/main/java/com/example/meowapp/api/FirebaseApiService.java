@@ -45,6 +45,11 @@ public interface FirebaseApiService {
     Call<Map<String, User>> getAllUsers();
     @GET("users/{id}.json")
     Call<User> getUserById(@Path("id") String userId);
+    @GET("users.json")
+    Call<Map<String, User>> getUserByEmail(
+            @Query("orderBy") String orderBy,
+            @Query("equalTo") String equalTo
+    );
     @POST("users.json")
     Call<User> addUser(@Body User user);
     @PUT("users/{id}.json")

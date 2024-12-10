@@ -46,8 +46,6 @@ public class UserFragment extends Fragment {
         firebaseAuth.signOut();
         try {
             Intent intent = new Intent(requireActivity(), LoginActivity.class);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            intent.setAction(Intent.ACTION_MAIN);
             startActivity(intent);
             requireActivity().finish();
         } catch (IllegalStateException exception) {

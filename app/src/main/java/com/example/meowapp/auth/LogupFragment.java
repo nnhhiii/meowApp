@@ -2,6 +2,7 @@ package com.example.meowapp.auth;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +16,22 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.meowapp.R;
+import com.example.meowapp.adapter.SelectLanguageAdapter;
+import com.example.meowapp.api.FirebaseApiService;
+import com.example.meowapp.model.Language;
+import com.example.meowapp.model.LanguagePreference;
+import com.example.meowapp.model.User;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LogupFragment extends Fragment {
 
@@ -60,7 +73,7 @@ public class LogupFragment extends Fragment {
         }
 
         if (!isValidPassword(password)) {
-            Toast.makeText(requireContext(), "Mật khẩu không hợp lệ!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "Mật khẩu tối thiểu 8 kí tự, chứa chữ hoa, chữ thường, số, kí tự đặc biệt!", Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -76,12 +89,29 @@ public class LogupFragment extends Fragment {
             return;
         }
 
-        Bundle args = new Bundle();
-        args.putString("username", username);
-        args.putString("email", email);
-        args.putString("password", password);
+        FirebaseApiService.apiService.getUserByEmail("\"email\"", "\"" + email + "\"").enqueue(new Callback<Map<String, User>>() {
+            @Override
+            public void onResponse(Call<Map<String, User>> call, Response<Map<String, User>> response) {
+                if (response.isSuccessful()) {
+                    Map<String, User> users = response.body();
+                    if (users != null && !users.isEmpty()) {
+                        Toast.makeText(getContext(), "Email đã được sử dụng cho tài khoản khác", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Bundle args = new Bundle();
+                        args.putString("username", username);
+                        args.putString("email", email);
+                        args.putString("password", password);
 
-        transactionHandle(args);
+                        transactionHandle(args);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Map<String, User>> call, Throwable t) {
+                Log.e("LogUpFragment", "Error", t);
+            }
+        });
     }
 
     private boolean isValidPassword(final String password) {

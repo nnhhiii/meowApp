@@ -155,8 +155,6 @@ public class LoginActivity extends AppCompatActivity {
                         String role = currentUser.getRole();
 
                         Intent intent = new Intent(LoginActivity.this, getDestinationClass(role));
-                        intent.setAction(Intent.ACTION_MAIN);
-                        intent.addCategory(Intent.CATEGORY_HOME);
                         startActivity(intent);
                         finish();
                     } else {

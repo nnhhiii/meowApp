@@ -1,6 +1,8 @@
 package com.example.meowapp.auth;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -32,7 +34,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -54,6 +58,7 @@ public class SelectLevelFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
     private DatabaseReference usersReference;
     private DatabaseReference languagePreferenceReference;
+    private String language_id;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -80,8 +85,18 @@ public class SelectLevelFragment extends Fragment {
         getReceivingBundle();
         loadLevelSelections();
 
-        listView.setOnItemClickListener((parent, view1, position, id) -> processingSelectedItem(position));
-        btnSubmit.setOnClickListener(v -> processingSubmitOnClick());
+
+        btnSubmit.setOnClickListener(v -> {
+            SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+            String selectedLevelId = sharedPreferences.getString("selected_level_id", null);
+
+            if (selectedLevelId != null) {
+                args.putString("level_id", selectedLevelId);
+                processingSubmitOnClick();
+            } else {
+                Toast.makeText(requireContext(), "Vui lòng chọn cấp độ!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void getReceivingBundle() {
@@ -98,8 +113,8 @@ public class SelectLevelFragment extends Fragment {
     }
 
     private void loadLevelSelections() {
-        String languageId = "1";
-        FirebaseApiService.apiService.getAllLevelByLanguageId("\"language_id\"", "\"" + languageId + "\"")
+        language_id = args.getString("language_id");
+        FirebaseApiService.apiService.getAllLevelByLanguageId("\"language_id\"", "\"" + language_id + "\"")
                 .enqueue(new Callback<Map<String, Level>>() {
                     @Override
                     public void onResponse(Call<Map<String, Level>> call, Response<Map<String, Level>> response) {
@@ -121,25 +136,9 @@ public class SelectLevelFragment extends Fragment {
                 });
     }
 
-    private void processingSelectedItem(int position) {
-        Map.Entry<String, Level> selectedEntry = adapter.getItem(position);
-        if (!TextUtils.isEmpty(selectedEntry.getKey())) {
-            args.putString("level_id", selectedEntry.getKey());
-        } else {
-            Log.e(TAG, "Can't get selected level id");
-            Toast.makeText(
-                    requireContext(),
-                    "Lỗi hệ thống, vui lòng thử lại sau!",
-                    Toast.LENGTH_SHORT
-            ).show();
-            btnSubmit.setEnabled(false);
-        }
-    }
 
     private void navigationToMainActivity() {
-        Intent intent = new Intent(requireContext(), MainActivity.class);
-        intent.setAction(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
+        Intent intent = new Intent(requireActivity(), MainActivity.class);
         startActivity(intent);
     }
 
@@ -210,16 +209,20 @@ public class SelectLevelFragment extends Fragment {
         user.setUsername(username);
         user.setAvatar(defaultAvatar);
         user.setRole("user");
-        user.setLanguage_id(language_id);
-        user.setCreated_at("");
-        user.setUpdated_at("");
+
+        // Lấy thời gian hiện tại
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentTime = sdf.format(new Date());
+
+        user.setCreated_at(currentTime);
+        user.setUpdated_at(currentTime);
 
         usersReference.child(uid).setValue(user).addOnCompleteListener(saveUserDataTask -> {
             if (saveUserDataTask.isSuccessful()) {
                 Log.i(TAG, "Create user data successfully!");
                 LanguagePreference preference = new LanguagePreference(language_id, uid, level_id, 0);
-                languagePreferenceReference.child("test").setValue(preference)
-                        .addOnCompleteListener(saveLanguageReferenceTask -> {
+                String uniqueKey = languagePreferenceReference.push().getKey();
+                languagePreferenceReference.child(uniqueKey).setValue(preference).addOnCompleteListener(saveLanguageReferenceTask -> {
                             if (saveLanguageReferenceTask.isSuccessful()) {
                                 Log.i(TAG, "Save language reference successfully!");
                                 Toast.makeText(requireContext(), "Đăng kí tài khoản thành công!", Toast.LENGTH_SHORT).show();

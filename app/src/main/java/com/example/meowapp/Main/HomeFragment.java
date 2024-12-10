@@ -14,6 +14,7 @@ import java.util.Comparator;
 import com.example.meowapp.model.LanguagePreference;
 import com.example.meowapp.model.User;
 import com.example.meowapp.questionType.BlankActivity;
+import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 import android.graphics.drawable.ColorDrawable;
 import android.view.View;
@@ -45,6 +46,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment {
 
@@ -56,6 +58,7 @@ public class HomeFragment extends Fragment {
     private Map<String, Pair<String, Integer>> languageIdMap = new HashMap<>();
     private String userId, languageId;
     private int language_score;
+    private FirebaseAuth firebaseAuth;
 
     @Nullable
     @Override
@@ -65,6 +68,7 @@ public class HomeFragment extends Fragment {
         bottomNavigationView = view.findViewById(R.id.bottomNavView);
         recyclerView = view.findViewById(R.id.recyclerView);
 
+
         lessonIds = new ArrayList<>();
         lessonNames = new ArrayList<>();
         languages = new ArrayList<>();
@@ -73,7 +77,8 @@ public class HomeFragment extends Fragment {
         recyclerView.setAdapter(buttonAdapter);
         bottomNavigationView.setItemIconTintList(null);
 
-        userId = "1";
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        userId = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
         fetchUserById();
         fetchLanguagePreference(); // Fetch language preference from API
 
