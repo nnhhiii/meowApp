@@ -3,15 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
+
     <RelativeLayout
         android:id="@+id/layout_tren"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <ImageButton
             android:id="@+id/back_btn"
             android:layout_width="65dp"
             android:layout_height="65dp"
-            android:background="@color/white"
+            android:background="@android:color/transparent"
             android:src="@drawable/ic_arrow_back" />
 
         <ProgressBar
@@ -19,11 +21,12 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="250dp"
             android:layout_height="20dp"
-            android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
             android:progress="30"
             android:progressTint="#8bc34a" />
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"

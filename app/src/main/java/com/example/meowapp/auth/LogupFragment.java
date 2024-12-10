@@ -1,84 +1,141 @@
 package com.example.meowapp.auth;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
+import android.text.TextUtils;
+import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.meowapp.R;
+import com.example.meowapp.adapter.SelectLanguageAdapter;
+import com.example.meowapp.api.FirebaseApiService;
+import com.example.meowapp.model.Language;
+import com.example.meowapp.model.LanguagePreference;
+import com.example.meowapp.model.User;
+import com.google.android.material.textfield.TextInputEditText;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link LogupFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class LogupFragment extends Fragment {
+
     private Button btnLogUp;
+    private TextInputEditText etUsername;
+    private TextInputEditText etEmail;
+    private TextInputEditText etPassword;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public LogupFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment LogupFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static LogupFragment newInstance(String param1, String param2) {
-        LogupFragment fragment = new LogupFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.activity_auth_logup, container, false);
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if (getActivity() instanceof BlankActivity) {
+            ((BlankActivity) getActivity()).updateProgressBar(65);
         }
+
+        btnLogUp = view.findViewById(R.id.btnLogup);
+        etUsername = view.findViewById(R.id.edtUsername);
+        etEmail = view.findViewById(R.id.edtEmail);
+        etPassword = view.findViewById(R.id.edtPassword);
+
+        btnLogUp.setOnClickListener(v -> logUpOnClickHandle());
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.activity_auth_logup, container, false);
-        btnLogUp = view.findViewById(R.id.btnLogup);
-        btnLogUp.setOnClickListener(v -> {
-            if (getActivity() instanceof BlankActivity) {
-                ((BlankActivity) getActivity()).updateProgressBar(65);
-            }
-            Fragment fragment = new SelectLanguageFragment();
-            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-            transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
-            transaction.replace(R.id.fragment_container, fragment);
-            transaction.addToBackStack(null);
+    private boolean isValidInputs(String username, String email, String password) {
+        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+            Toast.makeText(requireContext(), "Không để trống thông tin!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
 
-            // Thực thi giao dịch Fragment
-            transaction.commit();
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(requireContext(), "Vui lòng kiểm tra lại email!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (!isValidPassword(password)) {
+            Toast.makeText(requireContext(), "Mật khẩu tối thiểu 8 kí tự, chứa chữ hoa, chữ thường, số, kí tự đặc biệt!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
+    }
+
+    private void logUpOnClickHandle() {
+        String username = etUsername.getText().toString().trim();
+        String email = etEmail.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
+
+        if (!isValidInputs(username, email, password)) {
+            return;
+        }
+
+        FirebaseApiService.apiService.getUserByEmail("\"email\"", "\"" + email + "\"").enqueue(new Callback<Map<String, User>>() {
+            @Override
+            public void onResponse(Call<Map<String, User>> call, Response<Map<String, User>> response) {
+                if (response.isSuccessful()) {
+                    Map<String, User> users = response.body();
+                    if (users != null && !users.isEmpty()) {
+                        Toast.makeText(getContext(), "Email đã được sử dụng cho tài khoản khác", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Bundle args = new Bundle();
+                        args.putString("username", username);
+                        args.putString("email", email);
+                        args.putString("password", password);
+
+                        transactionHandle(args);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Map<String, User>> call, Throwable t) {
+                Log.e("LogUpFragment", "Error", t);
+            }
         });
-        return view;
+    }
+
+    private boolean isValidPassword(final String password) {
+        // Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character
+        final String PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+        Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
+    }
+
+    private void transactionHandle(Bundle args) {
+        Fragment fragment = new SelectLanguageFragment();
+        fragment.setArguments(args);
+
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(
+                R.anim.enter_from_right,
+                R.anim.exit_to_left,
+                R.anim.enter_from_left,
+                R.anim.exit_to_right
+        );
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+
     }
 }

@@ -1,10 +1,8 @@
 package com.example.meowapp.auth;
 
+import android.content.Context;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +10,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.content.SharedPreferences;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.meowapp.R;
 import com.example.meowapp.adapter.SelectLanguageAdapter;
@@ -26,107 +29,98 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SelectLanguageFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SelectLanguageFragment extends Fragment {
-    private SelectLanguageAdapter adapter;
+
+    private static final String TAG = SelectLanguageFragment.class.getSimpleName();
+    private int selectedPosition = -1;
+    private Bundle args;
+    private Button btnNext;
     private ListView listView;
-    private Button button;
+    private SelectLanguageAdapter adapter;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public SelectLanguageFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SelectLanguageFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SelectLanguageFragment newInstance(String param1, String param2) {
-        SelectLanguageFragment fragment = new SelectLanguageFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_select_language, container, false);
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if (getActivity() instanceof BlankActivity) {
+            ((BlankActivity) getActivity()).updateProgressBar(90);
         }
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_select_language, container, false);
-        button = view.findViewById(R.id.btnNext);
+        btnNext = view.findViewById(R.id.btnNext);
         listView = view.findViewById(R.id.listView);
-        button.setOnClickListener(v -> {
-            if (getActivity() instanceof BlankActivity) {
-                ((BlankActivity) getActivity()).updateProgressBar(90);
+
+        args = getArguments();
+        if (args == null) {
+            Log.e(TAG, "Can't get arguments");
+            Toast.makeText(
+                    requireContext(),
+                    "Lỗi hệ thống, vui lòng thử lại sau!",
+                    Toast.LENGTH_SHORT
+            ).show();
+            getParentFragmentManager().popBackStack();
+            return;
+        }
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear(); // Xóa hết dữ liệu
+        editor.apply();
+
+        loadLanguageSelections();
+        btnNext.setOnClickListener(v -> {
+            String selectedLanguageId = sharedPreferences.getString("selected_language_id", null);
+
+            if (selectedLanguageId != null) {
+                args.putString("language_id", selectedLanguageId);
+                processingNextOnClick();
+            } else {
+                Toast.makeText(requireContext(), "Vui lòng chọn ngôn ngữ!", Toast.LENGTH_SHORT).show();
             }
-            Fragment fragment = new SelectLevelFragment();
-
-            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-            transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
-            transaction.replace(R.id.fragment_container, fragment);
-            transaction.addToBackStack(null);
-
-            // Thực thi giao dịch Fragment
-            transaction.commit();
         });
-        loadData();
-        return view;
     }
 
-
-    private void loadData() {
+    private void loadLanguageSelections() {
         FirebaseApiService.apiService.getAllLanguage().enqueue(new Callback<Map<String, Language>>() {
             @Override
             public void onResponse(Call<Map<String, Language>> call, Response<Map<String, Language>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    // Chuyển đổi từ Map sang List
                     Map<String, Language> languageMap = response.body();
-                    List<Language> languages = new ArrayList<>(languageMap.values());
-                    adapter = new SelectLanguageAdapter(getContext(), languages);
+                    List<Map.Entry<String, Language>> entryList = new ArrayList<>(languageMap.entrySet());
+                    adapter = new SelectLanguageAdapter(requireContext(), entryList);
                     listView.setAdapter(adapter);
                 } else {
-                    Toast.makeText(getContext(), "Failed to get info", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Không tìm thấy dữ liệu ngôn ngữ!", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Map<String, Language>> call, Throwable t) {
-                Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e("error:", t.getMessage(), t);
+                Log.e(TAG, "Can't get data from server!", t);
             }
         });
     }
 
+    private void processingNextOnClick() {
+        Fragment fragment = new SelectLevelFragment();
+        fragment.setArguments(args);
 
-
-
-
+        try {
+            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(
+                    R.anim.enter_from_right,
+                    R.anim.exit_to_left,
+                    R.anim.enter_from_left,
+                    R.anim.exit_to_right
+            );
+            transaction.replace(R.id.fragment_container, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        } catch (IllegalStateException e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+    }
 }
