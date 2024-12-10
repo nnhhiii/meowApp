@@ -25,6 +25,7 @@ public class AdminActivity extends AppCompatActivity {
         gridItems.add(new GridItem(R.drawable.ic_lession, "Bài học"));
 //        gridItems.add(new GridItem(R.drawable.ic_question, "Câu hỏi"));
         gridItems.add(new GridItem(R.drawable.ic_noti, "Thông báo"));
+        gridItems.add(new GridItem(R.drawable.ic_noti, "Nhiệm vụ"));
 
         GridAdapter adapter = new GridAdapter(this, gridItems);
         gridView.setAdapter(adapter);
