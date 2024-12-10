@@ -158,9 +158,18 @@ public interface FirebaseApiService {
     @GET("notifications.json")
     Call<Map<String, Notification>> getNotifications();
 
+    @GET("users/{userId}/courses")
+    Call<List<String>> getUserCourses(@Path("userId") String userId);
     @GET("courses.json")
     Call<Map<String, Course>> getAllCourses();
+        @DELETE("missions/{id}")
+        Call<Mission> deleteMission(@Path("id") String missionId);
+
+    @GET("users/byEmail")
+    Call<Map<String, User>> getUserByEmail(@Query("key") String key, @Query("email") String email);
 
 
 }
+
+
 

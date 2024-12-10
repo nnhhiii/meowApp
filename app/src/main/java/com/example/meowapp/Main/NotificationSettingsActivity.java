@@ -2,6 +2,7 @@ package com.example.meowapp.Main;
 
 import android.os.Bundle;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import retrofit2.Response;
 
 public class NotificationSettingsActivity extends AppCompatActivity {
     private TextView tvNotification;
+    private ImageButton btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
