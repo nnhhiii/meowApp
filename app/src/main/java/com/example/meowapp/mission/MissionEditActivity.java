@@ -37,7 +37,7 @@ public class MissionEditActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mission_add);
+        setContentView(R.layout.activity_mission_edit);
 
         etMissionName = findViewById(R.id.et_mission_name);
         etRequire = findViewById(R.id.et_require);
