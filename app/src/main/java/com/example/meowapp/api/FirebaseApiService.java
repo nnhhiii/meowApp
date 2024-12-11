@@ -168,6 +168,12 @@ public interface FirebaseApiService {
     @GET("users/byEmail")
     Call<Map<String, User>> getUserByEmail(@Query("key") String key, @Query("email") String email);
 
+    @GET("questions/type-level-language")
+    Call<List<Question>> getQuestionsByTypeAndLevelLanguage(
+            @Query("question_type") String questionType,
+            @Query("level_id") String levelId,
+            @Query("language_id") String languageId );
+
 
 }
 
