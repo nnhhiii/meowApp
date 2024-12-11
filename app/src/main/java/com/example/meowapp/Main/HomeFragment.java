@@ -149,6 +149,13 @@ public class HomeFragment extends Fragment {
                     for (Map.Entry<String, LanguagePreference> entry : response.body().entrySet()) {
                         languageId = entry.getValue().getLanguage_id();
                         language_score = entry.getValue().getLanguage_score();
+
+                        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyPref", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("languageId", languageId);
+                        editor.putInt("languagePreferenceScore", language_score);
+                        editor.apply();
+
                         fetchLanguageById(languageId, language_score);
                         fetchLessonsByLanguageId(languageId);
                     }
@@ -191,12 +198,18 @@ public class HomeFragment extends Fragment {
                     int streaks = user.getStreaks();
                     int diamonds = user.getDiamonds();
                     int hearts = user.getHearts();
+                    int perfectLessons = user.getPerfectLessons();
+                    int eightyLessons = user.getEightyLessons();
+                    int lessons = user.getLessons();
 
                     SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyPref", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("userId", userId);
                     editor.putInt("score", score);
                     editor.putInt("streak", streaks);
+                    editor.putInt("eightyLessons", eightyLessons);
+                    editor.putInt("perfectLessons", perfectLessons);
+                    editor.putInt("lessons", lessons);
                     editor.apply();
                 } else {
                     Toast.makeText(getContext(), "No user available", Toast.LENGTH_SHORT).show();

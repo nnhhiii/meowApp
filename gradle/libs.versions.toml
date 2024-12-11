@@ -23,6 +23,10 @@ firebaseStorage = "21.0.0"
 recyclerview ="1.2.1"
 firebaseStorageVersion = "21.0.1"
 firebaseAuth = "23.1.0"
+firebaseAppcheckPlayintegrity = "18.0.0"
+firebaseAppcheck = "18.0.0"
+firebaseMessaging = "24.1.0"
+googleAuthLibraryOauth2Http = "1.30.0"
 
 [libraries]
 recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
@@ -48,6 +52,10 @@ picasso = { group = "com.squareup.picasso", name = "picasso", version.ref = "pic
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
 google-firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorageVersion" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
+firebase-appcheck-playintegrity = { group = "com.google.firebase", name = "firebase-appcheck-playintegrity", version.ref = "firebaseAppcheckPlayintegrity" }
+firebase-appcheck = { group = "com.google.firebase", name = "firebase-appcheck", version.ref = "firebaseAppcheck" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
+google-auth-library-oauth2-http = { group = "com.google.auth", name = "google-auth-library-oauth2-http", version.ref = "googleAuthLibraryOauth2Http" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

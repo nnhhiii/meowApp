@@ -1,7 +1,9 @@
 package com.example.meowapp.auth;
 
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
 import androidx.activity.EdgeToEdge;
@@ -11,12 +13,19 @@ import com.example.meowapp.R;
 
 public class BlankActivity extends AppCompatActivity {
     private ProgressBar progressBar;
+    private ImageButton btnBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_blank2);
         progressBar = findViewById(R.id.progressBar);
+        btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(v -> {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        });
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()

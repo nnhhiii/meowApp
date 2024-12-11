@@ -138,7 +138,7 @@ public class SelectLevelFragment extends Fragment {
 
 
     private void navigationToMainActivity() {
-        Intent intent = new Intent(requireActivity(), MainActivity.class);
+        Intent intent = new Intent(requireActivity(), LoginActivity.class);
         startActivity(intent);
     }
 

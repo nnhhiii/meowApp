@@ -27,7 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
+import com.google.firebase.messaging.FirebaseMessaging;
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = LoginActivity.class.getSimpleName();
@@ -59,6 +59,36 @@ public class LoginActivity extends AppCompatActivity {
         if (firebaseAuth.getCurrentUser() != null) {
             switchProgressBar(true);
             navigateToMainActivity();
+
+            // Lấy token
+            FirebaseMessaging.getInstance().getToken()
+                    .addOnCompleteListener(task -> {
+                        if (!task.isSuccessful()) {
+                            Log.w("FCM", "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+                        // Lấy token và xử lý
+                        String token = task.getResult();
+                        Log.d("FCM", "Token: " + token);
+
+                        // Lưu vào Realtime Database
+                        String userId = firebaseAuth.getCurrentUser().getUid();
+                        usersReference.child(userId).child("fcmToken").setValue(token)
+                                .addOnCompleteListener(task1 -> {
+                                    if (task1.isSuccessful()) {
+                                        Log.d("FCM", "Token đã được lưu vào Realtime Database.");
+                                    } else {
+                                        Log.w("FCM", "Lỗi khi lưu token: " + task1.getException());
+                                    }
+                                });
+                    });
+            FirebaseMessaging.getInstance().subscribeToTopic("all_devices")
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Log.d("FCM", "Đã đăng ký chủ đề thành công!");
+                        }
+                    });
+
         }
 
         btnForget.setOnClickListener(v -> {

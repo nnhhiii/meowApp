@@ -10,7 +10,7 @@
         android:layout_height="wrap_content">
 
         <ImageButton
-            android:id="@+id/back_btn"
+            android:id="@+id/btnBack"
             android:layout_width="65dp"
             android:layout_height="65dp"
             android:background="@android:color/transparent"

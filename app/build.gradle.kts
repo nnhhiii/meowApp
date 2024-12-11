@@ -16,6 +16,15 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+    packaging {
+        resources {
+            excludes.add("META-INF/DEPENDENCIES")
+            excludes.add("META-INF/INDEX.LIST")
+            excludes.add("META-INF/*.SF")
+            excludes.add("META-INF/*.DSA")
+            excludes.add("META-INF/*.RSA")
+        }
+    }
 
     buildTypes {
         release {
@@ -56,6 +65,10 @@ dependencies {
     implementation(libs.firebase.storage)
     implementation(libs.google.firebase.storage)
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.appcheck.playintegrity)
+    implementation(libs.firebase.appcheck)
+    implementation(libs.firebase.messaging)
+    implementation(libs.google.auth.library.oauth2.http)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

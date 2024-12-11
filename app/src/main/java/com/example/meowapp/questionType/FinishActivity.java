@@ -25,6 +25,12 @@ import com.example.meowapp.model.Lesson;
 import com.example.meowapp.model.Level;
 import com.example.meowapp.model.User;
 import com.example.meowapp.model.UserProgress;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,6 +39,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,7 +48,7 @@ import retrofit2.Response;
 public class FinishActivity extends AppCompatActivity {
     private TextView tvScore, tvPercent;
     private Button btnFinish;
-    private int scoreLesson, scoreUser, streaks, previousStreaks, percentScore, languageScore;
+    private int scoreLesson, scoreUser, streaks, previousStreaks, percentScore, languageScore, eightyLessons, perfectLessons, lessons;
     private String userId, lessonId, languageId, currentDateTime, progressId;
     private SimpleDateFormat sdf;
 
@@ -67,8 +74,12 @@ public class FinishActivity extends AppCompatActivity {
         previousStreaks = sharedPreferences.getInt("streaks", 0);
         streaks = sharedPreferences.getInt("streaks", 0);
         scoreUser = sharedPreferences.getInt("score", 0);
+        perfectLessons = sharedPreferences.getInt("perfectLessons", 0);
+        eightyLessons = sharedPreferences.getInt("eightyLessons", 0);
+        lessons = sharedPreferences.getInt("lessons", 0);
 
-        userId = "2";
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        userId = firebaseAuth.getCurrentUser().getUid();
 
         loadData();
         btnFinish.setOnClickListener(v -> {
@@ -98,9 +109,21 @@ public class FinishActivity extends AppCompatActivity {
     private void updateUserScore(){
         int newScore;
         newScore = scoreUser + (int) (scoreLesson * (percentScore / 100.0f));
-        Map<String, Object> scoreField = new HashMap<>();
-        scoreField.put("score", newScore);
-        FirebaseApiService.apiService.updateUserField(userId, scoreField).enqueue(new Callback<User>() {
+        Map<String, Object> field = new HashMap<>();
+        field.put("score", newScore);
+        field.put("lessons", ++lessons);
+
+        boolean shouldUpdateEightyLessons = percentScore >= 80;
+        boolean shouldUpdatePerfectLessons = percentScore == 100;
+
+        if (shouldUpdateEightyLessons) {
+            field.put("eightyLessons", ++eightyLessons);
+        }
+
+        if (shouldUpdatePerfectLessons) {
+            field.put("perfectLessons", ++perfectLessons);
+        }
+        FirebaseApiService.apiService.updateUserField(userId, field).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -118,28 +141,41 @@ public class FinishActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(FinishActivity.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(FinishActivity.this, "Lỗi update user: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
     private void updateLanguageScore(){
         int newScore;
         newScore = languageScore + (int) (scoreLesson * (percentScore / 100.0f));
-        Map<String, Object> scoreField = new HashMap<>();
-        scoreField.put("language_score", newScore);
-        FirebaseApiService.apiService.updateLanguageScore(languageId, scoreField).enqueue(new Callback<LanguagePreference>() {
+        Map<String, Object> field = new HashMap<>();
+        field.put("language_score", newScore);
+
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("language_preferences");
+        ref.orderByChild("user_id").equalTo(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onResponse(Call<LanguagePreference> call, Response<LanguagePreference> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    Toast.makeText(FinishActivity.this, "Điểm ngôn ngữ được cập nhật: " + newScore, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(FinishActivity.this, "Không cập nhật được điểm", Toast.LENGTH_SHORT).show();
+            public void onDataChange(DataSnapshot snapshot) {
+                // Duyệt qua các entry và tìm entry với đúng language_id
+                for (DataSnapshot languageSnapshot : snapshot.getChildren()) {
+                    String langId = languageSnapshot.child("language_id").getValue(String.class);
+                    if (langId != null && langId.equals(languageId)) {
+                        // Cập nhật language_score mới
+                        languageSnapshot.getRef().child("language_score").setValue(newScore)
+                                .addOnSuccessListener(aVoid -> {
+                                    Toast.makeText(FinishActivity.this, "Điểm ngôn ngữ đã được cập nhật: " + newScore, Toast.LENGTH_SHORT).show();
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(FinishActivity.this, "Lỗi cập nhật điểm: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                });
+                        break;
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<LanguagePreference> call, Throwable t) {
-                Toast.makeText(FinishActivity.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onCancelled(DatabaseError error) {
+                Toast.makeText(FinishActivity.this, "Lỗi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -185,7 +221,7 @@ public class FinishActivity extends AppCompatActivity {
                                     streaks++;  // Tăng streak
                                     updateStreak(streaks);
                                 } else {
-                                    streaks = 0;  // Reset streak
+                                    streaks = 1;  // Reset streak
                                     updateStreak(streaks);
                                 }
                             }
@@ -248,7 +284,7 @@ public class FinishActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(FinishActivity.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(FinishActivity.this, "Lỗi update streak: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -277,7 +313,7 @@ public class FinishActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<UserProgress> call, Throwable t) {
-                Toast.makeText(FinishActivity.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(FinishActivity.this, "Lỗi update userProgress: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

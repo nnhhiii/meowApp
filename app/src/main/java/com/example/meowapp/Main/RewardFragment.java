@@ -24,10 +24,12 @@ import com.example.meowapp.model.Mission;
 import com.example.meowapp.model.User;
 import com.example.meowapp.model.UserProgress;
 import com.example.meowapp.questionType.FinishActivity;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,8 +46,8 @@ public class RewardFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyPref", MODE_PRIVATE);
-        userId = sharedPreferences.getString("userId", null);
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        userId = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
     }
 
     @Override

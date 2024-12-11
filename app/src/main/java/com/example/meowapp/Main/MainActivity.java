@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment;
 import com.example.meowapp.R;
 import com.example.meowapp.service.TimerService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 public class MainActivity extends AppCompatActivity {
 
     private FrameLayout frameLayout;
@@ -32,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
         Intent serviceIntent = new Intent(this, TimerService.class);
         serviceIntent.putExtra("duration", 2 * 1000); // 5 phút
         startService(serviceIntent);
-
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

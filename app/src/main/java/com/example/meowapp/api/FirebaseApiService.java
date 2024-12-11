@@ -5,6 +5,7 @@ import com.example.meowapp.model.LanguagePreference;
 import com.example.meowapp.model.Lesson;
 import com.example.meowapp.model.Level;
 import com.example.meowapp.model.Mission;
+import com.example.meowapp.model.Notification;
 import com.example.meowapp.model.Question;
 import com.example.meowapp.model.Lesson;
 import com.example.meowapp.model.QuestionType;
@@ -157,4 +158,12 @@ public interface FirebaseApiService {
 
     @GET("missions.json")
     Call<Map<String, Mission>> getAllMission();
+
+
+    @GET("notifications.json")
+    Call<Map<String, Notification>> getAllNotifications();
+    @POST("notifications.json")
+    Call<Notification> addNotifications(@Body Notification notification);
+    @DELETE("notifications/{id}.json")
+    Call<Notification> deleteNotification(@Path("id") String id);
 }

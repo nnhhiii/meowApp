@@ -13,6 +13,7 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,10 +29,12 @@ import com.example.meowapp.R;
 import com.example.meowapp.adapter.QuestionAdapter;
 import com.example.meowapp.api.FirebaseApiService;
 
+import com.example.meowapp.auth.LoginActivity;
 import com.example.meowapp.lesson.LessonEditActivity;
 import com.example.meowapp.model.Question;
 import com.example.meowapp.model.QuestionType;
 import com.example.meowapp.model.User;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,6 +63,7 @@ public class BlankActivity extends AppCompatActivity {
     public int hearts, diamonds;
     private ProgressBar progressBar;
     public TextView tvHeart;
+    private ImageButton btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +72,22 @@ public class BlankActivity extends AppCompatActivity {
         setContentView(R.layout.activity_blank);
         tvHeart = findViewById(R.id.tvHeart);
         progressBar = findViewById(R.id.progressBar);
+        btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(v -> {
+            new AlertDialog.Builder(this)
+                    .setTitle("Xác nhận thoát")
+                    .setMessage("Bạn có chắc chắn muốn thoát không?")
+                    .setPositiveButton("OK", (dialog, which) -> {
+                        finish();
+                    })
+                    .setNegativeButton("Hủy", (dialog, which) -> {
+                        dialog.dismiss(); // Đóng Dialog
+                    })
+                    .show();
+        });
 
-        SharedPreferences sharedPreferences = getSharedPreferences("MyPref", MODE_PRIVATE);
-        userId = sharedPreferences.getString("userId", null);
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        userId = firebaseAuth.getCurrentUser().getUid();
 
         lessonId = getIntent().getStringExtra("LESSON_ID");
         fetchUserById();

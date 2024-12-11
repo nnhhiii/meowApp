@@ -2,12 +2,10 @@ package com.example.meowapp.admin;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,7 +13,8 @@ import com.example.meowapp.Level.LevelManagementActivity;
 import com.example.meowapp.R;
 import com.example.meowapp.language.LanguageManagementActivity;
 import com.example.meowapp.lesson.LessonManagementActivity;
-import com.example.meowapp.user.EditUserActivity;
+import com.example.meowapp.notification.NotificationCreateActivity;
+import com.example.meowapp.notification.NotificationManagementActivity;
 import com.example.meowapp.user.UserManagementActivity;
 
 import java.util.List;
@@ -67,6 +66,9 @@ public class GridAdapter extends BaseAdapter {
                 context.startActivity(intent);
             }else if (gridItem.getText().equals("Bài học")) {
                 Intent intent = new Intent(context, LessonManagementActivity.class);
+                context.startActivity(intent);
+            }else if (gridItem.getText().equals("Thông báo")) {
+                Intent intent = new Intent(context, NotificationManagementActivity.class);
                 context.startActivity(intent);
             }
         });
