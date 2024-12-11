@@ -1,5 +1,8 @@
 package com.example.meowapp.admin;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -11,11 +14,14 @@ import android.widget.TextView;
 
 import com.example.meowapp.Level.LevelManagementActivity;
 import com.example.meowapp.R;
+import com.example.meowapp.auth.LoginActivity;
 import com.example.meowapp.language.LanguageManagementActivity;
 import com.example.meowapp.lesson.LessonManagementActivity;
+import com.example.meowapp.mission.MissionManagementActivity;
 import com.example.meowapp.notification.NotificationCreateActivity;
 import com.example.meowapp.notification.NotificationManagementActivity;
 import com.example.meowapp.user.UserManagementActivity;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -70,6 +76,19 @@ public class GridAdapter extends BaseAdapter {
             }else if (gridItem.getText().equals("Thông báo")) {
                 Intent intent = new Intent(context, NotificationManagementActivity.class);
                 context.startActivity(intent);
+            }else if (gridItem.getText().equals("Nhiệm vụ")) {
+                Intent intent = new Intent(context, MissionManagementActivity.class);
+                context.startActivity(intent);
+            }else if (gridItem.getText().equals("Đăng xuất")) {
+                // Đăng xuất khỏi Firebase
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(context, LoginActivity.class);
+                context.startActivity(intent);
+
+                // Ép kiểu context thành Activity để gọi finish()
+                if (context instanceof Activity) {
+                    ((Activity) context).finish();
+                }
             }
         });
 

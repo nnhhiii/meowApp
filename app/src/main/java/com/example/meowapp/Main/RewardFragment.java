@@ -57,8 +57,8 @@ public class RewardFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_main_award, container, false);
         listView = view.findViewById(R.id.listVieww);
 
-        fetchUserProgress()
-;        return view;
+        fetchUserProgress();
+        return view;
     }
     private void fetchUserProgress() {
         FirebaseApiService.apiService.getAllUserProgressByUserId("\"user_id\"", "\"" + userId + "\"").enqueue(new Callback<Map<String, UserProgress>>() {

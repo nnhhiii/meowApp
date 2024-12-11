@@ -1,0 +1,210 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#FFFFFF">
+
+    <LinearLayout
+        android:id="@+id/headerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:background="#FFEBEE"
+        android:padding="16dp"
+        android:orientation="vertical">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgAvatar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:layout_marginBottom="10dp"
+            app:shapeAppearanceOverlay="@style/circleImageStyle"
+            app:srcCompat="@drawable/ic_launcher_background" />
+        <TextView
+            android:id="@+id/tvUserName"
+            android:layout_width="200dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:text="mchau"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#333333" />
+
+
+        <TextView
+            android:id="@+id/tvEmail"
+            android:layout_width="200dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:text="mcapr3pi"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textColor="#777777" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/infoLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/headerLayout"
+        android:layout_margin="16dp"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@drawable/rounded_card_background"
+        android:elevation="6dp">
+
+        <TextView
+            android:id="@+id/tvCoursePoints"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Điểm: 1200"
+            android:textSize="18sp"
+            android:textColor="#444444"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvUserCourses"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Khóa học: Tiếng anh, Tiếng hàn"
+            android:textSize="18sp"
+            android:textColor="#444444"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+
+    <!-- Courses Section -->
+    <LinearLayout
+        android:id="@+id/courseLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/infoLayout"
+        android:layout_margin="16dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <ImageButton
+            android:id="@+id/imgCourseEnglish"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/rounded_button_background"
+            android:contentDescription="English Course" />
+
+        <ImageButton
+            android:id="@+id/imgCourseKorean"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/rounded_button_background"
+            android:contentDescription="Korean Course" />
+    </LinearLayout>
+
+    <!-- Settings Button -->
+    <ImageButton
+        android:id="@+id/btnSettings"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_setting"
+        android:background="@drawable/rounded_card_background"
+        android:contentDescription="Settings"
+        android:elevation="6dp" />
+
+    <LinearLayout
+        android:id="@+id/navigationMenu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:background="#FDF6F9"
+        android:padding="24dp"
+        android:translationX="1000dp">
+
+        <!-- Back Button and Title -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_arrow_back"
+                android:background="@android:color/transparent"
+                android:contentDescription="Back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cài đặt"
+                android:textSize="20sp"
+                android:textColor="#333333"
+                android:layout_marginStart="16dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Spacer -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="16dp" />
+
+        <!-- Buttons -->
+        <Button
+            android:id="@+id/btnEditProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Chỉnh sửa thông tin cá nhân"
+            android:drawableStart="@drawable/ic_edit"
+            android:drawablePadding="12dp"
+            android:background="@drawable/rounded_gradient_button"
+            android:textColor="#FFFFFF"
+            android:padding="16dp"
+            android:textSize="18sp"
+            android:layout_marginBottom="16dp" />
+
+        <Button
+            android:id="@+id/btnNotificationSettings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Thông báo"
+            android:drawablePadding="12dp"
+            android:background="@drawable/rounded_gradient_button"
+            android:textColor="#FFFFFF"
+            android:padding="16dp"
+            android:textSize="18sp"
+            android:layout_marginBottom="16dp" />
+
+        <Button
+            android:id="@+id/btnCourseSettings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Khóa học"
+            android:drawablePadding="12dp"
+            android:background="@drawable/rounded_gradient_button"
+            android:textColor="#FFFFFF"
+            android:padding="16dp"
+            android:textSize="18sp"
+            android:layout_marginBottom="16dp" />
+
+        <Button
+            android:id="@+id/btnLogout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Đăng xuất"
+            android:drawableStart="@drawable/ic_logout"
+            android:drawablePadding="12dp"
+            android:background="@drawable/rounded_gradient_button"
+            android:textColor="#FFFFFF"
+            android:padding="16dp"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+</RelativeLayout>

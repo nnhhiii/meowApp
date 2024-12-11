@@ -3,6 +3,8 @@ package com.example.meowapp.model;
 public class Mission {
     private String missionName;
     private String rewardType;
+    private String created_at;
+    private String updated_at;
     private int rewardAmount, requiredScore, requiredPerfectLessons, requiredEightyLessons, requiredLessons, requiredStreaks;
 
     public String getMissionName() {
@@ -67,5 +69,20 @@ public class Mission {
 
     public void setRequiredStreaks(int requiredStreaks) {
         this.requiredStreaks = requiredStreaks;
+    }
+    public String getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
+    }
+
+    public String getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(String updated_at) {
+        this.updated_at = updated_at;
     }
 }

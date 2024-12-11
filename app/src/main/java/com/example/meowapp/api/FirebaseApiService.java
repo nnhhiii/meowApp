@@ -1,5 +1,4 @@
 package com.example.meowapp.api;
-
 import com.example.meowapp.model.Language;
 import com.example.meowapp.model.LanguagePreference;
 import com.example.meowapp.model.Lesson;
@@ -49,7 +48,7 @@ public interface FirebaseApiService {
     @GET("users.json")
     Call<Map<String, User>> getUserByEmail(
             @Query("orderBy") String orderBy,
-            @Query("equalTo") String equalTo
+            @Query("equalTo") String email
     );
     @POST("users.json")
     Call<User> addUser(@Body User user);
@@ -83,6 +82,8 @@ public interface FirebaseApiService {
     Call<LanguagePreference> addLanguagePreference(@Body LanguagePreference language);
     @PATCH("language_preferences/{id}.json")
     Call<LanguagePreference> updateLanguageScore(@Path("id") String userId, @Body Map<String, Object> scoreField);
+    @DELETE("language_preferences/{id}.json")
+    Call<LanguagePreference> deleteLanguagePreference(@Path("id") String id);
 
 
     @GET("levels.json")
@@ -143,7 +144,6 @@ public interface FirebaseApiService {
 
 
 
-
     @GET("user_progress.json")
     Call<Map<String, UserProgress>> getAllUserProgressByUserId(
             @Query("orderBy") String orderBy,
@@ -156,14 +156,15 @@ public interface FirebaseApiService {
     Call<UserProgress> updateFieldUserProgress(@Path("id") String id, @Body Map<String, Object> field);
 
 
+
     @GET("missions.json")
     Call<Map<String, Mission>> getAllMission();
+    @DELETE("missions/{id}")
+    Call<Mission> deleteMission(@Path("id") String missionId);
 
 
     @GET("notifications.json")
     Call<Map<String, Notification>> getAllNotifications();
-    @POST("notifications.json")
-    Call<Notification> addNotifications(@Body Notification notification);
     @DELETE("notifications/{id}.json")
     Call<Notification> deleteNotification(@Path("id") String id);
 }

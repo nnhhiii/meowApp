@@ -2,28 +2,21 @@ package com.example.meowapp.adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.meowapp.Main.SettingsNotificationActivity;
 import com.example.meowapp.R;
 import com.example.meowapp.api.FirebaseApiService;
 import com.example.meowapp.model.Notification;
-import com.example.meowapp.model.Level;
-import com.example.meowapp.model.Mission;
-import com.example.meowapp.model.Notification;
-import com.example.meowapp.notification.NotificationManagementActivity;
 
 import java.util.List;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -81,6 +74,14 @@ public class NotificationAdapter extends BaseAdapter {
         holder.title.setText(notification.getTitle());
         holder.body.setText(notification.getMessage());
         holder.createdAt.setText(notification.getCreatedAt());
+
+        if (context instanceof SettingsNotificationActivity) {
+            holder.btnDelete.setVisibility(View.GONE);
+            holder.createdAt.setVisibility(View.GONE);
+        } else {
+            holder.btnDelete.setVisibility(View.VISIBLE);
+            holder.createdAt.setVisibility(View.VISIBLE);
+        }
         
         holder.btnDelete.setOnClickListener(v -> {
             new AlertDialog.Builder(context)

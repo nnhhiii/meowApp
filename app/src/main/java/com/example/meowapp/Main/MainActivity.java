@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setItemIconTintList(null);
 
         Intent serviceIntent = new Intent(this, TimerService.class);
-        serviceIntent.putExtra("duration", 2 * 1000); // 5 phút
+        serviceIntent.putExtra("duration", 5 * 60 * 1000); // 5 phút
         startService(serviceIntent);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

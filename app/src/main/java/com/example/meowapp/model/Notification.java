@@ -10,7 +10,6 @@ public class Notification {
     public void setTitle(String title) {
         this.title = title;
     }
-
     public String getMessage() {
         return message;
     }
@@ -27,3 +26,4 @@ public class Notification {
         this.createdAt = createdAt;
     }
 }
+

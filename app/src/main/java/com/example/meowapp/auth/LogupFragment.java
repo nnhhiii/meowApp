@@ -22,6 +22,11 @@ import com.example.meowapp.model.Language;
 import com.example.meowapp.model.LanguagePreference;
 import com.example.meowapp.model.User;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,33 +94,34 @@ public class LogupFragment extends Fragment {
             return;
         }
 
-        FirebaseApiService.apiService.getUserByEmail("\"email\"", "\"" + email + "\"").enqueue(new Callback<Map<String, User>>() {
-            @Override
-            public void onResponse(Call<Map<String, User>> call, Response<Map<String, User>> response) {
-                if (response.isSuccessful()) {
-                    Map<String, User> users = response.body();
-                    if (users != null && !users.isEmpty()) {
-                        Toast.makeText(getContext(), "Email đã được sử dụng cho tài khoản khác", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Bundle args = new Bundle();
-                        args.putString("username", username);
-                        args.putString("email", email);
-                        args.putString("password", password);
+        // Firebase API call để kiểm tra nếu email đã tồn tại
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference("users");
 
-                        transactionHandle(args);
-                    }
+        reference.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Toast.makeText(getContext(), "Email đã được sử dụng cho tài khoản khác", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Nếu email chưa tồn tại, chuyển sang màn hình tiếp theo
+                    Bundle args = new Bundle();
+                    args.putString("username", username);
+                    args.putString("email", email);
+                    args.putString("password", password);
+
+                    transactionHandle(args);
                 }
             }
 
             @Override
-            public void onFailure(Call<Map<String, User>> call, Throwable t) {
-                Log.e("LogUpFragment", "Error", t);
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("LogUpFragment", "Firebase error", error.toException());
             }
         });
     }
 
     private boolean isValidPassword(final String password) {
-        // Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character
         final String PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
         Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
         Matcher matcher = pattern.matcher(password);
@@ -136,6 +142,5 @@ public class LogupFragment extends Fragment {
         transaction.replace(R.id.fragment_container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
-
     }
 }

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/dialog_background"
+    android:padding="30dp">
+    <RelativeLayout
+        android:id="@+id/layoutCountDown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:id="@+id/layout_diamond"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true">
+            <ImageView
+                android:id="@+id/imgIcon2"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/gem" />
+            <TextView
+                android:id="@+id/tvDiamond"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#1CB0F6"
+                android:textStyle="bold"
+                android:layout_toEndOf="@+id/imgIcon2"
+                android:textSize="16dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="5dp"
+                android:text="5046" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true">
+            <ImageView
+                android:id="@+id/imgIcon1"
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/clock" />
+            <TextView
+                android:id="@+id/tvCountDown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_toEndOf="@+id/imgIcon1"
+                android:layout_centerVertical="true"
+                android:textSize="16dp"
+                android:text="00:00"/>
+        </RelativeLayout>
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/heartContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/layoutCountDown"
+        android:layout_centerHorizontal="true">
+    </LinearLayout>
+    <TextView
+        android:id="@+id/heart_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bạn có đầy đủ trái tim"
+        android:textSize="18sp"
+        android:textColor="#333"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/heartContainer"
+        android:layout_centerHorizontal="true"/>
+
+    <RelativeLayout
+        android:id="@+id/btnRefill"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_text_background"
+        android:layout_marginTop="20dp"
+        android:paddingHorizontal="25dp"
+        android:layout_below="@+id/heart_text"
+        android:paddingVertical="20dp">
+        <ImageView
+            android:id="@+id/imgIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_heart_refill" />
+        <TextView
+            android:id="@+id/tvRefill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/imgIcon"
+            android:layout_centerVertical="true"
+            android:textSize="18dp"
+            android:text="Nạp ngay"/>
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/tvDiamond1"
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/gem" />
+        <TextView
+            android:id="@+id/tvDiamond1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:textStyle="bold"
+            android:textColor="#1CB0F6"
+            android:textSize="18dp"
+            android:layout_centerVertical="true"
+            android:text="450" />
+    </RelativeLayout>
+</RelativeLayout>

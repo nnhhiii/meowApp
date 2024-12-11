@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <!-- Tiêu đề -->
+    <TextView
+        android:id="@+id/titleLuyenTap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="LUYỆN TẬP"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="30dp"
+        android:gravity="center" /> <!-- Căn giữa -->
+
+    <!-- Trắc nghiệm hình -->
+    <RelativeLayout
+        android:id="@+id/btnTracNghiemHinh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_text_background"
+        android:layout_marginBottom="10dp"
+        android:paddingHorizontal="25dp"
+        android:paddingVertical="20dp">
+
+        <TextView
+            android:id="@+id/tvNameTracNghiemHinh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trắc nghiệm hình"
+            android:textSize="18sp"
+            android:textStyle="bold"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="center_vertical" />
+
+        <ImageView
+            android:id="@+id/imgIconTracNghiemHinh"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/img"
+            android:scaleType="centerCrop"/>
+    </RelativeLayout>
+
+    <!-- Trắc nghiệm -->
+    <RelativeLayout
+        android:id="@+id/btnTracNghiem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_text_background"
+        android:layout_marginBottom="10dp"
+        android:paddingHorizontal="25dp"
+        android:paddingVertical="20dp">
+
+        <TextView
+            android:id="@+id/tvNameTracNghiem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trắc nghiệm"
+            android:textSize="18sp"
+            android:textStyle="bold"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="center_vertical" />
+
+        <ImageView
+            android:id="@+id/imgIconTracNghiem"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/tn"
+            android:scaleType="centerCrop"/>
+    </RelativeLayout>
+
+    <!-- Nghe -->
+    <RelativeLayout
+        android:id="@+id/btnNghe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_text_background"
+        android:layout_marginBottom="10dp"
+        android:paddingHorizontal="25dp"
+        android:paddingVertical="20dp">
+
+        <TextView
+            android:id="@+id/tvNameNghe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nghe"
+            android:textSize="18sp"
+            android:textStyle="bold"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="center_vertical" />
+
+        <ImageView
+            android:id="@+id/imgIconNghe"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/listen"
+            android:scaleType="centerCrop"/>
+    </RelativeLayout>
+
+    <!-- Nói -->
+    <RelativeLayout
+        android:id="@+id/btnNoi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/edit_text_background"
+        android:paddingHorizontal="25dp"
+        android:paddingVertical="20dp">
+
+        <TextView
+            android:id="@+id/tvNameNoi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="5dp"
+            android:text="Nói"
+            android:textSize="18sp"
+            android:textStyle="bold"
+        android:gravity="center_vertical" />
+
+        <ImageView
+            android:id="@+id/imgIconNoi"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/speak" />
+    </RelativeLayout>
+
+    <!-- Viết -->
+    <RelativeLayout
+        android:id="@+id/btnViet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_text_background"
+        android:layout_marginBottom="10dp"
+        android:paddingHorizontal="25dp"
+        android:paddingVertical="20dp">
+
+        <TextView
+            android:id="@+id/tvNameViet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Viết"
+            android:textSize="18sp"
+            android:textStyle="bold"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="center_vertical" />
+
+        <ImageView
+            android:id="@+id/imgIconViet"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/write"
+            android:scaleType="centerCrop"/>
+    </RelativeLayout>
+
+    <!-- Sắp xếp chữ -->
+    <RelativeLayout
+        android:id="@+id/btnSapXepChu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_text_background"
+        android:layout_marginBottom="10dp"
+        android:paddingHorizontal="25dp"
+        android:paddingVertical="20dp">
+
+        <TextView
+            android:id="@+id/tvNameSapXepChu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sắp xếp chữ"
+            android:textSize="18sp"
+            android:textStyle="bold"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="center_vertical" />
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/abc"
+            android:scaleType="centerCrop"/>
+    </RelativeLayout>
+    <FrameLayout
+        android:id="@+id/containerMultipleChoice"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>
