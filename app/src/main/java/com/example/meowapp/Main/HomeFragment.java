@@ -4,6 +4,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.view.Gravity;
@@ -18,6 +19,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 import android.graphics.drawable.ColorDrawable;
 import android.view.View;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -33,6 +37,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.meowapp.adapter.ButtonAdapter;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.example.meowapp.R;
 import com.example.meowapp.api.FirebaseApiService;
 import com.example.meowapp.model.Language;
@@ -80,7 +86,7 @@ public class HomeFragment extends Fragment {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         userId = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
         fetchUserById();
-        fetchLanguagePreference(); // Fetch language preference from API
+        fetchLanguagePreference();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -90,8 +96,57 @@ public class HomeFragment extends Fragment {
                 if (itemId == R.id.tab_lang) {
                     showLanguagePopup();
                     return true;
+                } else if (itemId == R.id.tab_gem) {
+                    showDiamondsPopup("");
+                    return true;
+                } else if (itemId == R.id.tab_streak) {
+                    // Lấy số ngày streak từ Firebase
+                    DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users");
+                    String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                    userRef.child(currentUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            Integer streakDays = snapshot.child("streaks").getValue(Integer.class);
+                            int streak = (streakDays != null) ? streakDays : 0;
+
+                            showStreakPopup("Chuỗi", streak);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Log.e("StreakPopup", "Failed to fetch user data: " + error.getMessage());
+                        }
+                    });
+
+                    return true;
+
+
                 } else if (itemId == R.id.tab_heart) {
-                    showPointPopup("Point", "298484");
+                    DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users");
+                    String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                    userRef.child(currentUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                            Integer hearts = dataSnapshot.child("hearts").getValue(Integer.class);
+
+                            if (hearts != null) {
+
+                                showHeartPopup("Trái tim", hearts);
+                            } else {
+                                // Nếu không có trái tim, hiển thị popup với giá trị mặc định là 0
+                                showHeartPopup("Trái tim", 0);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            // Xử lý lỗi nếu có
+                            Toast.makeText(getContext(), "Lỗi khi lấy dữ liệu người dùng.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     return true;
                 }
 
@@ -271,31 +326,128 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private void showPointPopup(String titleText, String messageText) {
+    private void showHeartPopup(String title, int heartCount) {
+        // Inflate layout popup
         LayoutInflater inflater = getLayoutInflater();
-        View popupView = inflater.inflate(R.layout.item_popup_point, null);
+        View popupView = inflater.inflate(R.layout.item_popup_heart, null);
 
-        TextView title = popupView.findViewById(R.id.title);
-        TextView message = popupView.findViewById(R.id.message);
+        // Cập nhật tiêu đề và số lượng trái tim
+        TextView heartText = popupView.findViewById(R.id.heart_text);
+        heartText.setText(title + ": " + heartCount); // Hiển thị tiêu đề và số trái tim
 
-        title.setText(titleText);
-        message.setText(messageText);
+        // Cập nhật các trái tim
+        LinearLayout heartContainer = popupView.findViewById(R.id.heartContainer);
+        heartContainer.removeAllViews(); // Xóa trái tim cũ nếu có
 
-        PopupWindow popupWindow = new PopupWindow(
-                popupView,
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                true
-        );
+        for (int i = 0; i < heartCount; i++) {
+            ImageView heart = new ImageView(getContext());
+            heart.setImageResource(R.drawable.heart); // Drawable trái tim
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    dpToPx(24), // Chiều rộng 24dp
+                    dpToPx(24)  // Chiều cao 24dp
+            );
+            params.setMargins(8, 0, 8, 0); // Khoảng cách giữa các trái tim
+            heart.setLayoutParams(params);
+            heartContainer.addView(heart); // Thêm trái tim vào layout
+        }
 
-        popupWindow.setBackgroundDrawable(new ColorDrawable());
-        popupWindow.showAsDropDown(bottomNavigationView);
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setFocusable(true);
+        // Tạo và hiển thị AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(popupView);
+        builder.setCancelable(true);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 
-        popupView.setOnTouchListener((v, event) -> {
-            popupWindow.dismiss();
-            return true;
+    private int dpToPx(int dp) {
+        return Math.round(dp * getResources().getDisplayMetrics().density);
+    }
+
+    // Hàm hiển thị popup Diamonds (Diamonds Popup)
+    private void showDiamondsPopup(String title) {
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users");
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        userRef.child(currentUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                Integer diamonds = dataSnapshot.child("diamonds").getValue(Integer.class);
+                int count = (diamonds != null) ? diamonds : 0;
+
+                showPopup(title, count); // Hiển thị popup
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(requireContext(), "Lỗi khi lấy dữ liệu " + title, Toast.LENGTH_SHORT).show();
+            }
         });
     }
+    private void showPopup(String title, int count) {
+        // Sử dụng context phù hợp (Fragment hoặc Activity)
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+
+        // Layout tùy chỉnh cho popup, có thể thay đổi theo nhu cầu
+        View popupView = LayoutInflater.from(requireContext()).inflate(R.layout.item_popup_gem, null);
+
+        // Cập nhật tiêu đề của popup
+        TextView titleView = popupView.findViewById(R.id.gem_count);
+        titleView.setText(title);
+
+
+        // Xây dựng và hiển thị AlertDialog
+        builder.setView(popupView);
+        builder.setCancelable(true);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void showStreakPopup(String title, int streakDays) {
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users");
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        userRef.child(currentUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // Inflate layout popup
+                View popupView = LayoutInflater.from(requireContext()).inflate(R.layout.item_popup_streak, null);
+
+                // Cập nhật tiêu đề của popup với số ngày streak
+                TextView streakTitle = popupView.findViewById(R.id.streak_title);
+                streakTitle.setText("Chuỗi" + streakDays + " ngày "); // Hiển thị số ngày streak cùng với title
+
+                // Cập nhật các vòng tròn streak
+                for (int i = 1; i <= 10; i++) { // Giả sử có tối đa 10 ngày streak
+                    String dayId = "day_t" + i; // day_t1, day_t2, ...
+                    int resId = requireContext().getResources().getIdentifier(dayId, "id", requireContext().getPackageName());
+
+                    if (resId != 0) {
+                        TextView dayView = popupView.findViewById(resId);
+                        if (dayView != null) {
+                            // Nếu ngày streak nhỏ hơn hoặc bằng streakDays, đổi màu nền
+                            if (i <= streakDays) {
+                                dayView.setBackgroundResource(R.drawable.circle_background_orange);
+                            } else {
+                                dayView.setBackgroundResource(R.drawable.circle_background);
+                            }
+                        }
+                    }
+                }
+
+                // Hiển thị popup
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+                builder.setView(popupView);
+                AlertDialog dialog = builder.create();
+                dialog.setCancelable(true);
+                dialog.show();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("StreakPopup", "Failed to fetch user data: " + error.getMessage());
+            }
+        });
+    }
+
 }

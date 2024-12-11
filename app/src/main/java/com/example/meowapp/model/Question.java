@@ -1,15 +1,30 @@
 package com.example.meowapp.model;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.List;
-
 public class Question {
     private String question_text, lesson_id, correct_answer, order_words,
-            option_a, option_b,option_c,option_d, question_type,
+            option_a, option_b, option_c, option_d, question_type,
             image_option_a, image_option_b, image_option_c, image_option_d,
-            created_at, updated_at;
+            created_at, updated_at, level_id, language_id; // Thêm level_id và language_id
+
     public Question() {
+    }
+
+    // Getter và Setter cho level_id
+    public String getLevel_id() {
+        return level_id;
+    }
+
+    public void setLevel_id(String level_id) {
+        this.level_id = level_id;
+    }
+
+    // Getter và Setter cho language_id
+    public String getLanguage_id() {
+        return language_id;
+    }
+
+    public void setLanguage_id(String language_id) {
+        this.language_id = language_id;
     }
 
     public String getOrder_words() {
@@ -131,6 +146,4 @@ public class Question {
     public void setImage_option_d(String image_option_d) {
         this.image_option_d = image_option_d;
     }
-
 }
-
