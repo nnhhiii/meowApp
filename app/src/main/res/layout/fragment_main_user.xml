@@ -205,6 +205,19 @@
             android:textColor="#FFFFFF"
             android:padding="16dp"
             android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/btnChangePassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Đổi mật khẩu"
+            android:drawableStart="@drawable/ic_password"
+            android:drawablePadding="12dp"
+            android:background="@drawable/rounded_gradient_button"
+            android:textColor="#FFFFFF"
+            android:padding="16dp"
+            android:textSize="18sp" />
+
     </LinearLayout>
 
 </RelativeLayout>

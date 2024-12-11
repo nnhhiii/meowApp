@@ -15,7 +15,6 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.example.meowapp.R;
-import com.example.meowapp.auth.LoginActivity;
 import com.example.meowapp.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,7 +30,7 @@ public class UserFragment extends Fragment {
     private LinearLayout userInfoLayout;
     private ImageButton btnSettings;
     private ImageButton btnBack;
-    private Button btnEditProfile, btnNotificationSettings, btnCourseSettings, btnLogout;
+    private Button btnEditProfile, btnNotificationSettings, btnCourseSettings, btnLogout, btnChangePassword;
     private TextView tvUserName, tvEmail, tvCoursePoints, tvUserCourses;
     private ImageView imgAvatar;
     private User user;
@@ -50,6 +49,7 @@ public class UserFragment extends Fragment {
         btnNotificationSettings = view.findViewById(R.id.btnNotificationSettings);
         btnCourseSettings = view.findViewById(R.id.btnCourseSettings);
         btnLogout = view.findViewById(R.id.btnLogout);
+        btnChangePassword = view.findViewById(R.id.btnChangePassword);
 
         // Các TextView để hiển thị thông tin người dùng
         tvUserName = view.findViewById(R.id.tvUserName);
@@ -118,6 +118,12 @@ public class UserFragment extends Fragment {
             Intent intent = new Intent(getActivity(), LoginActivity.class);
             startActivity(intent);
             getActivity().finish();
+        });
+
+        btnChangePassword.setOnClickListener(v -> {
+            // Chuyển đến màn hình Đổi mật khẩu
+            Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
+            startActivity(intent);
         });
 
         return view;
