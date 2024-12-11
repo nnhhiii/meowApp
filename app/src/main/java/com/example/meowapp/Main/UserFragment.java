@@ -2,54 +2,186 @@ package com.example.meowapp.Main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.meowapp.R;
 import com.example.meowapp.auth.LoginActivity;
-import com.google.android.material.button.MaterialButton;
+import com.example.meowapp.model.User;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 public class UserFragment extends Fragment {
-
-    private static final String TAG = UserFragment.class.getSimpleName();
-
-    private MaterialButton btnLogout;
-    private FirebaseAuth firebaseAuth;
-
-    public UserFragment() {
-    }
+    private LinearLayout navigationMenu;
+    private LinearLayout userInfoLayout;
+    private ImageButton btnSettings;
+    private ImageButton btnBack;
+    private Button btnEditProfile, btnNotificationSettings, btnCourseSettings, btnLogout;
+    private TextView tvUserName, tvUserUsername, tvCoursePoints, tvUserCourses;
+    private ImageView imgAvatar;
+    private User user;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_user, container, false);
-    }
+        // Inflating layout cho fragment
+        View view = inflater.inflate(R.layout.fragment_user, container, false);
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
+        // Ánh xạ các thành phần trong layout
+        navigationMenu = view.findViewById(R.id.navigationMenu);
+        userInfoLayout = view.findViewById(R.id.infoLayout);
+        btnSettings = view.findViewById(R.id.btnSettings);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnEditProfile = view.findViewById(R.id.btnEditProfile);
+        btnNotificationSettings = view.findViewById(R.id.btnNotificationSettings);
+        btnCourseSettings = view.findViewById(R.id.btnCourseSettings);
         btnLogout = view.findViewById(R.id.btnLogout);
 
-        firebaseAuth = FirebaseAuth.getInstance();
+        // Các TextView để hiển thị thông tin người dùng
+        tvUserName = view.findViewById(R.id.tvUserName);
+        tvUserUsername = view.findViewById(R.id.tvUserUsername);
+        tvCoursePoints = view.findViewById(R.id.tvCoursePoints);
+        tvUserCourses = view.findViewById(R.id.tvUserCourses);
+        imgAvatar = view.findViewById(R.id.imgAvatar);
 
-        btnLogout.setOnClickListener(v -> processingLogoutOnClick());
+        // Lấy dữ liệu người dùng từ Firebase (hoặc nguồn khác)
+        fetchUserDataFromFirebase();
+
+        // Ẩn navigation menu ban đầu
+        navigationMenu.setVisibility(View.GONE);
+
+        btnSettings.setOnClickListener(v -> {
+            btnSettings.setVisibility(View.GONE);
+
+            if (navigationMenu.getVisibility() == View.GONE) {
+                navigationMenu.setTranslationX(navigationMenu.getWidth());
+                navigationMenu.setVisibility(View.VISIBLE);
+                navigationMenu.animate().translationX(0).setDuration(300).start();
+                userInfoLayout.setVisibility(View.GONE);
+            } else {
+                navigationMenu.animate().translationX(navigationMenu.getWidth()).setDuration(300)
+                        .withEndAction(() -> navigationMenu.setVisibility(View.GONE)).start();
+                userInfoLayout.setVisibility(View.VISIBLE);
+            }
+        });
+
+
+        btnBack.setOnClickListener(v -> {
+            // Hiển thị lại nút Settings
+            btnSettings.setVisibility(View.VISIBLE);
+
+            // Ẩn menu điều hướng
+            navigationMenu.setVisibility(View.GONE);
+
+            // Hiển thị lại layout thông tin người dùng
+            userInfoLayout.setVisibility(View.VISIBLE);
+        });
+
+
+        // Các nút cài đặt khác
+        btnEditProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+            intent.putExtra("userId", FirebaseAuth.getInstance().getCurrentUser().getUid());
+            startActivity(intent);
+        });
+
+
+        btnNotificationSettings.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), NotificationSettingsActivity.class);
+            startActivity(intent);
+        });
+
+        btnCourseSettings.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), CourseSettingsActivity.class);
+            startActivity(intent);
+        });
+
+        btnLogout.setOnClickListener(v -> {
+            // Đăng xuất khỏi Firebase
+            FirebaseAuth.getInstance().signOut();
+
+            // Chuyển hướng đến LoginActivity
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            startActivity(intent);
+            getActivity().finish();
+        });
+
+        return view;
     }
 
-    private void processingLogoutOnClick() {
-        firebaseAuth.signOut();
-        try {
-            Intent intent = new Intent(requireActivity(), LoginActivity.class);
-            startActivity(intent);
-            requireActivity().finish();
-        } catch (IllegalStateException exception) {
-            Log.e(TAG, "Get error while trying to navigate to login", exception);
+    // Phương thức lấy dữ liệu người dùng từ Firebase
+    private void fetchUserDataFromFirebase() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (currentUser == null) {
+            // Nếu không có người dùng đăng nhập, bạn có thể thông báo và thoát fragment
+            Toast.makeText(getContext(), "Vui lòng đăng nhập!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String userId = currentUser.getUid();  // Lấy ID người dùng hiện tại
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+
+        // Lấy dữ liệu từ node "users"
+        database.child("users").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Kiểm tra dữ liệu người dùng có tồn tại không
+                if (dataSnapshot.exists()) {
+                    // Lấy dữ liệu và ánh xạ vào đối tượng User
+                    user = dataSnapshot.getValue(User.class);
+
+                    // Sau khi lấy dữ liệu xong, cập nhật giao diện
+                    updateUserInterface();
+                } else {
+                    // Xử lý nếu không có dữ liệu
+                    tvUserName.setText("User not found");
+                    tvUserUsername.setText("N/A");
+                    tvCoursePoints.setText("N/A");
+                    tvUserCourses.setText("N/A");
+                    imgAvatar.setImageResource(R.drawable.user_avatar);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Thông báo lỗi khi việc lấy dữ liệu gặp sự cố
+                Toast.makeText(getContext(), "Lỗi khi tải dữ liệu!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    // Phương thức cập nhật giao diện sau khi lấy được dữ liệu người dùng
+    private void updateUserInterface() {
+        if (user != null) {
+            // Cập nhật giao diện với thông tin người dùng
+            tvUserName.setText(user.getUsername());
+            tvUserUsername.setText(user.getEmail()); // Hiển thị email trong trường username
+            tvCoursePoints.setText("Course Points: " + user.getScore());
+            tvUserCourses.setText("Courses: " + user.getLessons());  // Hiển thị số lượng bài học
+
+            // Nếu avatar là URL, dùng Picasso hoặc Glide để tải ảnh
+            if (user.getAvatar() != null && !user.getAvatar().isEmpty()) {
+                Picasso.get().load(user.getAvatar()).into(imgAvatar);  // Dùng Picasso để tải avatar
+            } else {
+                imgAvatar.setImageResource(R.drawable.user_avatar); // Hình ảnh mặc định nếu không có avatar
+            }
         }
     }
+
 }

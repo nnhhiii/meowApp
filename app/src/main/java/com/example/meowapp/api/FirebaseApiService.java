@@ -1,10 +1,12 @@
 package com.example.meowapp.api;
 
+import com.example.meowapp.model.Course;
 import com.example.meowapp.model.Language;
 import com.example.meowapp.model.LanguagePreference;
 import com.example.meowapp.model.Lesson;
 import com.example.meowapp.model.Level;
 import com.example.meowapp.model.Mission;
+import com.example.meowapp.model.Notification;
 import com.example.meowapp.model.Question;
 import com.example.meowapp.model.Lesson;
 import com.example.meowapp.model.QuestionType;
@@ -45,11 +47,6 @@ public interface FirebaseApiService {
     Call<Map<String, User>> getAllUsers();
     @GET("users/{id}.json")
     Call<User> getUserById(@Path("id") String userId);
-    @GET("users.json")
-    Call<Map<String, User>> getUserByEmail(
-            @Query("orderBy") String orderBy,
-            @Query("equalTo") String equalTo
-    );
     @POST("users.json")
     Call<User> addUser(@Body User user);
     @PUT("users/{id}.json")
@@ -157,12 +154,22 @@ public interface FirebaseApiService {
 
     @GET("missions.json")
     Call<Map<String, Mission>> getAllMission();
-    @GET("missions/{id}.json")
-    Call<Mission> getMissionById(@Path("id") String id);
-    @POST("missions.json")
-    Call<Mission> addMission(@Body Mission mission);
-    @PUT("missions/{id}.json")
-    Call<Mission> updateMission(@Path("id") String id, @Body Mission mission);
-    @DELETE("missions/{id}.json")
-    Call<Mission> deleteMission(@Path("id") String id);
+
+    @GET("notifications.json")
+    Call<Map<String, Notification>> getNotifications();
+
+    @GET("users/{userId}/courses")
+    Call<List<String>> getUserCourses(@Path("userId") String userId);
+    @GET("courses.json")
+    Call<Map<String, Course>> getAllCourses();
+        @DELETE("missions/{id}")
+        Call<Mission> deleteMission(@Path("id") String missionId);
+
+    @GET("users/byEmail")
+    Call<Map<String, User>> getUserByEmail(@Query("key") String key, @Query("email") String email);
+
+
 }
+
+
+
