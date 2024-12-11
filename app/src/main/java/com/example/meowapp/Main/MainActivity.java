@@ -1,15 +1,17 @@
 package com.example.meowapp.Main;
 
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.content.Context;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.fragment.app.Fragment;
 
 import com.example.meowapp.R;
 import com.example.meowapp.service.TimerService;
@@ -44,15 +46,18 @@ public class MainActivity extends AppCompatActivity {
                     selectedFragment = new RankFragment();
                 } else if (itemId == R.id.tab_user) {
                     selectedFragment = new UserFragment();
-                }  else if (itemId == R.id.tab_practice) {
+                } else if (itemId == R.id.tab_practice) {
                     selectedFragment = new PracticeFragment();
                 } else if (itemId == R.id.tab_award) {
                     selectedFragment = new RewardFragment();
                 }
 
-
                 if (selectedFragment != null) {
-                    loadFragment(selectedFragment, false);
+                    try {
+                        loadFragment(selectedFragment, false);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 return true;
@@ -62,20 +67,26 @@ public class MainActivity extends AppCompatActivity {
         loadFragment(new HomeFragment(), true);
     }
 
-    private void loadFragment(Fragment fragment, boolean isAppInitialized) {
+    private void loadFragment(Fragment fragment, boolean addToBackStack) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        // If app is initialized, use add, otherwise replace
-        if (isAppInitialized) {
-            fragmentTransaction.add(R.id.frameLayout, fragment);
-        } else {
-            fragmentTransaction.replace(R.id.frameLayout, fragment);
+        fragmentTransaction.replace(R.id.frameLayout, fragment);
+
+        if (addToBackStack) {
+            fragmentTransaction.addToBackStack(null);
         }
 
-        // Optionally add to back stack
-        fragmentTransaction.addToBackStack(null);
-
         fragmentTransaction.commit();
+    }
+
+    private boolean isServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

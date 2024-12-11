@@ -26,7 +26,10 @@
         android:background="@drawable/edit_text_background"
         android:layout_marginBottom="10dp"
         android:paddingHorizontal="25dp"
-        android:paddingVertical="20dp">
+        android:paddingVertical="20dp"
+        android:clickable="true"
+        android:focusable="true">
+
 
         <TextView
             android:id="@+id/tvNameTracNghiemHinh"
@@ -58,9 +61,12 @@
         android:background="@drawable/edit_text_background"
         android:layout_marginBottom="10dp"
         android:paddingHorizontal="25dp"
-        android:paddingVertical="20dp">
+        android:paddingVertical="20dp"
+        android:clickable="true"
+        android:focusable="true">
 
-        <TextView
+
+    <TextView
             android:id="@+id/tvNameTracNghiem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -91,9 +97,12 @@
         android:background="@drawable/edit_text_background"
         android:layout_marginBottom="10dp"
         android:paddingHorizontal="25dp"
-        android:paddingVertical="20dp">
+        android:paddingVertical="20dp"
+        android:clickable="true"
+        android:focusable="true">
 
-        <TextView
+
+    <TextView
             android:id="@+id/tvNameNghe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -124,9 +133,12 @@
         android:layout_marginBottom="10dp"
         android:background="@drawable/edit_text_background"
         android:paddingHorizontal="25dp"
-        android:paddingVertical="20dp">
+        android:paddingVertical="20dp"
+        android:clickable="true"
+        android:focusable="true">
 
-        <TextView
+
+    <TextView
             android:id="@+id/tvNameNoi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -153,24 +165,27 @@
     <RelativeLayout
         android:id="@+id/btnViet"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/edit_text_background"
+        android:layout_height="99dp"
         android:layout_marginBottom="10dp"
+        android:background="@drawable/edit_text_background"
+        android:clickable="true"
+        android:focusable="true"
         android:paddingHorizontal="25dp"
         android:paddingVertical="20dp">
+
 
         <TextView
             android:id="@+id/tvNameViet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="5dp"
+            android:gravity="center_vertical"
             android:text="Viết"
             android:textSize="18sp"
-            android:textStyle="bold"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="50dp"
-        android:layout_marginBottom="5dp"
-        android:gravity="center_vertical" />
+            android:textStyle="bold" /> <!-- Căn giữa theo chiều dọc -->
 
         <ImageView
             android:id="@+id/imgIconViet"
@@ -178,8 +193,8 @@
             android:layout_height="60dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/write"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            android:src="@drawable/write" />
     </RelativeLayout>
 
     <!-- Sắp xếp chữ -->
@@ -190,9 +205,12 @@
         android:background="@drawable/edit_text_background"
         android:layout_marginBottom="10dp"
         android:paddingHorizontal="25dp"
-        android:paddingVertical="20dp">
+        android:paddingVertical="20dp"
+        android:clickable="true"
+        android:focusable="true">
 
-        <TextView
+
+    <TextView
             android:id="@+id/tvNameSapXepChu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -213,8 +231,5 @@
             android:src="@drawable/abc"
             android:scaleType="centerCrop"/>
     </RelativeLayout>
-    <FrameLayout
-        android:id="@+id/containerMultipleChoice"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+
 </LinearLayout>

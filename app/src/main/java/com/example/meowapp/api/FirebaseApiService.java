@@ -167,4 +167,12 @@ public interface FirebaseApiService {
     Call<Map<String, Notification>> getAllNotifications();
     @DELETE("notifications/{id}.json")
     Call<Notification> deleteNotification(@Path("id") String id);
+
+    @GET("questions/type-level-language")
+    Call<List<Question>> getQuestionsByTypeAndLevelLanguage(
+            @Query("question_type") String questionType,
+            @Query("level_id") String levelId,
+            @Query("language_id") String languageId );
+
+
 }
