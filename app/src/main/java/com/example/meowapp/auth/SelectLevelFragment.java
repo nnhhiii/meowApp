@@ -222,7 +222,8 @@ public class SelectLevelFragment extends Fragment {
                 Log.i(TAG, "Create user data successfully!");
                 LanguagePreference preference = new LanguagePreference(language_id, uid, level_id, 0);
                 String uniqueKey = languagePreferenceReference.push().getKey();
-                languagePreferenceReference.child(uniqueKey).setValue(preference).addOnCompleteListener(saveLanguageReferenceTask -> {
+                languagePreferenceReference.child(uniqueKey).setValue(preference)
+                        .addOnCompleteListener(saveLanguageReferenceTask -> {
                             if (saveLanguageReferenceTask.isSuccessful()) {
                                 Log.i(TAG, "Save language reference successfully!");
                                 Toast.makeText(requireContext(), "Đăng kí tài khoản thành công!", Toast.LENGTH_SHORT).show();

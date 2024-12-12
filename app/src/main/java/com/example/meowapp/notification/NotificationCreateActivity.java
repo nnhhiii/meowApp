@@ -69,7 +69,8 @@ public class NotificationCreateActivity extends AppCompatActivity {
                 // Tạo yêu cầu thông báo cho chủ đề "all_devices"
                 FirebaseNotificationRequest request = new FirebaseNotificationRequest("all_devices", title, message);
 
-                NotificationApiService.apiService.sendNotification(authHeader, request).enqueue(new Callback<FirebaseResponse>() {
+                NotificationApiService.apiService.sendNotification(authHeader, request)
+                        .enqueue(new Callback<FirebaseResponse>() {
                     @Override
                     public void onResponse(Call<FirebaseResponse> call, Response<FirebaseResponse> response) {
                         if (response.isSuccessful()) {

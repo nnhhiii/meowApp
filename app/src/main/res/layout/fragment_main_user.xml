@@ -79,30 +79,30 @@
     </LinearLayout>
 
     <!-- Courses Section -->
-    <LinearLayout
-        android:id="@+id/courseLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/infoLayout"
-        android:layout_margin="16dp"
-        android:orientation="horizontal"
-        android:gravity="center">
+<!--    <LinearLayout-->
+<!--        android:id="@+id/courseLayout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@id/infoLayout"-->
+<!--        android:layout_margin="16dp"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:gravity="center">-->
 
-        <ImageButton
-            android:id="@+id/imgCourseEnglish"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/rounded_button_background"
-            android:contentDescription="English Course" />
+<!--        <ImageButton-->
+<!--            android:id="@+id/imgCourseEnglish"-->
+<!--            android:layout_width="80dp"-->
+<!--            android:layout_height="80dp"-->
+<!--            android:layout_marginEnd="16dp"-->
+<!--            android:background="@drawable/rounded_button_background"-->
+<!--            android:contentDescription="English Course" />-->
 
-        <ImageButton
-            android:id="@+id/imgCourseKorean"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:background="@drawable/rounded_button_background"
-            android:contentDescription="Korean Course" />
-    </LinearLayout>
+<!--        <ImageButton-->
+<!--            android:id="@+id/imgCourseKorean"-->
+<!--            android:layout_width="80dp"-->
+<!--            android:layout_height="80dp"-->
+<!--            android:background="@drawable/rounded_button_background"-->
+<!--            android:contentDescription="Korean Course" />-->
+<!--    </LinearLayout>-->
 
     <!-- Settings Button -->
     <ImageButton
