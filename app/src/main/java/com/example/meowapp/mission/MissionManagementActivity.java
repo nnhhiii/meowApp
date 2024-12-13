@@ -120,4 +120,9 @@ public class MissionManagementActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged(); // Cập nhật lại danh sách hiển thị
         }
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadMissions(); // Tải lại dữ liệu khi quay lại màn hình
+    }
 }

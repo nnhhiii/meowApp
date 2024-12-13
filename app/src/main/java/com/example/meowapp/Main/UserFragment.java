@@ -15,6 +15,8 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.example.meowapp.R;
+import com.example.meowapp.auth.ChangePasswordActivity;
+import com.example.meowapp.auth.LoginActivity;
 import com.example.meowapp.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
