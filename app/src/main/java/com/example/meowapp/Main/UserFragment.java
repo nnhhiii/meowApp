@@ -123,7 +123,6 @@ public class UserFragment extends Fragment {
         });
 
         btnChangePassword.setOnClickListener(v -> {
-            // Chuyển đến màn hình Đổi mật khẩu
             Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
             startActivity(intent);
         });

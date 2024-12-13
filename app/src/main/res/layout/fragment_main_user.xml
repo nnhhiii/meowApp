@@ -79,30 +79,30 @@
     </LinearLayout>
 
     <!-- Courses Section -->
-    <LinearLayout
-        android:id="@+id/courseLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/infoLayout"
-        android:layout_margin="16dp"
-        android:orientation="horizontal"
-        android:gravity="center">
+<!--    <LinearLayout-->
+<!--        android:id="@+id/courseLayout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@id/infoLayout"-->
+<!--        android:layout_margin="16dp"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:gravity="center">-->
 
-        <ImageButton
-            android:id="@+id/imgCourseEnglish"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/rounded_button_background"
-            android:contentDescription="English Course" />
+<!--        <ImageButton-->
+<!--            android:id="@+id/imgCourseEnglish"-->
+<!--            android:layout_width="80dp"-->
+<!--            android:layout_height="80dp"-->
+<!--            android:layout_marginEnd="16dp"-->
+<!--            android:background="@drawable/rounded_button_background"-->
+<!--            android:contentDescription="English Course" />-->
 
-        <ImageButton
-            android:id="@+id/imgCourseKorean"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:background="@drawable/rounded_button_background"
-            android:contentDescription="Korean Course" />
-    </LinearLayout>
+<!--        <ImageButton-->
+<!--            android:id="@+id/imgCourseKorean"-->
+<!--            android:layout_width="80dp"-->
+<!--            android:layout_height="80dp"-->
+<!--            android:background="@drawable/rounded_button_background"-->
+<!--            android:contentDescription="Korean Course" />-->
+<!--    </LinearLayout>-->
 
     <!-- Settings Button -->
     <ImageButton
@@ -195,23 +195,24 @@
             android:layout_marginBottom="16dp" />
 
         <Button
-            android:id="@+id/btnLogout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Đăng xuất"
-            android:drawableStart="@drawable/ic_logout"
-            android:drawablePadding="12dp"
-            android:background="@drawable/rounded_gradient_button"
-            android:textColor="#FFFFFF"
-            android:padding="16dp"
-            android:textSize="18sp" />
-
-        <Button
             android:id="@+id/btnChangePassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Đổi mật khẩu"
             android:drawableStart="@drawable/ic_password"
+            android:drawablePadding="12dp"
+            android:background="@drawable/rounded_gradient_button"
+            android:textColor="#FFFFFF"
+            android:padding="16dp"
+            android:textSize="18sp"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:id="@+id/btnLogout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Đăng xuất"
+            android:drawableStart="@drawable/ic_logout"
             android:drawablePadding="12dp"
             android:background="@drawable/rounded_gradient_button"
             android:textColor="#FFFFFF"

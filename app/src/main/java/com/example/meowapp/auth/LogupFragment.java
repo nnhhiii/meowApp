@@ -66,6 +66,7 @@ public class LogupFragment extends Fragment {
         btnLogUp.setOnClickListener(v -> logUpOnClickHandle());
     }
 
+    // Phương thức kiểm tra tính hợp lệ
     private boolean isValidInputs(String username, String email, String password) {
         if (TextUtils.isEmpty(username) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
             Toast.makeText(requireContext(), "Không để trống thông tin!", Toast.LENGTH_SHORT).show();
@@ -85,6 +86,7 @@ public class LogupFragment extends Fragment {
         return true;
     }
 
+    // Xử lý sự kiện Log Up
     private void logUpOnClickHandle() {
         String username = etUsername.getText().toString().trim();
         String email = etEmail.getText().toString().trim();
@@ -98,7 +100,7 @@ public class LogupFragment extends Fragment {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference reference = database.getReference("users");
 
-        reference.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+        reference.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() { // tìm tài khoản trùng email.
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -128,6 +130,7 @@ public class LogupFragment extends Fragment {
         return matcher.matches();
     }
 
+    // Chuyển sang SelectLanguageFragment
     private void transactionHandle(Bundle args) {
         Fragment fragment = new SelectLanguageFragment();
         fragment.setArguments(args);

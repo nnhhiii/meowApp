@@ -72,7 +72,7 @@
         android:layout_centerHorizontal="true"/>
 
     <RelativeLayout
-        android:id="@+id/btnRefill"
+        android:id="@+id/layoutBtnRefill"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/edit_text_background"
