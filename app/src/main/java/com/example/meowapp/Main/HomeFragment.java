@@ -1,5 +1,6 @@
 package com.example.meowapp.Main;
 
+import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
 
 import static androidx.core.content.ContextCompat.registerReceiver;
@@ -9,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.app.AlertDialog;
 import android.text.TextUtils;
@@ -33,13 +35,17 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.meowapp.adapter.ButtonAdapter;
@@ -70,10 +76,12 @@ public class HomeFragment extends Fragment {
     private List<Language> languages;
     private Map<String, Pair<String, Integer>> languageIdMap = new HashMap<>();
     private String userId, languageId;
-    private int language_score;
+    private int language_score, score, streaks, hearts, eightyLessons, lessons, perfectLessons, diamonds;
     private FirebaseAuth firebaseAuth;
     private LinearLayout heartContainer;
-    private TextView heartText, tvCountDown;;
+    private TextView heartText, countDownText, diamondText;
+    private boolean isReceiverRegistered = false;
+    private RelativeLayout refillButton;
 
     @Nullable
     @Override
@@ -132,31 +140,7 @@ public class HomeFragment extends Fragment {
 
 
                 } else if (itemId == R.id.tab_heart) {
-                    DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users");
-                    String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-                    userRef.child(currentUserId).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                            Integer hearts = dataSnapshot.child("hearts").getValue(Integer.class);
-
-                            if (hearts != null) {
-
-                                showHeartPopup("Tim", hearts);
-                            } else {
-                                // Nếu không có trái tim, hiển thị popup với giá trị mặc định là 0
-                                showHeartPopup("Tim", 0);
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                            // Xử lý lỗi nếu có
-                            Toast.makeText(getContext(), "Lỗi khi lấy dữ liệu người dùng.", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    return true;
+                    showHeartPopup();
                 }
 
                 return false;
@@ -206,7 +190,8 @@ public class HomeFragment extends Fragment {
     }
 
     private void fetchLanguagePreference() {
-        FirebaseApiService.apiService.getAllLanguagePreferenceByUserId("\"user_id\"", "\"" + userId + "\"").enqueue(new Callback<Map<String, LanguagePreference>>() {
+        FirebaseApiService.apiService.getAllLanguagePreferenceByUserId("\"user_id\"", "\"" + userId + "\"")
+                .enqueue(new Callback<Map<String, LanguagePreference>>() {
             @Override
             public void onResponse(Call<Map<String, LanguagePreference>> call, Response<Map<String, LanguagePreference>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -244,7 +229,6 @@ public class HomeFragment extends Fragment {
                     languageIdMap.put(response.body().getLanguage_name(), new Pair<>(languageId, languagePreferenceScore));
                 }
             }
-
             @Override
             public void onFailure(Call<Language> call, Throwable t) {
                 Log.e("HomeFragment", "Error fetching language by ID: " + languageId, t);
@@ -258,13 +242,13 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     User user = response.body();
-                    int score = user.getScore();
-                    int streaks = user.getStreaks();
-                    int diamonds = user.getDiamonds();
-                    int hearts = user.getHearts();
-                    int perfectLessons = user.getPerfectLessons();
-                    int eightyLessons = user.getEightyLessons();
-                    int lessons = user.getLessons();
+                    score = user.getScore();
+                    streaks = user.getStreaks();
+                    diamonds = user.getDiamonds();
+                    hearts = user.getHearts();
+                    perfectLessons = user.getPerfectLessons();
+                    eightyLessons = user.getEightyLessons();
+                    lessons = user.getLessons();
 
                     SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyPref", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -348,19 +332,34 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private void showHeartPopup(String title, int heartCount) {
+    private void showHeartPopup() {
+        fetchUserById();
         // Inflate layout popup
         LayoutInflater inflater = getLayoutInflater();
         View popupView = inflater.inflate(R.layout.item_popup_heart, null);
 
-        // Tham chiếu các thành phần UI
+        diamondText = popupView.findViewById(R.id.tvDiamond);
         heartText = popupView.findViewById(R.id.heart_text);
         heartContainer = popupView.findViewById(R.id.heartContainer);
-        tvCountDown = popupView.findViewById(R.id.tvCountDown);
-        TextView tvDiamond = popupView.findViewById(R.id.tvDiamond);
+        countDownText = popupView.findViewById(R.id.tvCountDown);
+        refillButton = popupView.findViewById(R.id.layoutBtnRefill);
 
-        heartText.setText(title + ": " + heartCount);
-        updateHeartDisplay(heartCount);
+        diamondText.setText(String.valueOf(diamonds));
+        heartText.setText("Tim: " + hearts);
+        updateHeartDisplay(hearts);
+
+        if(hearts >= 5){
+            refillButton.setVisibility(View.GONE);
+        }
+        refillButton.setOnClickListener(v -> {
+            if (diamonds >= 450) {
+                diamonds -= 450;
+                updateUserHeart();
+                updateUserDiamonds(diamonds);
+            } else {
+                Toast.makeText(getContext(), "Bạn không đủ đá", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         // Tạo và hiển thị AlertDialog
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
@@ -379,7 +378,7 @@ public class HomeFragment extends Fragment {
         BroadcastReceiver heartAndCountdownReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                // Kiểm tra Action để phân biệt các loại broadcast
+                Log.d(TAG, "Broadcast nhận: " + intent.getAction());
                 if (intent.getAction().equals("com.example.UPDATE_HEART")) {
                     int updatedHeartCount = intent.getIntExtra("heartCount", 0);
                     updateHeartDisplay(updatedHeartCount);
@@ -391,10 +390,22 @@ public class HomeFragment extends Fragment {
         };
 
         // Đăng ký receiver
-        requireContext().registerReceiver(heartAndCountdownReceiver, filter);
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(heartAndCountdownReceiver, filter);
+        isReceiverRegistered = true;
+        Log.d(TAG, "Receiver đã đăng kí");
 
         // Hủy receiver khi dialog bị đóng
-        dialog.setOnDismissListener(dialogInterface -> requireContext().unregisterReceiver(heartAndCountdownReceiver));
+        dialog.setOnDismissListener(dialogInterface -> {
+            try {
+                if (isReceiverRegistered) {
+                    LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(heartAndCountdownReceiver);
+                    isReceiverRegistered = false; // Đánh dấu receiver đã bị hủy
+                    Log.d(TAG, "Receiver hủy đăng kí");
+                }
+            } catch (IllegalArgumentException e) {
+                Log.e(TAG, "Receiver not registered or already unregistered", e);
+            }
+        });
     }
 
     private int dpToPx(int dp) {
@@ -453,12 +464,13 @@ public class HomeFragment extends Fragment {
 
                 // Cập nhật tiêu đề của popup với số ngày streak
                 TextView streakTitle = popupView.findViewById(R.id.streak_title);
-                streakTitle.setText("Chuỗi" + streakDays + " ngày "); // Hiển thị số ngày streak cùng với title
+                streakTitle.setText("Chuỗi " + streakDays + " ngày "); // Hiển thị số ngày streak cùng với title
 
                 // Cập nhật các vòng tròn streak
                 for (int i = 1; i <= 10; i++) { // Giả sử có tối đa 10 ngày streak
                     String dayId = "day_t" + i; // day_t1, day_t2, ...
-                    int resId = requireContext().getResources().getIdentifier(dayId, "id", requireContext().getPackageName());
+                    int resId = requireContext().getResources().getIdentifier(dayId, "id",
+                            requireContext().getPackageName());
 
                     if (resId != 0) {
                         TextView dayView = popupView.findViewById(resId);
@@ -511,6 +523,46 @@ public class HomeFragment extends Fragment {
 
         // Chỉ hiển thị phút và giây
         String timeFormatted = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
-        tvCountDown.setText(timeFormatted);
+        countDownText.setText(timeFormatted);
     }
+    public void updateUserHeart(){
+        Map<String, Object> field = new HashMap<>();
+        field.put("hearts", 5);
+        FirebaseApiService.apiService.updateUserField(userId, field).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    updateHeartDisplay(5);
+                    refillButton.setVisibility(View.GONE);
+                } else {
+                    Toast.makeText(getContext(), "Không lấy được tim", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Toast.makeText(getContext(), "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    public void updateUserDiamonds(Integer diamonds){
+        Map<String, Object> field = new HashMap<>();
+        field.put("diamonds", diamonds);
+        FirebaseApiService.apiService.updateUserField(userId, field).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    diamondText.setText(String.valueOf(diamonds));
+                }else{
+                    Toast.makeText(getContext(), "Không lấy được đá", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Toast.makeText(getContext(), "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }

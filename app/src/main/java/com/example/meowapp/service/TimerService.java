@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.meowapp.api.FirebaseApiService;
 import com.example.meowapp.model.User;
@@ -77,7 +78,7 @@ public class TimerService extends Service {
                         public void run() {
                             Log.d("TimerService", "Checking hearts...");
                             getUserHeart();  // Tiếp tục kiểm tra tim
-                            handler.postDelayed(this, 10000);  // Lặp lại kiểm tra mỗi 5 giây
+                            handler.postDelayed(this, 10000);  // Lặp lại kiểm tra mỗi 10 giây
                         }
                     }, 10000); // Bắt đầu kiểm tra sau 5 giây
 
@@ -156,13 +157,15 @@ public class TimerService extends Service {
     private void sendHeartUpdateBroadcast() {
         Intent intent = new Intent("com.example.UPDATE_HEART");
         intent.putExtra("heartCount", hearts);
-        sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        Log.d("TimerService", "Đã gửi broadcast heart");
     }
 
     private void sendCountdownUpdateBroadcast(long millisUntilFinished) {
         Intent intent = new Intent("com.example.UPDATE_COUNTDOWN");
         intent.putExtra("countdown", millisUntilFinished);
-        sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        Log.d("TimerService", "Đã gửi broadcast time");
     }
 
     @Override

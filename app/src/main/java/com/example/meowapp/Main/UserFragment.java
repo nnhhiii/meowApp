@@ -17,8 +17,6 @@ import androidx.fragment.app.Fragment;
 import com.example.meowapp.R;
 import com.example.meowapp.auth.ChangePasswordActivity;
 import com.example.meowapp.auth.LoginActivity;
-import com.example.meowapp.model.Language;
-import com.example.meowapp.model.LanguagePreference;
 import com.example.meowapp.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -78,7 +76,7 @@ public class UserFragment extends Fragment {
         tvUserCourses = view.findViewById(R.id.tvUserCourses);
         imgAvatar = view.findViewById(R.id.imgAvatar);
 
-        // Lấy dữ liệu người dùng từ Firebase
+        // Lấy dữ liệu người dùng từ Firebase (hoặc nguồn khác)
         fetchUserDataFromFirebase();
         setupLanguageFlags(); // thiết lập ánh xạ cờ
 
@@ -99,6 +97,7 @@ public class UserFragment extends Fragment {
                 userInfoLayout.setVisibility(View.VISIBLE);
             }
         });
+
 
         btnBack.setOnClickListener(v -> {
             // Hiển thị lại nút Settings
@@ -129,6 +128,7 @@ public class UserFragment extends Fragment {
             Intent intent = new Intent(getActivity(), SettingsCourseActivity.class);
             startActivity(intent);
         });
+
         btnLogout.setOnClickListener(v -> {
             // Đăng xuất khỏi Firebase
             FirebaseAuth.getInstance().signOut();
@@ -144,6 +144,7 @@ public class UserFragment extends Fragment {
             Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
             startActivity(intent);
         });
+
         return view;
     }
 
@@ -159,6 +160,7 @@ public class UserFragment extends Fragment {
 
         String userId = currentUser.getUid();  // Lấy ID người dùng hiện tại
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+
         // Lấy dữ liệu từ node "users"
         database.child("users").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -167,6 +169,7 @@ public class UserFragment extends Fragment {
                 if (dataSnapshot.exists()) {
                     // Lấy dữ liệu và ánh xạ vào đối tượng User
                     user = dataSnapshot.getValue(User.class);
+
                     // Sau khi lấy dữ liệu xong, cập nhật giao diện
                     updateUserInterface();
                 } else {
@@ -193,11 +196,13 @@ public class UserFragment extends Fragment {
             tvUserName.setText(user.getUsername());
             tvEmail.setText(user.getEmail());
             tvCoursePoints.setText("Điểm: " + user.getScore());
+            tvUserCourses.setText("Ngôn ngữ học: " + user.getLessons());
 
+            // Nếu avatar là URL, dùng Picasso hoặc Glide để tải ảnh
             if (user.getAvatar() != null && !user.getAvatar().isEmpty()) {
                 Picasso.get().load(user.getAvatar()).into(imgAvatar);
             } else {
-                imgAvatar.setImageResource(R.drawable.user_avatar);
+                imgAvatar.setImageResource(R.drawable.user_avatar); // Hình ảnh mặc định nếu không có avatar
             }
 
             courseLayout.removeAllViews();
