@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp"
+    android:background="#FFE4E1">
+
+
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/rounded_button_background"
+        android:src="@drawable/ic_arrow_back"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
+        android:contentDescription="Quay lại" />
+
+
+    <TextView
+        android:id="@+id/tvHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thông tin tài khoản"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="#D81B60"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="24dp" />
+
+
+    <LinearLayout
+        android:id="@+id/profileInfoSection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/tvHeader"
+        android:background="@drawable/rounded_card_background"
+        android:padding="16dp"
+        android:layout_marginTop="16dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgAvatar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:layout_marginBottom="10dp"
+            app:shapeAppearanceOverlay="@style/circleImageStyle"
+            app:srcCompat="@drawable/ic_launcher_background" />
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Admin"
+            android:textSize="18sp"
+            android:textColor="#4A148C"
+            android:layout_gravity="center"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/tvEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="admin@example.com"
+            android:textSize="16sp"
+            android:textColor="#4A148C"
+            android:layout_gravity="center"
+            android:layout_marginBottom="8dp" />
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btnEditProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chỉnh sửa thông tin"
+        android:backgroundTint="#FDA2C1"
+        android:textColor="#FFFFFF"
+        android:elevation="4dp"
+        android:layout_below="@id/profileInfoSection"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp" />
+
+
+    <LinearLayout
+        android:id="@+id/editProfileSection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:background="@drawable/rounded_card_background"
+        android:padding="16dp"
+        android:layout_below="@id/profileInfoSection"
+        android:layout_marginTop="16dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgChangeAvatar"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:layout_marginBottom="10dp"
+            app:shapeAppearanceOverlay="@style/circleImageStyle"
+            app:srcCompat="@drawable/ic_launcher_background" />
+
+        <Button
+            android:id="@+id/btnImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:layout_marginBottom="20dp"
+            android:text="Tải ảnh"
+            android:layout_gravity="center"/>
+        <EditText
+            android:id="@+id/edtName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint=" Tên người dùng"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:padding="14dp"
+            android:background="@drawable/edit_text_background"
+            android:layout_marginBottom="24dp"
+            android:drawableLeft="@drawable/ic_username"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp"/>
+
+        <EditText
+            android:id="@+id/edtEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint=" Email"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:padding="14dp"
+            android:background="@drawable/edit_text_background"
+            android:layout_marginBottom="24dp"
+            android:drawableLeft="@drawable/ic_email"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp"/>
+
+        <EditText
+            android:id="@+id/edtPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="  Mật khẩu"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:padding="14dp"
+            android:background="@drawable/edit_text_background"
+            android:layout_marginBottom="24dp"
+            android:inputType="textPassword"
+            android:drawableLeft="@drawable/ic_password_star"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp"/>
+
+        <Button
+            android:id="@+id/btnSaveProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lưu"
+            android:backgroundTint="#FBB1CA"
+            android:textColor="#FFFFFF"
+            android:elevation="4dp" />
+    </LinearLayout>
+</RelativeLayout>

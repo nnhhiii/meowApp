@@ -89,19 +89,19 @@
         android:gravity="center">
 
         <ImageButton
-            android:id="@+id/imgCourseEnglish"
+            android:id="@+id/imgCourse1"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/rounded_button_background"
-            android:contentDescription="English Course" />
+            android:contentDescription="Course 1" />
 
         <ImageButton
-            android:id="@+id/imgCourseKorean"
+            android:id="@+id/imgCourse2"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:background="@drawable/rounded_button_background"
-            android:contentDescription="Korean Course" />
+            android:contentDescription="Course 2" />
     </LinearLayout>
 
     <!-- Settings Button -->
@@ -204,7 +204,8 @@
             android:background="@drawable/rounded_gradient_button"
             android:textColor="#FFFFFF"
             android:padding="16dp"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:layout_marginBottom="16dp"/>
 
         <Button
             android:id="@+id/btnChangePassword"
@@ -216,7 +217,8 @@
             android:background="@drawable/rounded_gradient_button"
             android:textColor="#FFFFFF"
             android:padding="16dp"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:layout_marginBottom="16dp"/>
 
     </LinearLayout>
 

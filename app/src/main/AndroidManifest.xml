@@ -132,6 +132,9 @@
         <activity
             android:name=".admin.AdminActivity"
             android:exported="false" />
+        <activity
+            android:name=".admin.AdminProfileActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

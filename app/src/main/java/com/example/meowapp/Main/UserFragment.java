@@ -15,6 +15,10 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.example.meowapp.R;
+import com.example.meowapp.auth.ChangePasswordActivity;
+import com.example.meowapp.auth.LoginActivity;
+import com.example.meowapp.model.Language;
+import com.example.meowapp.model.LanguagePreference;
 import com.example.meowapp.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,15 +29,30 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class UserFragment extends Fragment {
     private LinearLayout navigationMenu;
     private LinearLayout userInfoLayout;
+    private LinearLayout courseLayout;
     private ImageButton btnSettings;
     private ImageButton btnBack;
     private Button btnEditProfile, btnNotificationSettings, btnCourseSettings, btnLogout, btnChangePassword;
     private TextView tvUserName, tvEmail, tvCoursePoints, tvUserCourses;
     private ImageView imgAvatar;
     private User user;
+
+    private Map<String, Integer> languageFlags;
+
+    private void setupLanguageFlags() {
+        languageFlags = new HashMap<>();
+        languageFlags.put("en", R.drawable.ic_flagofusa);
+        languageFlags.put("es", R.drawable.ic_flagofspain);
+        languageFlags.put("vi", R.drawable.ic_flagvn);
+        // Thêm các ngôn ngữ khác
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -50,6 +69,7 @@ public class UserFragment extends Fragment {
         btnCourseSettings = view.findViewById(R.id.btnCourseSettings);
         btnLogout = view.findViewById(R.id.btnLogout);
         btnChangePassword = view.findViewById(R.id.btnChangePassword);
+        courseLayout = view.findViewById(R.id.courseLayout);
 
         // Các TextView để hiển thị thông tin người dùng
         tvUserName = view.findViewById(R.id.tvUserName);
@@ -58,8 +78,9 @@ public class UserFragment extends Fragment {
         tvUserCourses = view.findViewById(R.id.tvUserCourses);
         imgAvatar = view.findViewById(R.id.imgAvatar);
 
-        // Lấy dữ liệu người dùng từ Firebase (hoặc nguồn khác)
+        // Lấy dữ liệu người dùng từ Firebase
         fetchUserDataFromFirebase();
+        setupLanguageFlags(); // thiết lập ánh xạ cờ
 
         // Ẩn navigation menu ban đầu
         navigationMenu.setVisibility(View.GONE);
@@ -78,7 +99,6 @@ public class UserFragment extends Fragment {
                 userInfoLayout.setVisibility(View.VISIBLE);
             }
         });
-
 
         btnBack.setOnClickListener(v -> {
             // Hiển thị lại nút Settings
@@ -109,7 +129,6 @@ public class UserFragment extends Fragment {
             Intent intent = new Intent(getActivity(), SettingsCourseActivity.class);
             startActivity(intent);
         });
-
         btnLogout.setOnClickListener(v -> {
             // Đăng xuất khỏi Firebase
             FirebaseAuth.getInstance().signOut();
@@ -125,7 +144,6 @@ public class UserFragment extends Fragment {
             Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
             startActivity(intent);
         });
-
         return view;
     }
 
@@ -141,7 +159,6 @@ public class UserFragment extends Fragment {
 
         String userId = currentUser.getUid();  // Lấy ID người dùng hiện tại
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-
         // Lấy dữ liệu từ node "users"
         database.child("users").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -150,7 +167,6 @@ public class UserFragment extends Fragment {
                 if (dataSnapshot.exists()) {
                     // Lấy dữ liệu và ánh xạ vào đối tượng User
                     user = dataSnapshot.getValue(User.class);
-
                     // Sau khi lấy dữ liệu xong, cập nhật giao diện
                     updateUserInterface();
                 } else {
@@ -171,23 +187,40 @@ public class UserFragment extends Fragment {
         });
     }
 
-
     // Phương thức cập nhật giao diện sau khi lấy được dữ liệu người dùng
     private void updateUserInterface() {
         if (user != null) {
-            // Cập nhật giao diện với thông tin người dùng
             tvUserName.setText(user.getUsername());
-            tvEmail.setText(user.getEmail()); // Hiển thị email trong trường username
+            tvEmail.setText(user.getEmail());
             tvCoursePoints.setText("Điểm: " + user.getScore());
-            tvUserCourses.setText("Ngôn ngữ học: " + user.getLessons());  // Hiển thị số lượng bài học
 
-            // Nếu avatar là URL, dùng Picasso hoặc Glide để tải ảnh
             if (user.getAvatar() != null && !user.getAvatar().isEmpty()) {
-                Picasso.get().load(user.getAvatar()).into(imgAvatar);  // Dùng Picasso để tải avatar
+                Picasso.get().load(user.getAvatar()).into(imgAvatar);
             } else {
-                imgAvatar.setImageResource(R.drawable.user_avatar); // Hình ảnh mặc định nếu không có avatar
+                imgAvatar.setImageResource(R.drawable.user_avatar);
+            }
+
+            courseLayout.removeAllViews();
+            if (user.getLanguage_id() != null && !user.getLanguage_id().isEmpty()) {
+                String[] languageIds = user.getLanguage_id().split(",");
+                for (String languageId : languageIds) {
+                    Integer flagResource = languageFlags.get(languageId.trim());
+                    if (flagResource != null) {
+                        ImageButton flagButton = new ImageButton(getContext());
+                        flagButton.setImageResource(flagResource);
+                        flagButton.setBackground(null);
+
+                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                        );
+                        layoutParams.setMargins(16, 16, 16, 16);
+                        flagButton.setLayoutParams(layoutParams);
+
+                        courseLayout.addView(flagButton);
+                    }
+                }
             }
         }
     }
-
 }
