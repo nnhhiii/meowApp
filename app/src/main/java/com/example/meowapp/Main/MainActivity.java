@@ -30,9 +30,11 @@ public class MainActivity extends AppCompatActivity {
         frameLayout = findViewById(R.id.frameLayout);
         bottomNavigationView.setItemIconTintList(null);
 
+
         Intent serviceIntent = new Intent(this, TimerService.class);
-        serviceIntent.putExtra("duration", 5 * 60 * 1000); // 5 phút
+        serviceIntent.putExtra("duration", 5 * 60 * 1000); // 2 giây
         startService(serviceIntent);
+
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

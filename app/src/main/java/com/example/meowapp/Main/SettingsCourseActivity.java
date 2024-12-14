@@ -54,7 +54,8 @@ public class SettingsCourseActivity extends AppCompatActivity {
         loadData();
     }
     private void loadData() {
-        FirebaseApiService.apiService.getAllLanguagePreferenceByUserId("\"user_id\"", "\"" + userId + "\"").enqueue(new Callback<Map<String, LanguagePreference>>() {
+        FirebaseApiService.apiService.getAllLanguagePreferenceByUserId("\"user_id\"", "\"" + userId + "\"")
+                .enqueue(new Callback<Map<String, LanguagePreference>>() {
             @Override
             public void onResponse(Call<Map<String, LanguagePreference>> call, Response<Map<String, LanguagePreference>> response) {
                 if (response.isSuccessful() && response.body() != null) {

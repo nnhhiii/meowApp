@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="17dp"
-            android:text="Quản lý thông báo"
+            android:text="Tạo thông báo"
             android:textSize="24sp"
             android:textStyle="bold" />
     </RelativeLayout>
