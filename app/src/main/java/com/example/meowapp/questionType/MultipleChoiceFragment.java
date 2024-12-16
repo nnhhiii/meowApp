@@ -102,12 +102,6 @@ public class MultipleChoiceFragment extends Fragment {
 
         loadData();
 
-        tts = new TextToSpeech(getContext(), status -> {
-            if (status == TextToSpeech.SUCCESS) {
-                tts.setLanguage(Locale.US);
-            }
-        });
-
         playButton = view.findViewById(R.id.btnVolume);
         playButton.setOnClickListener(v -> {
             if (question != null) {

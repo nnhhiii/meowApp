@@ -45,7 +45,7 @@ public class SpeakingFragment extends Fragment {
     private TextView questionTv;
     private String correct_answer;
     private ImageButton playButton;
-    private TextToSpeech tts;
+
     private Question question;
 
     @Override
@@ -57,17 +57,12 @@ public class SpeakingFragment extends Fragment {
         playButton = view.findViewById(R.id.btnVolume);
         btnMicro = view.findViewById(R.id.btnMicro); // Nút thu âm
 
-        // Khởi tạo TextToSpeech
-        tts = new TextToSpeech(getContext(), status -> {
-            if (status == TextToSpeech.SUCCESS) {
-                tts.setLanguage(Locale.US);
-            }
-        });
-
         // Xử lý TextToSpeech phát câu hỏi
+        playButton = view.findViewById(R.id.btnVolume);
         playButton.setOnClickListener(v -> {
             if (question != null) {
-                tts.speak(question.getQuestion_text(), TextToSpeech.QUEUE_FLUSH, null, null);
+                BlankActivity activity = (BlankActivity) getActivity();
+                activity.handleTextToSpeech(question.getQuestion_text());
             } else {
                 Toast.makeText(getContext(), "Câu hỏi không hợp lệ", Toast.LENGTH_SHORT).show();
             }
@@ -203,16 +198,4 @@ public class SpeakingFragment extends Fragment {
             }
         });
     }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (speechRecognizer != null) {
-            speechRecognizer.destroy();
-        }
-        if (tts != null) {
-            tts.shutdown();
-        }
-    }
-
 }

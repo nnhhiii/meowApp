@@ -36,7 +36,6 @@ public class ListeningFragment extends Fragment {
     private String correctAnswer, orderWord;
     private ArrayList<String> selectedWords = new ArrayList<>();
     private ImageView playButton;
-    private TextToSpeech tts;
     private Question question;
 
 
@@ -51,13 +50,6 @@ public class ListeningFragment extends Fragment {
 
         wordContainer = view.findViewById(R.id.wordContainer);
         answerContainer = view.findViewById(R.id.answerContainer);
-
-        tts = new TextToSpeech(getContext(), status -> {
-            if (status == TextToSpeech.SUCCESS) {
-                // Default language, can be changed later based on detection
-                tts.setLanguage(Locale.US);
-            }
-        });
 
         playButton = view.findViewById(R.id.btnVolume);
         playButton.setOnClickListener(v -> {
