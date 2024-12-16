@@ -412,27 +412,47 @@ public class HomeFragment extends Fragment {
         return Math.round(dp * getResources().getDisplayMetrics().density);
     }
 
-    // Hàm hiển thị popup Diamonds (Diamonds Popup)
     private void showDiamondsPopup(String title) {
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users");
-        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        fetchUserById();
+        LayoutInflater inflater = getLayoutInflater();
+        View popupView = inflater.inflate(R.layout.item_popup_gem, null);
 
-        userRef.child(currentUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+        TextView diamondText = popupView.findViewById(R.id.gem_count);
+        diamondText.setText(String.valueOf(diamonds));
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setView(popupView);
+        builder.setCancelable(true);
+
+        AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.show();
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("com.example.UPDATE_DIAMONDS");
+
+        BroadcastReceiver diamondReceiver = new BroadcastReceiver() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                Integer diamonds = dataSnapshot.child("diamonds").getValue(Integer.class);
-                int count = (diamonds != null) ? diamonds : 0;
-
-                showPopup(title, count); // Hiển thị popup
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals("com.example.UPDATE_DIAMONDS")) {
+                    int updatedDiamondCount = intent.getIntExtra("diamondCount", 0);
+                    diamondText.setText(String.valueOf(updatedDiamondCount));
+                }
             }
+        };
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(requireContext(), "Lỗi khi lấy dữ liệu " + title, Toast.LENGTH_SHORT).show();
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(diamondReceiver, filter);
+
+        dialog.setOnDismissListener(dialogInterface -> {
+            try {
+                LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(diamondReceiver);
+            } catch (IllegalArgumentException e) {
+                Log.e(TAG, "Receiver not registered or already unregistered", e);
             }
         });
     }
+
     private void showPopup(String title, int count) {
         // Sử dụng context phù hợp (Fragment hoặc Activity)
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());

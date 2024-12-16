@@ -133,6 +133,11 @@ public interface FirebaseApiService {
             @Query("orderBy") String orderBy,
             @Query("equalTo") String lessonId
     );
+    @GET("questions.json")
+    Call<Map<String, Question>> getQuestionsByType(
+            @Query("orderBy") String orderBy,
+            @Query("equalTo") String questionType
+    );
     @GET("questions/{id}.json")
     Call<Question> getQuestionById(@Path("id") String id);
     @POST("questions.json")
@@ -168,11 +173,7 @@ public interface FirebaseApiService {
     @DELETE("notifications/{id}.json")
     Call<Notification> deleteNotification(@Path("id") String id);
 
-    @GET("questions/type-level-language")
-    Call<List<Question>> getQuestionsByTypeAndLevelLanguage(
-            @Query("question_type") String questionType,
-            @Query("level_id") String levelId,
-            @Query("language_id") String languageId );
+
 
 
 }
