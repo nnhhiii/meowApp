@@ -2,24 +2,24 @@ package com.example.meowapp.Main;
 
 import android.os.Bundle;
 import androidx.cardview.widget.CardView;
+import android.speech.tts.TextToSpeech;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import android.speech.tts.TextToSpeech;
-import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.meowapp.R;
-import com.squareup.picasso.Picasso;
+import com.example.meowapp.questionType.BlankActivity;
 
 import java.util.Locale;
 
-public class MultipleChoiceImageFragmentNew extends Fragment {
+
+public class MultipleChoiceTextFragmentNew extends Fragment {
 
     private TextView optionA, optionB, optionC, optionD, questionTv;
     private String correctAnswer, selectedAnswer;
@@ -27,32 +27,29 @@ public class MultipleChoiceImageFragmentNew extends Fragment {
     private Button submitButton;
     private TextToSpeech tts;
     private ImageButton playButton;
-    private ImageView imageA, imageB, imageC, imageD;
 
-    public static MultipleChoiceImageFragmentNew newInstance(String[] imageOptions, String[] answerOptions, String correctAnswer, String questionText) {
-        MultipleChoiceImageFragmentNew fragment = new MultipleChoiceImageFragmentNew();
+    public static MultipleChoiceTextFragmentNew newInstance(String questionText, String optionA, String optionB, String optionC, String optionD, String correctAnswer) {
+        MultipleChoiceTextFragmentNew fragment = new MultipleChoiceTextFragmentNew();
         Bundle args = new Bundle();
-        args.putStringArray("imageOptions", imageOptions);
-        args.putStringArray("answerOptions", answerOptions);
-        args.putString("correctAnswer", correctAnswer);
         args.putString("question_text", questionText);
+        args.putString("option_a", optionA);
+        args.putString("option_b", optionB);
+        args.putString("option_c", optionC);
+        args.putString("option_d", optionD);
+        args.putString("correct_answer", correctAnswer);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_question_type_multiple_choice_image, container, false);
+        View view = inflater.inflate(R.layout.fragment_question_type_multiple_choice, container, false);
 
         questionTv = view.findViewById(R.id.question);
         cardViewA = view.findViewById(R.id.cardView1);
         cardViewB = view.findViewById(R.id.cardView2);
         cardViewC = view.findViewById(R.id.cardView3);
         cardViewD = view.findViewById(R.id.cardView4);
-        imageA = view.findViewById(R.id.image_1);
-        imageB = view.findViewById(R.id.image_2);
-        imageC = view.findViewById(R.id.image_3);
-        imageD = view.findViewById(R.id.image_4);
         optionA = view.findViewById(R.id.option_a);
         optionB = view.findViewById(R.id.option_b);
         optionC = view.findViewById(R.id.option_c);
@@ -61,13 +58,12 @@ public class MultipleChoiceImageFragmentNew extends Fragment {
 
         Bundle args = getArguments();
         if (args != null) {
-            String[] imageOptions = args.getStringArray("imageOptions");
-            String[] answerOptions = args.getStringArray("answerOptions");
-            correctAnswer = args.getString("correctAnswer");
-            String questionText = args.getString("question_text");
-
-            questionTv.setText(questionText);
-            displayQuestion(imageOptions, answerOptions);
+            questionTv.setText(args.getString("question_text"));
+            optionA.setText(args.getString("option_a"));
+            optionB.setText(args.getString("option_b"));
+            optionC.setText(args.getString("option_c"));
+            optionD.setText(args.getString("option_d"));
+            correctAnswer = args.getString("correct_answer");
         }
 
         cardViewA.setOnClickListener(v -> {
@@ -96,7 +92,6 @@ public class MultipleChoiceImageFragmentNew extends Fragment {
                 Toast.makeText(getContext(), "Vui lòng chọn đáp án!", Toast.LENGTH_SHORT).show();
             }
         });
-
         tts = new TextToSpeech(getContext(), status -> {
             if (status == TextToSpeech.SUCCESS) {
                 tts.setLanguage(Locale.US);
@@ -107,35 +102,22 @@ public class MultipleChoiceImageFragmentNew extends Fragment {
             handleTextToSpeech(questionTv.getText().toString());
         });
 
+
         return view;
     }
 
-    private void displayQuestion(String[] imageOptions, String[] answerOptions) {
-        String questionText = getArguments().getString("question_text");
-        questionTv.setText(questionText);
-        Picasso.get().load(imageOptions[0]).into(imageA);
-        Picasso.get().load(imageOptions[1]).into(imageB);
-        Picasso.get().load(imageOptions[2]).into(imageC);
-        Picasso.get().load(imageOptions[3]).into(imageD);
-
-        optionA.setText(answerOptions[0]);
-        optionB.setText(answerOptions[1]);
-        optionC.setText(answerOptions[2]);
-        optionD.setText(answerOptions[3]);
-    }
-
     private void setBackground(CardView selectedCardView) {
-        selectedCardView.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.pink3));
+        selectedCardView.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.pink3));
 
         for (CardView cardView : new CardView[]{cardViewA, cardViewB, cardViewC, cardViewD}) {
             if (cardView != selectedCardView) {
-                cardView.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), android.R.color.white));
+                cardView.setCardBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.white));
             }
         }
     }
 
-    private boolean checkAnswer(String selected) {
-        return selected.equals(correctAnswer);
+    private boolean checkAnswer(String selectedAnswer) {
+        return selectedAnswer.equals(correctAnswer);
     }
     private void handleTextToSpeech(String text) {
         if (tts != null && !tts.isSpeaking()) {
@@ -145,4 +127,3 @@ public class MultipleChoiceImageFragmentNew extends Fragment {
         }
     }
 }
-

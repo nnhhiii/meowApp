@@ -29,44 +29,35 @@ public class PracticeFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_main_practice, container, false);
         apiService = FirebaseApiService.apiService;
 
-        RelativeLayout btnTracNghiemHinh = rootView.findViewById(R.id.btnTracNghiemHinh);
-
-        btnTracNghiemHinh.setOnClickListener(v -> loadMultipleChoiceImageFragment());
+        setupButtonClickListeners(rootView);
 
         return rootView;
     }
 
-    private void loadMultipleChoiceImageFragment() {
+    private void setupButtonClickListeners(View rootView) {
+        RelativeLayout btnTracNghiemHinh = rootView.findViewById(R.id.btnTracNghiemHinh);
+        RelativeLayout btnTracNghiem = rootView.findViewById(R.id.btnTracNghiem);
+        RelativeLayout btnNghe = rootView.findViewById(R.id.btnNghe);
+        RelativeLayout btnNoi = rootView.findViewById(R.id.btnNoi);
+        RelativeLayout btnViet = rootView.findViewById(R.id.btnViet);
+        RelativeLayout btnSapXepChu = rootView.findViewById(R.id.btnSapXepChu);
+
+        btnTracNghiemHinh.setOnClickListener(v -> loadFragmentWithQuestions("3", this::loadMultipleChoiceImageFragment));
+        btnTracNghiem.setOnClickListener(v -> loadFragmentWithQuestions("2", this::loadMultipleChoiceTextFragment));
+        btnNghe.setOnClickListener(v -> loadFragmentWithQuestions("4", this::loadListeningFragment));
+        btnNoi.setOnClickListener(v -> loadFragmentWithQuestions("5", this::loadSpeakingFragment));
+        btnViet.setOnClickListener(v -> loadFragmentWithQuestions("1", this::loadWritingFragment));
+//        btnSapXepChu.setOnClickListener(v -> loadFragmentWithQuestions("l1", this::loadArrangeWordsFragment));
+    }
+
+    private void loadFragmentWithQuestions(String questionType, QuestionCallback callback) {
         if (apiService != null) {
-            // Gọi API lấy danh sách câu hỏi theo type
-            apiService.getQuestionsByType("\"question_type\"", "\"3\"").enqueue(new Callback<Map<String, Question>>() {
+            apiService.getQuestionsByType("\"question_type\"", "\"" + questionType + "\"").enqueue(new Callback<Map<String, Question>>() {
                 @Override
                 public void onResponse(Call<Map<String, Question>> call, Response<Map<String, Question>> response) {
                     if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
-                        // Duyệt qua Map để lấy câu hỏi đầu tiên
-                        Map<String, Question> questionMap = response.body();
-                        Question question = questionMap.values().iterator().next(); // Lấy phần tử đầu tiên từ Map
-
-                        // Chuẩn bị dữ liệu cho fragment
-                        String[] imageOptions = {
-                                question.getImage_option_a(),
-                                question.getImage_option_b(),
-                                question.getImage_option_c(),
-                                question.getImage_option_d()
-                        };
-                        String[] answerOptions = {
-                                question.getOption_a(),
-                                question.getOption_b(),
-                                question.getOption_c(),
-                                question.getOption_d()
-                        };
-                        String correctAnswer = question.getCorrect_answer();
-                        String questionText = question.getQuestion_text();
-
-                        Log.d("PracticeFragment", "Loaded Question: " + question.getQuestion_text());
-
-                        // Chuyển sang fragment MultipleChoiceImageFragmentNew
-                        replaceFragment(MultipleChoiceImageFragmentNew.newInstance(imageOptions, answerOptions, correctAnswer, questionText));
+                        Question question = response.body().values().iterator().next();
+                        callback.onQuestionLoaded(question);
                     } else {
                         Log.e("PracticeFragment", "No questions available or API failed.");
                     }
@@ -83,10 +74,63 @@ public class PracticeFragment extends Fragment {
     }
 
     private void replaceFragment(Fragment fragment) {
-        // Thực hiện transaction để thay đổi fragment
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frameLayout, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    private void loadMultipleChoiceImageFragment(Question question) {
+        String[] imageOptions = {question.getImage_option_a(), question.getImage_option_b(), question.getImage_option_c(), question.getImage_option_d()};
+        String[] answerOptions = {question.getOption_a(), question.getOption_b(), question.getOption_c(), question.getOption_d()};
+        String correctAnswer = question.getCorrect_answer();
+        String questionText = question.getQuestion_text();
+
+        replaceFragment(MultipleChoiceImageFragmentNew.newInstance(imageOptions, answerOptions, correctAnswer, questionText));
+    }
+
+    private void loadMultipleChoiceTextFragment(Question question) {
+        String questionText = question.getQuestion_text();
+        String optionA = question.getOption_a();
+        String optionB = question.getOption_b();
+        String optionC = question.getOption_c();
+        String optionD = question.getOption_d();
+        String correctAnswer = question.getCorrect_answer();
+
+        replaceFragment(MultipleChoiceTextFragmentNew.newInstance(questionText, optionA, optionB, optionC, optionD, correctAnswer));
+    }
+
+    private void loadListeningFragment(Question question) {
+        String correctAnswer = question.getCorrect_answer();
+        String questionText = question.getQuestion_text();
+        String orderWords = question.getOrder_words();
+
+        replaceFragment(ListeningFragmentNew.newInstance(correctAnswer, questionText, orderWords));
+    }
+
+    private void loadSpeakingFragment(Question question) {
+        replaceFragment(SpeakingFragmentNew.newInstance(question));
+    }
+
+    private void loadWritingFragment(Question question) {
+        String questionText = question.getQuestion_text();
+        String correctAnswer = question.getCorrect_answer();
+
+        replaceFragment(WritingFragmentNew.newInstance(questionText, correctAnswer));
+    }
+
+//    private void loadArrangeWordsFragment(Question question) {
+//        String correctAnswer = question.getCorrect_answer();
+//        String questionText = question.getQuestion_text();
+//        String orderWords = question.getOrder_words();
+//
+//        String[] words = orderWords.split(", ");
+//        replaceFragment(ArrangeWordsFragment.newInstance(correctAnswer, questionText, words));
+//    }
+
+
+    @FunctionalInterface
+    private interface QuestionCallback {
+        void onQuestionLoaded(Question question);
     }
 }
