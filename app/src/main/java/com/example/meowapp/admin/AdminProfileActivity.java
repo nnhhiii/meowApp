@@ -1,39 +1,34 @@
 package com.example.meowapp.admin;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.meowapp.R;
+import com.example.meowapp.language.LanguageManagementActivity;
+import com.example.meowapp.lesson.LessonManagementActivity;
+import com.example.meowapp.mission.MissionManagementActivity;
+import com.example.meowapp.user.UserManagementActivity;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 
 public class AdminProfileActivity extends AppCompatActivity {
 
-    private ImageView imgAvatar, btnBack;
-    private EditText edtName, edtEmail, edtPassword;
-    private Button btnEditProfile, btnSaveProfile, btnChangeAvatar;
-    private LinearLayout profileSection, editProfileSection;
+    private TextView tvAdminName, tvAdminEmail, tvTotalUsers, tvTotalCourses, tvTotalLessons;
+    private Button btnEditProfile, btnLogout;
+    private ImageButton btnBack;
+    private LinearLayout usersSection, coursesSection, lessonsSection;
 
     private DatabaseReference dbRef;
-    private StorageReference storageRef;
-    private Uri imgUri;
     private String adminId = "admin"; // ID cố định hoặc lấy từ logic của bạn
 
     @Override
@@ -42,121 +37,108 @@ public class AdminProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_admin_profile);
 
         // Ánh xạ view
-        imgAvatar = findViewById(R.id.imgAvatar);
-        btnBack = findViewById(R.id.btnBack);
-        edtName = findViewById(R.id.edtName);
-        edtEmail = findViewById(R.id.edtEmail);
-        edtPassword = findViewById(R.id.edtPassword);
-        btnSaveProfile = findViewById(R.id.btnSaveProfile);
-        btnChangeAvatar = findViewById(R.id.btnImage);
+        tvAdminName = findViewById(R.id.tvName);
+        tvAdminEmail = findViewById(R.id.tvEmail);
+        tvTotalUsers = findViewById(R.id.tvTotalUsers);
+        tvTotalCourses = findViewById(R.id.tvTotalCourses);
+        tvTotalLessons = findViewById(R.id.tvTotalLessons);
         btnEditProfile = findViewById(R.id.btnEditProfile);
-        profileSection = findViewById(R.id.profileInfoSection);
-        editProfileSection = findViewById(R.id.editProfileSection);
+        btnBack = findViewById(R.id.btnBack);
+        btnLogout = findViewById(R.id.btnLogout);
 
-        // Firebase references
-        dbRef = FirebaseDatabase.getInstance().getReference("users").child(adminId);
-        storageRef = FirebaseStorage.getInstance().getReference("avatars");
+        // Firebase reference
+        dbRef = FirebaseDatabase.getInstance().getReference();
 
-        // Nút quay lại
         btnBack.setOnClickListener(v -> finish());
 
-        // Nút chỉnh sửa thông tin
-        btnEditProfile.setOnClickListener(v -> {
-            editProfileSection.setVisibility(View.VISIBLE);
-            profileSection.setVisibility(View.GONE);
-        });
+        getAdminInfo();
+        // Lấy dữ liệu từ Firebase
+        getAdminStats();
 
-        // Nút chọn ảnh đại diện
-        btnChangeAvatar.setOnClickListener(v -> selectImage());
+        usersSection.setOnClickListener(v -> navigateToUserManagement());
 
-        // Nút lưu thông tin
-        btnSaveProfile.setOnClickListener(v -> saveProfile());
+        coursesSection.setOnClickListener(v -> navigateToLanguageManagement());
 
-        // Tải dữ liệu người dùng
-        loadUserData();
+        lessonsSection.setOnClickListener(v -> navigateToLessonManagement());
+
+        btnEditProfile.setOnClickListener(v -> editProfile());
+        btnLogout.setOnClickListener(v -> logout());
     }
 
-    private void loadUserData() {
-        dbRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful() && task.getResult() != null) {
+    private void getAdminInfo() {
+        dbRef.child("admins").child(adminId).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
                 DataSnapshot snapshot = task.getResult();
-                String name = snapshot.child("name").getValue(String.class);
-                String email = snapshot.child("email").getValue(String.class);
-                String avatar = snapshot.child("avatar").getValue(String.class);
+                if (snapshot.exists()) {
+                    String adminName = snapshot.child("name").getValue(String.class);
+                    String adminEmail = snapshot.child("email").getValue(String.class);
 
-                edtName.setText(name);
-                edtEmail.setText(email);
-
-                if (!TextUtils.isEmpty(avatar)) {
-                    Picasso.get().load(avatar).into(imgAvatar);
+                    // Cập nhật thông tin lên giao diện
+                    tvAdminName.setText(adminName != null ? adminName : "Chưa có tên");
+                    tvAdminEmail.setText(adminEmail != null ? adminEmail : "Chưa có email");
+                } else {
+                    Toast.makeText(AdminProfileActivity.this, "Không tìm thấy thông tin admin", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(this, "Không tải được dữ liệu!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AdminProfileActivity.this, "Lỗi khi lấy thông tin admin", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void getAdminStats() {
+        // Lấy thông tin về số lượng người dùng, khóa học và bài học từ Firebase
+        dbRef.child("users").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DataSnapshot snapshot = task.getResult();
+                int userCount = (int) snapshot.getChildrenCount();
+                tvTotalUsers.setText(String.valueOf(userCount));
+            } else {
+                Toast.makeText(AdminProfileActivity.this, "Lỗi khi lấy dữ liệu người dùng", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        dbRef.child("languages").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DataSnapshot snapshot = task.getResult();
+                int courseCount = (int) snapshot.getChildrenCount(); // Số lượng khóa học
+                tvTotalCourses.setText(String.valueOf(courseCount));  // Hiển thị tổng số khóa học
+            } else {
+                Toast.makeText(AdminProfileActivity.this, "Lỗi khi lấy dữ liệu khóa học", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        dbRef.child("lessons").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DataSnapshot snapshot = task.getResult();
+                int lessonCount = (int) snapshot.getChildrenCount();
+                tvTotalLessons.setText(String.valueOf(lessonCount));
+            } else {
+                Toast.makeText(AdminProfileActivity.this, "Lỗi khi lấy dữ liệu bài học", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void selectImage() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        imagePicker.launch(intent);
+    private void navigateToUserManagement() {
+        Intent intent = new Intent(AdminProfileActivity.this, UserManagementActivity.class);
+        startActivity(intent);
     }
 
-    private final ActivityResultLauncher<Intent> imagePicker = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getData() != null && result.getResultCode() == RESULT_OK) {
-                    imgUri = result.getData().getData();
-                    imgAvatar.setImageURI(imgUri);
-                } else {
-                    Toast.makeText(this, "Không chọn được ảnh!", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-    private void saveProfile() {
-        String name = edtName.getText().toString().trim();
-        String email = edtEmail.getText().toString().trim();
-        String password = edtPassword.getText().toString().trim();
-
-        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(email)) {
-            Toast.makeText(this, "Vui lòng nhập đủ thông tin!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (imgUri != null) {
-            uploadImageToFirebase(name, email, password);
-        } else {
-            updateUserData(name, email, password, null);
-        }
+    private void navigateToLanguageManagement() {
+        Intent intent = new Intent(AdminProfileActivity.this, LanguageManagementActivity.class);
+        startActivity(intent);
     }
 
-    private void uploadImageToFirebase(String name, String email, String password) {
-        String fileName = "avatar_" + System.currentTimeMillis() + ".jpg";
-        StorageReference avatarRef = storageRef.child(fileName);
-
-        avatarRef.putFile(imgUri).addOnSuccessListener(taskSnapshot ->
-                avatarRef.getDownloadUrl().addOnSuccessListener(uri ->
-                        updateUserData(name, email, password, uri.toString())
-                )
-        ).addOnFailureListener(e ->
-                Toast.makeText(this, "Tải ảnh lên thất bại!", Toast.LENGTH_SHORT).show()
-        );
+    private void navigateToLessonManagement() {
+        Intent intent = new Intent(AdminProfileActivity.this, LessonManagementActivity.class);
+        startActivity(intent);
     }
 
-    private void updateUserData(String name, String email, String password, String avatarUrl) {
-        dbRef.child("name").setValue(name);
-        dbRef.child("email").setValue(email);
-
-        if (!TextUtils.isEmpty(password)) {
-            dbRef.child("password").setValue(password);
-        }
-
-        if (avatarUrl != null) {
-            dbRef.child("avatar").setValue(avatarUrl);
-        }
-
-        Toast.makeText(this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
+    private void editProfile() {
+        Intent intent = new Intent(AdminProfileActivity.this, AdminEditProfileActivity.class);
+        startActivity(intent);
+    }
+    private void logout() {
+        Toast.makeText(AdminProfileActivity.this, "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
         finish();
     }
 }
