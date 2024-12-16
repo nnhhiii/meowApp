@@ -73,7 +73,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
     }
 
     public void sendPasswordResetEmail(String email) {
-        FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+        FirebaseAuth.getInstance().sendPasswordResetEmail(email) // Yêu cầu Firebase gửi email đặt lại mật khẩu.
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         finish();

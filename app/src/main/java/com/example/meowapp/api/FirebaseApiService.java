@@ -164,8 +164,14 @@ public interface FirebaseApiService {
 
     @GET("missions.json")
     Call<Map<String, Mission>> getAllMission();
-    @DELETE("missions/{id}")
-    Call<Mission> deleteMission(@Path("id") String missionId);
+    @GET("missions/{id}.json")
+    Call<Mission> getMissionById(@Path("id") String id);
+    @POST("missions.json")
+    Call<Mission> addMission(@Body Mission mission);
+    @PUT("missions/{id}.json")
+    Call<Mission> updateMission(@Path("id") String id, @Body Mission mission);
+    @DELETE("missions/{id}.json")
+    Call<Mission> deleteMission(@Path("id") String id);
 
 
     @GET("notifications.json")
