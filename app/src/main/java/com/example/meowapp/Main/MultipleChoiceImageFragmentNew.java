@@ -1,5 +1,6 @@
 package com.example.meowapp.Main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
@@ -33,13 +34,13 @@ public class MultipleChoiceImageFragmentNew extends Fragment {
     private ImageView imageA, imageB, imageC, imageD;
     private List<Question> questions;
     private int currentQuestionIndex = 0;
+    private int correctAnswersCount = 0;
 
-    // Sửa lại hàm mớiInstance để truyền danh sách câu hỏi từ gói practice
     public static MultipleChoiceImageFragmentNew newInstance(List<Question> questions) {
         MultipleChoiceImageFragmentNew fragment = new MultipleChoiceImageFragmentNew();
         Bundle args = new Bundle();
         Log.d("MultipleChoiceImageFragmentNew", "Received list of questions: " + questions.size());
-        args.putSerializable("questions", (ArrayList<Question>) questions); // Gửi danh sách câu hỏi qua Bundle
+        args.putSerializable("questions", (ArrayList<Question>) questions);
         fragment.setArguments(args);
         return fragment;
     }
@@ -63,11 +64,10 @@ public class MultipleChoiceImageFragmentNew extends Fragment {
         optionD = view.findViewById(R.id.option_d);
         submitButton = view.findViewById(R.id.btnSubmit);
 
-        // Nhận dữ liệu từ Bundle
         Bundle args = getArguments();
         if (args != null) {
             questions = (List<Question>) args.getSerializable("questions");
-            displayQuestion(); // Hiển thị câu hỏi từ danh sách
+            displayQuestion();
         }
 
         cardViewA.setOnClickListener(v -> {
@@ -112,7 +112,7 @@ public class MultipleChoiceImageFragmentNew extends Fragment {
 
     private void displayQuestion() {
         if (questions != null && currentQuestionIndex < questions.size()) {
-            Question question = questions.get(currentQuestionIndex); // Lấy câu hỏi hiện tại
+            Question question = questions.get(currentQuestionIndex);
             String[] imageOptions = {question.getImage_option_a(), question.getImage_option_b(), question.getImage_option_c(), question.getImage_option_d()};
             String[] answerOptions = {question.getOption_a(), question.getOption_b(), question.getOption_c(), question.getOption_d()};
             correctAnswer = question.getCorrect_answer();
@@ -128,9 +128,11 @@ public class MultipleChoiceImageFragmentNew extends Fragment {
             optionC.setText(answerOptions[2]);
             optionD.setText(answerOptions[3]);
         } else {
-            // Khi không còn câu hỏi nào nữa, xử lý kết thúc bài thi
-            Toast.makeText(getContext(), "Đã hoàn thành bài tập!", Toast.LENGTH_SHORT).show();
-            // Optionally, navigate to a summary or another fragment
+            if (getParentFragmentManager() != null) {
+                getParentFragmentManager().beginTransaction()
+                        .replace(R.id.frameLayout, new PracticeFinishFragment())
+                        .commit();
+            }
         }
     }
 
@@ -145,7 +147,11 @@ public class MultipleChoiceImageFragmentNew extends Fragment {
     }
 
     private boolean checkAnswer(String selected) {
-        return selected.equals(correctAnswer);
+        if (selected.equals(correctAnswer)) {
+            correctAnswersCount++;
+            return true;
+        }
+        return false;
     }
 
     private void handleTextToSpeech(String text) {
@@ -161,16 +167,19 @@ public class MultipleChoiceImageFragmentNew extends Fragment {
         if (currentQuestionIndex < questions.size()) {
             displayQuestion();
         } else {
-            // Khi không còn câu hỏi nào nữa, xử lý kết thúc bài tập và quay về PracticeFragment
-            Toast.makeText(getContext(), "Đã hoàn thành bài tập!", Toast.LENGTH_SHORT).show();
-            if (getParentFragmentManager() != null) {
-                getParentFragmentManager().beginTransaction()
-                        .replace(R.id.frameLayout, new PracticeFragment())
-                        .commit();
-            }
+            // Tạo một instance của PracticeFinishFragment
+            PracticeFinishFragment practiceFinishFragment = new PracticeFinishFragment();
+
+            // Gửi dữ liệu qua Bundle
+            Bundle bundle = new Bundle();
+            bundle.putInt("correctAnswersCount", correctAnswersCount);
+            bundle.putInt("totalQuestions", questions.size());
+            practiceFinishFragment.setArguments(bundle);
+
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.frameLayout, practiceFinishFragment)
+                    .addToBackStack(null)
+                    .commit();
         }
-    }
+    }}
 
-
-
-}
