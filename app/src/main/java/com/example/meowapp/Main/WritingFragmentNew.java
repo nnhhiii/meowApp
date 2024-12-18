@@ -28,6 +28,7 @@ public class WritingFragmentNew extends Fragment {
     private Question question;
     private List<Question> questions;
     private int currentQuestionIndex = 0;
+    private int correctAnswersCount = 0;
 
     private static final String ARG_QUESTION_TEXT = "questionText";
     private static final String ARG_CORRECT_ANSWER = "correctAnswer";
@@ -87,8 +88,12 @@ public class WritingFragmentNew extends Fragment {
         return view;
     }
 
-    private boolean checkAnswer(String answer) {
-        return answer.equals(correct_answer);
+    private boolean checkAnswer(String selected) {
+        if (selected.equals(correct_answer)) {
+            correctAnswersCount++;
+            return true;
+        }
+        return false;
     }
 
     private void handleTextToSpeech(String text) {
@@ -98,6 +103,7 @@ public class WritingFragmentNew extends Fragment {
             Toast.makeText(getContext(), "Không hỗ trợ Text To Speech hiện tại", Toast.LENGTH_SHORT).show();
         }
     }
+
 
     private void displayQuestion() {
         if (questions != null && currentQuestionIndex < questions.size()) {
@@ -117,15 +123,21 @@ public class WritingFragmentNew extends Fragment {
 
     public void displayNextQuestion() {
         currentQuestionIndex++;
-        if (currentQuestionIndex < questions.size()) {
+        if (currentQuestionIndex < questions.size())
+        {
             displayQuestion();
-        } else {
-            Toast.makeText(getContext(), "Đã hoàn thành bài tập!", Toast.LENGTH_SHORT).show();
-            if (getParentFragmentManager() != null) {
-                getParentFragmentManager().beginTransaction()
-                        .replace(R.id.frameLayout, new PracticeFragment())
-                        .commit();
-            }
+        }  else {
+            PracticeFinishFragment practiceFinishFragment = new PracticeFinishFragment();
+
+            Bundle bundle = new Bundle();
+            bundle.putInt("correctAnswersCount", correctAnswersCount);
+            bundle.putInt("totalQuestions", questions.size());
+            practiceFinishFragment.setArguments(bundle);
+
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.frameLayout, practiceFinishFragment)
+                    .addToBackStack(null)
+                    .commit();
         }
     }
 }

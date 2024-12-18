@@ -30,6 +30,7 @@ public class MultipleChoiceTextFragmentNew extends Fragment {
     private ImageButton playButton;
     private List<Question> questions;
     private int currentQuestionIndex = 0;
+    private int correctAnswersCount = 0;
 
     public static MultipleChoiceTextFragmentNew newInstance(List<Question> questions) {
         MultipleChoiceTextFragmentNew fragment = new MultipleChoiceTextFragmentNew();
@@ -130,9 +131,12 @@ public class MultipleChoiceTextFragmentNew extends Fragment {
     }
 
     private boolean checkAnswer(String selected) {
-        return selected.equals(correctAnswer);
+        if (selected.equals(correctAnswer)) {
+            correctAnswersCount++;
+            return true;
+        }
+        return false;
     }
-
     private void handleTextToSpeech(String text) {
         if (tts != null && !tts.isSpeaking()) {
             tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
@@ -145,13 +149,19 @@ public class MultipleChoiceTextFragmentNew extends Fragment {
         currentQuestionIndex++;
         if (currentQuestionIndex < questions.size()) {
             displayQuestion();
-        } else {
-            Toast.makeText(getContext(), "Đã hoàn thành bài tập!", Toast.LENGTH_SHORT).show();
-            if (getParentFragmentManager() != null) {
-                getParentFragmentManager().beginTransaction()
-                        .replace(R.id.frameLayout, new PracticeFragment())
-                        .commit();
-            }
+        }  else {
+            PracticeFinishFragment practiceFinishFragment = new PracticeFinishFragment();
+
+            // Gửi dữ liệu qua Bundle
+            Bundle bundle = new Bundle();
+            bundle.putInt("correctAnswersCount", correctAnswersCount);
+            bundle.putInt("totalQuestions", questions.size());
+            practiceFinishFragment.setArguments(bundle);
+
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.frameLayout, practiceFinishFragment)
+                    .addToBackStack(null)
+                    .commit();
         }
     }
 }

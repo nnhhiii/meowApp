@@ -30,6 +30,7 @@ public class ListeningFragmentNew extends Fragment {
     private ImageView playButton;
     private TextToSpeech tts;
     private int currentQuestionIndex = 0;
+    private int correctAnswersCount = 0;
 
     public static ListeningFragmentNew newInstance(List<Question> questions) {
         ListeningFragmentNew fragment = new ListeningFragmentNew();
@@ -89,8 +90,14 @@ public class ListeningFragmentNew extends Fragment {
     }
 
     private boolean checkAnswer(String userAnswer) {
-        return userAnswer.equals(questions.get(currentQuestionIndex).getOrder_words());
+        if (userAnswer.equals(questions.get(currentQuestionIndex).getOrder_words())) {
+            correctAnswersCount++;
+            return true;
+        } else {
+            return false;
+        }
     }
+
 
     private void loadWords(String[] words) {
         for (String word : words) {
@@ -165,14 +172,29 @@ public class ListeningFragmentNew extends Fragment {
     public void displayNextQuestion() {
         currentQuestionIndex++;
         if (currentQuestionIndex < questions.size()) {
-            loadWords(questions.get(currentQuestionIndex).getOrder_words().split(", "));
-        } else {
-            Toast.makeText(getContext(), "Đã hoàn thành bài tập!", Toast.LENGTH_SHORT).show();
-            if (getParentFragmentManager() != null) {
-                getParentFragmentManager().beginTransaction()
-                        .replace(R.id.frameLayout, new PracticeFragment())
-                        .commit();
-            }
+            displayQuestion();
+        }  else {
+            PracticeFinishFragment practiceFinishFragment = new PracticeFinishFragment();
+
+            Bundle bundle = new Bundle();
+            bundle.putInt("correctAnswersCount", correctAnswersCount);
+            bundle.putInt("totalQuestions", questions.size());
+            practiceFinishFragment.setArguments(bundle);
+
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.frameLayout, practiceFinishFragment)
+                    .addToBackStack(null)
+                    .commit();
         }
+
     }
+
+    private void displayQuestion() {
+        selectedWords.clear();
+        answerContainer.removeAllViews();
+
+        String[] words = questions.get(currentQuestionIndex).getOrder_words().split(", ");
+        loadWords(words);
+    }
+
 }

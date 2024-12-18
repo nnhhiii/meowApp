@@ -167,7 +167,6 @@ public class MultipleChoiceImageFragmentNew extends Fragment {
         if (currentQuestionIndex < questions.size()) {
             displayQuestion();
         } else {
-            // Tạo một instance của PracticeFinishFragment
             PracticeFinishFragment practiceFinishFragment = new PracticeFinishFragment();
 
             // Gửi dữ liệu qua Bundle

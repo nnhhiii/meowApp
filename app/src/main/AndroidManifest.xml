@@ -138,8 +138,6 @@
         <activity
             android:name=".admin.AdminProfileActivity"
             android:exported="false" />
-
     </application>
-
 
 </manifest>
