@@ -2,15 +2,18 @@ package com.example.meowapp.Main;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import com.example.meowapp.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -58,8 +61,20 @@ public class ResultBottomSheetNew extends BottomSheetDialogFragment {
         explainTv.setText(explanation);
 
         button.setOnClickListener(v -> {
-            dismiss();  // Đóng BottomSheet
-              });
+            dismiss(); // Đóng BottomSheetDialogFragment
+            if (getParentFragmentManager() != null) {
+                Fragment fragment = getParentFragmentManager().findFragmentById(R.id.frameLayout);
+                if (fragment instanceof MultipleChoiceImageFragmentNew) {
+                    MultipleChoiceImageFragmentNew multipleChoiceFragment = (MultipleChoiceImageFragmentNew) fragment;
+                    multipleChoiceFragment.displayNextQuestion(); // Gửi sự kiện đến fragment cha xử lý câu hỏi tiếp theo
+                } else {
+                    Toast.makeText(getContext(), "Fragment không hợp lệ!", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(getContext(), "FragmentManager không hợp lệ!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         return view;
     }

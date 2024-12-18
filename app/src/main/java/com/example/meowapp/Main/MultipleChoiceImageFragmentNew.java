@@ -5,7 +5,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import android.speech.tts.TextToSpeech;
-import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +15,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.meowapp.R;
+import com.example.meowapp.model.Question;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class MultipleChoiceImageFragmentNew extends Fragment {
@@ -28,14 +31,15 @@ public class MultipleChoiceImageFragmentNew extends Fragment {
     private TextToSpeech tts;
     private ImageButton playButton;
     private ImageView imageA, imageB, imageC, imageD;
+    private List<Question> questions;
+    private int currentQuestionIndex = 0;
 
-    public static MultipleChoiceImageFragmentNew newInstance(String[] imageOptions, String[] answerOptions, String correctAnswer, String questionText) {
+    // Sửa lại hàm mớiInstance để truyền danh sách câu hỏi từ gói practice
+    public static MultipleChoiceImageFragmentNew newInstance(List<Question> questions) {
         MultipleChoiceImageFragmentNew fragment = new MultipleChoiceImageFragmentNew();
         Bundle args = new Bundle();
-        args.putStringArray("imageOptions", imageOptions);
-        args.putStringArray("answerOptions", answerOptions);
-        args.putString("correctAnswer", correctAnswer);
-        args.putString("question_text", questionText);
+        Log.d("MultipleChoiceImageFragmentNew", "Received list of questions: " + questions.size());
+        args.putSerializable("questions", (ArrayList<Question>) questions); // Gửi danh sách câu hỏi qua Bundle
         fragment.setArguments(args);
         return fragment;
     }
@@ -59,15 +63,11 @@ public class MultipleChoiceImageFragmentNew extends Fragment {
         optionD = view.findViewById(R.id.option_d);
         submitButton = view.findViewById(R.id.btnSubmit);
 
+        // Nhận dữ liệu từ Bundle
         Bundle args = getArguments();
         if (args != null) {
-            String[] imageOptions = args.getStringArray("imageOptions");
-            String[] answerOptions = args.getStringArray("answerOptions");
-            correctAnswer = args.getString("correctAnswer");
-            String questionText = args.getString("question_text");
-
-            questionTv.setText(questionText);
-            displayQuestion(imageOptions, answerOptions);
+            questions = (List<Question>) args.getSerializable("questions");
+            displayQuestion(); // Hiển thị câu hỏi từ danh sách
         }
 
         cardViewA.setOnClickListener(v -> {
@@ -110,18 +110,28 @@ public class MultipleChoiceImageFragmentNew extends Fragment {
         return view;
     }
 
-    private void displayQuestion(String[] imageOptions, String[] answerOptions) {
-        String questionText = getArguments().getString("question_text");
-        questionTv.setText(questionText);
-        Picasso.get().load(imageOptions[0]).into(imageA);
-        Picasso.get().load(imageOptions[1]).into(imageB);
-        Picasso.get().load(imageOptions[2]).into(imageC);
-        Picasso.get().load(imageOptions[3]).into(imageD);
+    private void displayQuestion() {
+        if (questions != null && currentQuestionIndex < questions.size()) {
+            Question question = questions.get(currentQuestionIndex); // Lấy câu hỏi hiện tại
+            String[] imageOptions = {question.getImage_option_a(), question.getImage_option_b(), question.getImage_option_c(), question.getImage_option_d()};
+            String[] answerOptions = {question.getOption_a(), question.getOption_b(), question.getOption_c(), question.getOption_d()};
+            correctAnswer = question.getCorrect_answer();
+            questionTv.setText(question.getQuestion_text());
 
-        optionA.setText(answerOptions[0]);
-        optionB.setText(answerOptions[1]);
-        optionC.setText(answerOptions[2]);
-        optionD.setText(answerOptions[3]);
+            Picasso.get().load(imageOptions[0]).into(imageA);
+            Picasso.get().load(imageOptions[1]).into(imageB);
+            Picasso.get().load(imageOptions[2]).into(imageC);
+            Picasso.get().load(imageOptions[3]).into(imageD);
+
+            optionA.setText(answerOptions[0]);
+            optionB.setText(answerOptions[1]);
+            optionC.setText(answerOptions[2]);
+            optionD.setText(answerOptions[3]);
+        } else {
+            // Khi không còn câu hỏi nào nữa, xử lý kết thúc bài thi
+            Toast.makeText(getContext(), "Đã hoàn thành bài tập!", Toast.LENGTH_SHORT).show();
+            // Optionally, navigate to a summary or another fragment
+        }
     }
 
     private void setBackground(CardView selectedCardView) {
@@ -137,6 +147,7 @@ public class MultipleChoiceImageFragmentNew extends Fragment {
     private boolean checkAnswer(String selected) {
         return selected.equals(correctAnswer);
     }
+
     private void handleTextToSpeech(String text) {
         if (tts != null && !tts.isSpeaking()) {
             tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
@@ -144,5 +155,22 @@ public class MultipleChoiceImageFragmentNew extends Fragment {
             Toast.makeText(getContext(), "Không hỗ trợ Text To Speech hiện tại", Toast.LENGTH_SHORT).show();
         }
     }
-}
 
+    public void displayNextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.size()) {
+            displayQuestion();
+        } else {
+            // Khi không còn câu hỏi nào nữa, xử lý kết thúc bài tập và quay về PracticeFragment
+            Toast.makeText(getContext(), "Đã hoàn thành bài tập!", Toast.LENGTH_SHORT).show();
+            if (getParentFragmentManager() != null) {
+                getParentFragmentManager().beginTransaction()
+                        .replace(R.id.frameLayout, new PracticeFragment())
+                        .commit();
+            }
+        }
+    }
+
+
+
+}

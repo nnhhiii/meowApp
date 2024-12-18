@@ -14,7 +14,9 @@ import com.example.meowapp.R;
 import com.example.meowapp.api.FirebaseApiService;
 import com.example.meowapp.model.Question;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -50,14 +52,15 @@ public class PracticeFragment extends Fragment {
 //        btnSapXepChu.setOnClickListener(v -> loadFragmentWithQuestions("l1", this::loadArrangeWordsFragment));
     }
 
-    private void loadFragmentWithQuestions(String questionType, QuestionCallback callback) {
+    private void loadFragmentWithQuestions(String questionType, QuestionsCallback callback) {
         if (apiService != null) {
             apiService.getQuestionsByType("\"question_type\"", "\"" + questionType + "\"").enqueue(new Callback<Map<String, Question>>() {
                 @Override
                 public void onResponse(Call<Map<String, Question>> call, Response<Map<String, Question>> response) {
                     if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
-                        Question question = response.body().values().iterator().next();
-                        callback.onQuestionLoaded(question);
+                        Map<String, Question> questionsMap = response.body();
+                        List<Question> questionsList = questionsMap.values().stream().collect(Collectors.toList());
+                        callback.onQuestionsLoaded(questionsList);
                     } else {
                         Log.e("PracticeFragment", "No questions available or API failed.");
                     }
@@ -80,16 +83,26 @@ public class PracticeFragment extends Fragment {
         transaction.commit();
     }
 
-    private void loadMultipleChoiceImageFragment(Question question) {
-        String[] imageOptions = {question.getImage_option_a(), question.getImage_option_b(), question.getImage_option_c(), question.getImage_option_d()};
-        String[] answerOptions = {question.getOption_a(), question.getOption_b(), question.getOption_c(), question.getOption_d()};
-        String correctAnswer = question.getCorrect_answer();
-        String questionText = question.getQuestion_text();
+    private void loadMultipleChoiceImageFragment(List<Question> questions) {
+        if (questions != null && !questions.isEmpty()) {
+            Question question = questions.get(0);
 
-        replaceFragment(MultipleChoiceImageFragmentNew.newInstance(imageOptions, answerOptions, correctAnswer, questionText));
+            String[] imageOptions = {question.getImage_option_a(), question.getImage_option_b(),
+                    question.getImage_option_c(), question.getImage_option_d()};
+
+            String[] answerOptions = {question.getOption_a(), question.getOption_b(),
+                    question.getOption_c(), question.getOption_d()};
+
+            String correctAnswer = question.getCorrect_answer();
+            String questionText = question.getQuestion_text();
+
+            replaceFragment(MultipleChoiceImageFragmentNew.newInstance(questions));
+        }
     }
 
-    private void loadMultipleChoiceTextFragment(Question question) {
+
+    private void loadMultipleChoiceTextFragment(List<Question> questions) {
+        Question question = questions.get(0);
         String questionText = question.getQuestion_text();
         String optionA = question.getOption_a();
         String optionB = question.getOption_b();
@@ -100,7 +113,8 @@ public class PracticeFragment extends Fragment {
         replaceFragment(MultipleChoiceTextFragmentNew.newInstance(questionText, optionA, optionB, optionC, optionD, correctAnswer));
     }
 
-    private void loadListeningFragment(Question question) {
+    private void loadListeningFragment(List<Question> questions) {
+        Question question = questions.get(0);
         String correctAnswer = question.getCorrect_answer();
         String questionText = question.getQuestion_text();
         String orderWords = question.getOrder_words();
@@ -108,29 +122,28 @@ public class PracticeFragment extends Fragment {
         replaceFragment(ListeningFragmentNew.newInstance(correctAnswer, questionText, orderWords));
     }
 
-    private void loadSpeakingFragment(Question question) {
-        replaceFragment(SpeakingFragmentNew.newInstance(question));
+    private void loadSpeakingFragment(List<Question> questions) {
+        replaceFragment(SpeakingFragmentNew.newInstance(questions.get(0)));
     }
 
-    private void loadWritingFragment(Question question) {
+    private void loadWritingFragment(List<Question> questions) {
+        Question question = questions.get(0);
         String questionText = question.getQuestion_text();
         String correctAnswer = question.getCorrect_answer();
 
         replaceFragment(WritingFragmentNew.newInstance(questionText, correctAnswer));
     }
 
-//    private void loadArrangeWordsFragment(Question question) {
-//        String correctAnswer = question.getCorrect_answer();
+//    private void loadArrangeWordsFragment(List<Question> questions) {
+//        Question question = questions.get(0);
 //        String questionText = question.getQuestion_text();
-//        String orderWords = question.getOrder_words();
+//        String[] wordsToArrange = question.getOrder_words().split(" ");
 //
-//        String[] words = orderWords.split(", ");
-//        replaceFragment(ArrangeWordsFragment.newInstance(correctAnswer, questionText, words));
+//        replaceFragment(Arrange.newInstance(questionText, wordsToArrange));
 //    }
 
-
     @FunctionalInterface
-    private interface QuestionCallback {
-        void onQuestionLoaded(Question question);
+    private interface QuestionsCallback {
+        void onQuestionsLoaded(List<Question> questions);
     }
 }
