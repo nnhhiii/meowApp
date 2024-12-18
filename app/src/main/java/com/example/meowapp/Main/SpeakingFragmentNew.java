@@ -21,6 +21,7 @@ import com.example.meowapp.R;
 import com.example.meowapp.model.Question;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class SpeakingFragmentNew extends Fragment {
@@ -35,17 +36,17 @@ public class SpeakingFragmentNew extends Fragment {
     private TextView questionTv;
     private String correctAnswer;
     private TextToSpeech tts;
-    private Question question;
+    private ArrayList<Question> questions;
+    private int currentQuestionIndex = 0;
 
     // Phương thức newInstance để nhận dữ liệu từ Fragment khác
-    public static SpeakingFragmentNew newInstance(Question question) {
+    public static SpeakingFragmentNew newInstance(List<Question> questions) {
         SpeakingFragmentNew fragment = new SpeakingFragmentNew();
         Bundle args = new Bundle();
-        args.putSerializable("question", question);
+        args.putSerializable("questions", (ArrayList<Question>) questions);
         fragment.setArguments(args);
         return fragment;
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_question_type_speaking, container, false);
@@ -56,10 +57,10 @@ public class SpeakingFragmentNew extends Fragment {
 
         // Nhận dữ liệu câu hỏi từ Bundle
         if (getArguments() != null) {
-            question = (Question) getArguments().getSerializable("question");
-            if (question != null) {
-                questionTv.setText(question.getQuestion_text());
-                correctAnswer = question.getCorrect_answer();
+            questions = (ArrayList<Question>) getArguments().getSerializable("questions");
+            if (questions != null && !questions.isEmpty()) {
+                currentQuestionIndex = 0;
+                loadQuestion(questions.get(currentQuestionIndex));
             }
         }
 
@@ -121,6 +122,11 @@ public class SpeakingFragmentNew extends Fragment {
         return view;
     }
 
+    private void loadQuestion(Question question) {
+        questionTv.setText(question.getQuestion_text());
+        correctAnswer = question.getCorrect_answer();
+    }
+
     private void startListening() {
         isListening = true;
         speechRecognizer.startListening(recognizerIntent);
@@ -162,6 +168,20 @@ public class SpeakingFragmentNew extends Fragment {
                 break;
         }
         Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+    }
+
+    public void displayNextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.size()) {
+            loadQuestion(questions.get(currentQuestionIndex));
+        } else {
+            Toast.makeText(getContext(), "Đã hoàn thành bài tập!", Toast.LENGTH_SHORT).show();
+            if (getParentFragmentManager() != null) {
+                getParentFragmentManager().beginTransaction()
+                        .replace(R.id.frameLayout, new PracticeFragment())
+                        .commit();
+            }
+        }
     }
 
     @Override

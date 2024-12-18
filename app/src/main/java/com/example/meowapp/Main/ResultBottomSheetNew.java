@@ -44,15 +44,12 @@ public class ResultBottomSheetNew extends BottomSheetDialogFragment {
             explainTv.setTextColor(ContextCompat.getColor(getContext(), R.color.green1));
             button.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.green2));
 
-
             playSound(R.raw.correct_sound);
         } else {
             resultTv.setText("Sai rồi!");
             resultTv.setTextColor(ContextCompat.getColor(getContext(), R.color.red1));
             explainTv.setTextColor(ContextCompat.getColor(getContext(), R.color.red1));
             button.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.red2));
-
-
 
             playSound(R.raw.error_sound);
         }
@@ -62,19 +59,26 @@ public class ResultBottomSheetNew extends BottomSheetDialogFragment {
 
         button.setOnClickListener(v -> {
             dismiss(); // Đóng BottomSheetDialogFragment
-            if (getParentFragmentManager() != null) {
-                Fragment fragment = getParentFragmentManager().findFragmentById(R.id.frameLayout);
-                if (fragment instanceof MultipleChoiceImageFragmentNew) {
-                    MultipleChoiceImageFragmentNew multipleChoiceFragment = (MultipleChoiceImageFragmentNew) fragment;
-                    multipleChoiceFragment.displayNextQuestion(); // Gửi sự kiện đến fragment cha xử lý câu hỏi tiếp theo
-                } else {
-                    Toast.makeText(getContext(), "Fragment không hợp lệ!", Toast.LENGTH_SHORT).show();
-                }
+            Fragment fragment = getParentFragmentManager().findFragmentById(R.id.frameLayout);
+            if (fragment instanceof MultipleChoiceImageFragmentNew) {
+                MultipleChoiceImageFragmentNew multipleChoiceFragment = (MultipleChoiceImageFragmentNew) fragment;
+                multipleChoiceFragment.displayNextQuestion(); // Gửi sự kiện đến fragment cha xử lý câu hỏi tiếp theo
+            } else if (fragment instanceof MultipleChoiceTextFragmentNew) {
+                MultipleChoiceTextFragmentNew multipleChoiceTextFragment = (MultipleChoiceTextFragmentNew) fragment;
+                multipleChoiceTextFragment.displayNextQuestion();
+            } else if (fragment instanceof ListeningFragmentNew) {
+                ListeningFragmentNew listeningFragment = (ListeningFragmentNew) fragment;
+                listeningFragment.displayNextQuestion();
+            } else if (fragment instanceof SpeakingFragmentNew) {
+                SpeakingFragmentNew speakingFragment = (SpeakingFragmentNew) fragment;
+                speakingFragment.displayNextQuestion();
+            } else if (fragment instanceof WritingFragmentNew) {
+                WritingFragmentNew writingFragment = (WritingFragmentNew) fragment;
+                writingFragment.displayNextQuestion();
             } else {
-                Toast.makeText(getContext(), "FragmentManager không hợp lệ!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Fragment không hợp lệ!", Toast.LENGTH_SHORT).show();
             }
         });
-
 
         return view;
     }

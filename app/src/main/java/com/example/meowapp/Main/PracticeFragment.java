@@ -90,12 +90,14 @@ public class PracticeFragment extends Fragment {
             String[] imageOptions = {question.getImage_option_a(), question.getImage_option_b(),
                     question.getImage_option_c(), question.getImage_option_d()};
 
+            // Creating a list of answer options
             String[] answerOptions = {question.getOption_a(), question.getOption_b(),
                     question.getOption_c(), question.getOption_d()};
 
             String correctAnswer = question.getCorrect_answer();
             String questionText = question.getQuestion_text();
 
+            // Passing the list of questions to the fragment
             replaceFragment(MultipleChoiceImageFragmentNew.newInstance(questions));
         }
     }
@@ -110,7 +112,7 @@ public class PracticeFragment extends Fragment {
         String optionD = question.getOption_d();
         String correctAnswer = question.getCorrect_answer();
 
-        replaceFragment(MultipleChoiceTextFragmentNew.newInstance(questionText, optionA, optionB, optionC, optionD, correctAnswer));
+        replaceFragment(MultipleChoiceTextFragmentNew.newInstance(questions));
     }
 
     private void loadListeningFragment(List<Question> questions) {
@@ -119,11 +121,11 @@ public class PracticeFragment extends Fragment {
         String questionText = question.getQuestion_text();
         String orderWords = question.getOrder_words();
 
-        replaceFragment(ListeningFragmentNew.newInstance(correctAnswer, questionText, orderWords));
+        replaceFragment(ListeningFragmentNew.newInstance(questions));
     }
 
     private void loadSpeakingFragment(List<Question> questions) {
-        replaceFragment(SpeakingFragmentNew.newInstance(questions.get(0)));
+        replaceFragment(SpeakingFragmentNew.newInstance(questions));
     }
 
     private void loadWritingFragment(List<Question> questions) {
@@ -131,7 +133,7 @@ public class PracticeFragment extends Fragment {
         String questionText = question.getQuestion_text();
         String correctAnswer = question.getCorrect_answer();
 
-        replaceFragment(WritingFragmentNew.newInstance(questionText, correctAnswer));
+        replaceFragment(WritingFragmentNew.newInstance(questions));
     }
 
 //    private void loadArrangeWordsFragment(List<Question> questions) {

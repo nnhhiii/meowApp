@@ -15,27 +15,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.meowapp.R;
+import com.example.meowapp.model.Question;
 import com.google.android.flexbox.FlexboxLayout;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class ListeningFragmentNew extends Fragment {
-    private String correctAnswer;
-    private String questionText;
-    private String orderWords;
+    private ArrayList<Question> questions;
     private Button submitButton;
     private FlexboxLayout wordContainer, answerContainer;
     private ArrayList<String> selectedWords = new ArrayList<>();
     private ImageView playButton;
     private TextToSpeech tts;
+    private int currentQuestionIndex = 0;
 
-    public static ListeningFragmentNew newInstance(String correctAnswer, String questionText, String orderWords) {
+    public static ListeningFragmentNew newInstance(List<Question> questions) {
         ListeningFragmentNew fragment = new ListeningFragmentNew();
         Bundle args = new Bundle();
-        args.putString("correctAnswer", correctAnswer);
-        args.putString("questionText", questionText);
-        args.putString("orderWords", orderWords);
+        args.putSerializable("questions", (ArrayList<Question>) questions);
         fragment.setArguments(args);
         return fragment;
     }
@@ -44,9 +43,7 @@ public class ListeningFragmentNew extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            correctAnswer = getArguments().getString("correctAnswer");
-            questionText = getArguments().getString("questionText");
-            orderWords = getArguments().getString("orderWords");
+            questions = (ArrayList<Question>) getArguments().getSerializable("questions");
         }
     }
 
@@ -65,7 +62,11 @@ public class ListeningFragmentNew extends Fragment {
 
         playButton = view.findViewById(R.id.btnVolume);
         playButton.setOnClickListener(v -> {
-            handleTextToSpeech(questionText);
+            if (!questions.isEmpty()) {
+                handleTextToSpeech(questions.get(currentQuestionIndex).getQuestion_text());
+            } else {
+                Toast.makeText(getContext(), "Không có câu hỏi nào", Toast.LENGTH_SHORT).show();
+            }
         });
 
         submitButton = view.findViewById(R.id.btnSubmit);
@@ -76,19 +77,19 @@ public class ListeningFragmentNew extends Fragment {
             }
             String userAnswer = selectedSentence.toString().trim();
             boolean isCorrect = checkAnswer(userAnswer);
-            ResultBottomSheetNew bottomSheet = new ResultBottomSheetNew(isCorrect, correctAnswer);
+            ResultBottomSheetNew bottomSheet = new ResultBottomSheetNew(isCorrect, questions.get(currentQuestionIndex).getCorrect_answer());
             bottomSheet.show(getParentFragmentManager(), "ResultBottomSheet");
         });
 
-        if (orderWords != null && !orderWords.isEmpty()) {
-            loadWords(orderWords.split(", "));
+        if (!questions.isEmpty()) {
+            loadWords(questions.get(currentQuestionIndex).getOrder_words().split(", "));
         }
 
         return view;
     }
 
     private boolean checkAnswer(String userAnswer) {
-        return userAnswer.equals(correctAnswer);
+        return userAnswer.equals(questions.get(currentQuestionIndex).getOrder_words());
     }
 
     private void loadWords(String[] words) {
@@ -158,6 +159,20 @@ public class ListeningFragmentNew extends Fragment {
             tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
         } else {
             Toast.makeText(getContext(), "Không hỗ trợ Text To Speech hiện tại", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void displayNextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.size()) {
+            loadWords(questions.get(currentQuestionIndex).getOrder_words().split(", "));
+        } else {
+            Toast.makeText(getContext(), "Đã hoàn thành bài tập!", Toast.LENGTH_SHORT).show();
+            if (getParentFragmentManager() != null) {
+                getParentFragmentManager().beginTransaction()
+                        .replace(R.id.frameLayout, new PracticeFragment())
+                        .commit();
+            }
         }
     }
 }

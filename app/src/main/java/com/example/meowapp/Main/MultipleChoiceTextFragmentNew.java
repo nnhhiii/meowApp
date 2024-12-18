@@ -2,9 +2,9 @@ package com.example.meowapp.Main;
 
 import android.os.Bundle;
 import androidx.cardview.widget.CardView;
-import android.speech.tts.TextToSpeech;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +14,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.meowapp.R;
-import com.example.meowapp.questionType.BlankActivity;
+import com.example.meowapp.model.Question;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
-
 
 public class MultipleChoiceTextFragmentNew extends Fragment {
 
@@ -27,16 +28,13 @@ public class MultipleChoiceTextFragmentNew extends Fragment {
     private Button submitButton;
     private TextToSpeech tts;
     private ImageButton playButton;
+    private List<Question> questions;
+    private int currentQuestionIndex = 0;
 
-    public static MultipleChoiceTextFragmentNew newInstance(String questionText, String optionA, String optionB, String optionC, String optionD, String correctAnswer) {
+    public static MultipleChoiceTextFragmentNew newInstance(List<Question> questions) {
         MultipleChoiceTextFragmentNew fragment = new MultipleChoiceTextFragmentNew();
         Bundle args = new Bundle();
-        args.putString("question_text", questionText);
-        args.putString("option_a", optionA);
-        args.putString("option_b", optionB);
-        args.putString("option_c", optionC);
-        args.putString("option_d", optionD);
-        args.putString("correct_answer", correctAnswer);
+        args.putSerializable("questions", (ArrayList<Question>) questions);
         fragment.setArguments(args);
         return fragment;
     }
@@ -58,12 +56,8 @@ public class MultipleChoiceTextFragmentNew extends Fragment {
 
         Bundle args = getArguments();
         if (args != null) {
-            questionTv.setText(args.getString("question_text"));
-            optionA.setText(args.getString("option_a"));
-            optionB.setText(args.getString("option_b"));
-            optionC.setText(args.getString("option_c"));
-            optionD.setText(args.getString("option_d"));
-            correctAnswer = args.getString("correct_answer");
+            questions = (List<Question>) args.getSerializable("questions");
+            displayQuestion();
         }
 
         cardViewA.setOnClickListener(v -> {
@@ -92,6 +86,7 @@ public class MultipleChoiceTextFragmentNew extends Fragment {
                 Toast.makeText(getContext(), "Vui lòng chọn đáp án!", Toast.LENGTH_SHORT).show();
             }
         });
+
         tts = new TextToSpeech(getContext(), status -> {
             if (status == TextToSpeech.SUCCESS) {
                 tts.setLanguage(Locale.US);
@@ -102,8 +97,26 @@ public class MultipleChoiceTextFragmentNew extends Fragment {
             handleTextToSpeech(questionTv.getText().toString());
         });
 
-
         return view;
+    }
+
+    private void displayQuestion() {
+        if (questions != null && currentQuestionIndex < questions.size()) {
+            Question question = questions.get(currentQuestionIndex);
+            correctAnswer = question.getCorrect_answer();
+            questionTv.setText(question.getQuestion_text());
+            optionA.setText(question.getOption_a());
+            optionB.setText(question.getOption_b());
+            optionC.setText(question.getOption_c());
+            optionD.setText(question.getOption_d());
+        } else {
+            Toast.makeText(getContext(), "Đã hoàn thành bài tập!", Toast.LENGTH_SHORT).show();
+            if (getParentFragmentManager() != null) {
+                getParentFragmentManager().beginTransaction()
+                        .replace(R.id.frameLayout, new PracticeFragment())
+                        .commit();
+            }
+        }
     }
 
     private void setBackground(CardView selectedCardView) {
@@ -116,14 +129,29 @@ public class MultipleChoiceTextFragmentNew extends Fragment {
         }
     }
 
-    private boolean checkAnswer(String selectedAnswer) {
-        return selectedAnswer.equals(correctAnswer);
+    private boolean checkAnswer(String selected) {
+        return selected.equals(correctAnswer);
     }
+
     private void handleTextToSpeech(String text) {
         if (tts != null && !tts.isSpeaking()) {
             tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
         } else {
             Toast.makeText(getContext(), "Không hỗ trợ Text To Speech hiện tại", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void displayNextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.size()) {
+            displayQuestion();
+        } else {
+            Toast.makeText(getContext(), "Đã hoàn thành bài tập!", Toast.LENGTH_SHORT).show();
+            if (getParentFragmentManager() != null) {
+                getParentFragmentManager().beginTransaction()
+                        .replace(R.id.frameLayout, new PracticeFragment())
+                        .commit();
+            }
         }
     }
 }
