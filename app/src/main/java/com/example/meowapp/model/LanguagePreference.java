@@ -1,8 +1,10 @@
 package com.example.meowapp.model;
 
+import android.text.TextUtils;
+
 public class LanguagePreference {
 
-    private String language_id, user_id, level_id;
+    private String language_id, user_id, level_id, language_name;
     private int language_score;
 
     public LanguagePreference() {
@@ -46,4 +48,13 @@ public class LanguagePreference {
     public void setLanguage_score(int language_score) {
         this.language_score = language_score;
     }
+
+    public String getLanguage_name() {
+        return language_name;
+    }
+
+    public void setLanguage_name(String language_name) {
+        this.language_name = language_name;
+    }
+
 }

@@ -43,9 +43,12 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,6 +63,7 @@ public class UserFragment extends Fragment {
     private Map<String, Pair<String, Integer>> languageIdMap = new HashMap<>();
     private List<Language> languages = new ArrayList<>();
     private User user;
+    private String userId;
 
 
     @Override
@@ -72,10 +76,16 @@ public class UserFragment extends Fragment {
         // Lấy dữ liệu ngôn ngữ từ SharedPreferences
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyPref", MODE_PRIVATE);
         String languageId = sharedPreferences.getString("languageId", null);
+        userId = sharedPreferences.getString("userId", null);
 
         if (languageId != null) {
             // Gọi API để lấy thông tin ngôn ngữ và hiển thị hình cờ
             fetchLanguageById(languageId);
+        }
+        if (userId != null) {
+            fetchUserDataFromFirebase();
+        } else {
+            Toast.makeText(getContext(), "User ID is missing", Toast.LENGTH_SHORT).show();
         }
 
         fetchUserDataFromFirebase();
@@ -195,29 +205,28 @@ public class UserFragment extends Fragment {
 
     private void updateUserInterface() {
         if (user != null) {
-            // Cập nhật thông tin người dùng
             tvUserName.setText(user.getUsername());
             tvEmail.setText(user.getEmail());
             tvCoursePoints.setText("Điểm: " + user.getScore());
-            tvUserCourses.setText("Ngôn ngữ học: " + user.getLanguage_name());
 
-            // Hiển thị avatar người dùng
+            // Hiển thị tất cả ngôn ngữ người dùng đã học
+            StringBuilder languagesText = new StringBuilder("Ngôn ngữ học: ");
+            for (Language language : languages) {
+                languagesText.append(language.getLanguage_name()).append(", ");
+            }
+            if (languagesText.length() > 0) {
+                languagesText.setLength(languagesText.length() - 2);
+            }
+            tvUserCourses.setText(languagesText.toString());
+
             if (user.getAvatar() != null && !user.getAvatar().isEmpty()) {
                 Picasso.get().load(user.getAvatar()).into(imgAvatar);
             } else {
                 imgAvatar.setImageResource(R.drawable.user_avatar);
             }
 
-            // Xóa các cờ hiện tại trong courseLayout
-            if (courseLayout != null) {
-                courseLayout.removeAllViews();
-            }
-
-            // Kiểm tra và hiển thị các ngôn ngữ học
             if (user.getLanguage_name() != null && !user.getLanguage_name().isEmpty()) {
                 String[] languageIds = user.getLanguage_name().split(",");
-
-                // Duyệt qua từng languageId và gọi API để lấy thông tin ngôn ngữ
                 for (String languageId : languageIds) {
                     fetchLanguageById(languageId);
                 }
@@ -225,14 +234,17 @@ public class UserFragment extends Fragment {
         }
     }
 
+
+
     private void fetchLanguageById(String languageId) {
         FirebaseApiService.apiService.getLanguageById(languageId).enqueue(new Callback<Language>() {
             @Override
             public void onResponse(Call<Language> call, Response<Language> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Language language = response.body();
-                    // Hiển thị cờ của ngôn ngữ
                     addLanguageFlag(language);
+                    languages.add(language);
+                    languageIdMap.put(language.getLanguage_name(), new Pair<>(languageId, 0)); // Use default score 0 for now
                 }
             }
 
@@ -244,6 +256,10 @@ public class UserFragment extends Fragment {
     }
 
     private void addLanguageFlag(Language language) {
+        if (language == null) {
+            return;
+        }
+
         ImageView languageFlagImage = new ImageView(getContext());
         String flagImageUrl = language.getLanguage_image();
 
@@ -265,12 +281,14 @@ public class UserFragment extends Fragment {
             courseLayout.addView(languageFlagImage);
         }
 
-        // Thiết lập padding và layoutParams cho ImageView
         languageFlagImage.setPadding(10, 10, 10, 10);
+
+        // Thiết lập layout cho các cờ
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
         languageFlagImage.setLayoutParams(layoutParams);
     }
+
 }

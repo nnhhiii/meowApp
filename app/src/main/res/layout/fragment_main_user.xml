@@ -78,7 +78,7 @@
             android:layout_gravity="center_horizontal" />
     </LinearLayout>
 
-    <HorizontalScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/infoLayout"
@@ -88,12 +88,21 @@
 
         <LinearLayout
             android:id="@+id/courseLayout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
+            android:orientation="horizontal"
+            android:scrollbars="horizontal"
+            android:gravity="center">
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="10dp"
+            android:contentDescription=" Flag"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/rounded_card_background"/>
         </LinearLayout>
-    </HorizontalScrollView>
+    </ScrollView>
 
     <!-- Settings Button -->
     <ImageButton

@@ -1,7 +1,7 @@
 package com.example.meowapp.model;
 
 public class User {
-    private String username, email, password, role, avatar, language_id, created_at, updated_at, language_name;
+    private String username, email, password, role, avatar, language_id, created_at, updated_at, language_name, languages;
     private int score, streaks, diamonds, hearts, lessons, eightyLessons, perfectLessons;
 
     public int getLessons() {
@@ -130,5 +130,12 @@ public class User {
 
     public void setLanguage_name(String language_name) {
         this.language_name = language_name;
+    }
+    public String getLanguages() {
+        return languages;
+    }
+
+    public void setLanguages(String languages) {
+        this.languages = languages;
     }
 }
