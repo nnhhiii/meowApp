@@ -220,7 +220,7 @@ public class HomeFragment extends Fragment {
                                 SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyPref", MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
                                 editor.putString("languageId", languageId);
-                                editor.putString("levelId", levelId); // Thêm levelId
+                                editor.putString("levelId", levelId);
                                 editor.putInt("languagePreferenceScore", language_score);
                                 editor.apply();
 
