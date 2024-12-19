@@ -6,48 +6,45 @@
     android:layout_height="wrap_content"
     android:background="@drawable/radius_4_goc">
 
-
-<LinearLayout
-android:orientation="vertical"
-android:gravity="center"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-<TextView
-android:id="@+id/gem_title"
-android:text="Đá quý"
-android:textSize="16sp"
-android:textStyle="bold"
-android:textColor="#333"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/gem_title"
+        android:text="Đá quý"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#333"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center" />
 
 
-<TextView
-android:id="@+id/gem_count"
-android:text="Bạn có 505 đá quý"
-android:textSize="14sp"
-android:textColor="@color/black"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="8dp">
 
 
-<ImageView
-android:id="@+id/gem_icon"
-android:layout_width="89dp"
-android:layout_height="80dp"
-android:layout_marginTop="12dp"
-android:src="@drawable/award_gold_open" />
+        <ImageView
+            android:id="@+id/imgGem"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/gem" />
 
-
-<Button
-android:id="@+id/go_to_shop"
-android:text="Đến cửa hàng"
-android:textColor="@color/pink1"
-android:background="?android:attr/selectableItemBackground"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:layout_marginTop="8dp"/>
+        <TextView
+            android:id="@+id/gem_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100"
+            android:textColor="#1CB0F6"
+            android:textSize="20sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
-    </LinearLayout>
+    <ImageView
+        android:id="@+id/gem_icon"
+        android:layout_width="89dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="12dp"
+        android:src="@drawable/award_gold_open" />
+</LinearLayout>

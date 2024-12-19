@@ -42,7 +42,7 @@ public class WritingFragment extends Fragment {
         submitButton = view.findViewById(R.id.btnSubmit);
         submitButton.setOnClickListener(v -> {
             String answer = et_answer.getText().toString();
-            if(answer.isEmpty()) {
+            if(!answer.isEmpty()) {
                 boolean isCorrect = checkAnswer(answer);
                 ResultBottomSheet bottomSheet = new ResultBottomSheet(isCorrect, correct_answer);
                 bottomSheet.show(getParentFragmentManager(), "ResultBottomSheet");

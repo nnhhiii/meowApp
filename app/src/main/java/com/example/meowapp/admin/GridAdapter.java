@@ -61,7 +61,10 @@ public class GridAdapter extends BaseAdapter {
         icon.setImageResource(gridItem.getIconResId());
         text.setText(gridItem.getText());
         convertView.setOnClickListener(v -> {
-            if (gridItem.getText().equals("Người dùng")) {
+            if (gridItem.getText().equals("Tài khoản")) {
+                Intent intent = new Intent(context, AdminProfileActivity.class);
+                context.startActivity(intent);
+            }else if (gridItem.getText().equals("Người dùng")) {
                 Intent intent = new Intent(context, UserManagementActivity.class);
                 context.startActivity(intent);
             }else if (gridItem.getText().equals("Ngôn ngữ")) {

@@ -56,32 +56,33 @@ public class LoginActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         usersReference = FirebaseDatabase.getInstance().getReference("users");
 
+        // Xử lý khi người dùng đã đăng nhập trước đó
         if (firebaseAuth.getCurrentUser() != null) {
             switchProgressBar(true);
-            navigateToMainActivity();
+            navigateToMainActivity(); // Chuyển đến màn hình chính
 
-            // Lấy token
-            FirebaseMessaging.getInstance().getToken()
-                    .addOnCompleteListener(task -> {
-                        if (!task.isSuccessful()) {
-                            Log.w("FCM", "Fetching FCM registration token failed", task.getException());
-                            return;
-                        }
-                        // Lấy token và xử lý
-                        String token = task.getResult();
-                        Log.d("FCM", "Token: " + token);
-
-                        // Lưu vào Realtime Database
-                        String userId = firebaseAuth.getCurrentUser().getUid();
-                        usersReference.child(userId).child("fcmToken").setValue(token)
-                                .addOnCompleteListener(task1 -> {
-                                    if (task1.isSuccessful()) {
-                                        Log.d("FCM", "Token đã được lưu vào Realtime Database.");
-                                    } else {
-                                        Log.w("FCM", "Lỗi khi lưu token: " + task1.getException());
-                                    }
-                                });
-                    });
+//            // Lấy token
+//            FirebaseMessaging.getInstance().getToken()
+//                    .addOnCompleteListener(task -> {
+//                        if (!task.isSuccessful()) {
+//                            Log.w("FCM", "Fetching FCM registration token failed", task.getException());
+//                            return;
+//                        }
+//                        // Lấy token và xử lý
+//                        String token = task.getResult();
+//                        Log.d("FCM", "Token: " + token);
+//
+//                        // Lưu vào Realtime Database
+//                        String userId = firebaseAuth.getCurrentUser().getUid();
+//                        usersReference.child(userId).child("fcmToken").setValue(token)
+//                                .addOnCompleteListener(task1 -> {
+//                                    if (task1.isSuccessful()) {
+//                                        Log.d("FCM", "Token đã được lưu vào Realtime Database.");
+//                                    } else {
+//                                        Log.w("FCM", "Lỗi khi lưu token: " + task1.getException());
+//                                    }
+//                                });
+//                    });
             FirebaseMessaging.getInstance().subscribeToTopic("all_devices")
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
@@ -91,17 +92,20 @@ public class LoginActivity extends AppCompatActivity {
 
         }
 
+        // Quên mật khẩu
         btnForget.setOnClickListener(v -> {
             Intent intent = new Intent(this, ForgetPasswordActivity.class);
             startActivity(intent);
         });
 
+        // Đăng ký
         btnLogUp.setOnClickListener(v -> {
             Intent intent = new Intent(this, BlankActivity.class);
             startActivity(intent);
             finish();
         });
 
+        // Đăng nhập
         btnLogin.setOnClickListener(v -> processingLoginOnClick());
     }
 
@@ -115,6 +119,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    // Phương thức xử lý đăng nhập
     private boolean isValidInputs(String email, String password) {
         if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
             Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
@@ -141,7 +146,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void processingLoginWithFireBase(String email, String password) {
-
+        // Đăng nhập với Firebase
         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
@@ -167,8 +172,9 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    // Chuyển đến màn hình chính
     private void navigateToMainActivity() {
-        String currentUID = firebaseAuth.getCurrentUser().getUid();
+        String currentUID = firebaseAuth.getCurrentUser().getUid(); // lấy UID của người dùng
         if (TextUtils.isEmpty(currentUID)) {
             switchProgressBar(false);
             Log.e(TAG, "Can't retrieve UID of current user");
@@ -176,6 +182,7 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+        // Truy vấn thông tin từ Realtime Database
         usersReference.child(currentUID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -199,6 +206,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
 
+            // Xác định màn hình điều hướng Admin/User
             private Class<?> getDestinationClass(String role) {
                 return role.equals("admin") ? AdminActivity.class : MainActivity.class;
             }

@@ -37,7 +37,12 @@ public class TimerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        duration = intent.getIntExtra("duration", 0);
+        if (intent != null) {
+            duration = intent.getIntExtra("duration", 0);
+        } else {
+            Log.e("TimerService", "Intent is null in onStartCommand");
+            duration = 0;
+        }
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         userId = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();

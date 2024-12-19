@@ -23,7 +23,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:gravity="center"
-            android:text="Thêm nhiệm vụ"
+            android:text="Chỉnh sửa nhiệm vụ"
             android:textSize="24sp"
             android:textStyle="bold" />
     </RelativeLayout>
@@ -128,7 +128,7 @@
         android:id="@+id/btn_save_changes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Thêm"
+        android:text="Lưu"
         android:textSize="18sp"
         android:layout_margin="25dp"
         android:layout_alignParentBottom="true"

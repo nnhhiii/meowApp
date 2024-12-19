@@ -1,6 +1,8 @@
 package com.example.meowapp.model;
 
-public class Question {
+import java.io.Serializable;
+
+public class Question implements Serializable {
     private String question_text, lesson_id, correct_answer, order_words,
             option_a, option_b, option_c, option_d, question_type,
             image_option_a, image_option_b, image_option_c, image_option_d,

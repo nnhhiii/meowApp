@@ -1,6 +1,5 @@
 package com.example.meowapp.Main;
 
-import android.content.Intent;
 import android.os.Bundle;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
@@ -12,18 +11,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.meowapp.R;
 import com.example.meowapp.model.Question;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class MultipleChoiceImageFragmentNew extends Fragment {
+public class MultipleChoiceTextFragmentNew extends Fragment {
 
     private TextView optionA, optionB, optionC, optionD, questionTv;
     private String correctAnswer, selectedAnswer;
@@ -31,15 +28,13 @@ public class MultipleChoiceImageFragmentNew extends Fragment {
     private Button submitButton;
     private TextToSpeech tts;
     private ImageButton playButton;
-    private ImageView imageA, imageB, imageC, imageD;
     private List<Question> questions;
     private int currentQuestionIndex = 0;
     private int correctAnswersCount = 0;
 
-    public static MultipleChoiceImageFragmentNew newInstance(List<Question> questions) {
-        MultipleChoiceImageFragmentNew fragment = new MultipleChoiceImageFragmentNew();
+    public static MultipleChoiceTextFragmentNew newInstance(List<Question> questions) {
+        MultipleChoiceTextFragmentNew fragment = new MultipleChoiceTextFragmentNew();
         Bundle args = new Bundle();
-        Log.d("MultipleChoiceImageFragmentNew", "Received list of questions: " + questions.size());
         args.putSerializable("questions", (ArrayList<Question>) questions);
         fragment.setArguments(args);
         return fragment;
@@ -47,17 +42,13 @@ public class MultipleChoiceImageFragmentNew extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_question_type_multiple_choice_image, container, false);
+        View view = inflater.inflate(R.layout.fragment_question_type_multiple_choice, container, false);
 
         questionTv = view.findViewById(R.id.question);
         cardViewA = view.findViewById(R.id.cardView1);
         cardViewB = view.findViewById(R.id.cardView2);
         cardViewC = view.findViewById(R.id.cardView3);
         cardViewD = view.findViewById(R.id.cardView4);
-        imageA = view.findViewById(R.id.image_1);
-        imageB = view.findViewById(R.id.image_2);
-        imageC = view.findViewById(R.id.image_3);
-        imageD = view.findViewById(R.id.image_4);
         optionA = view.findViewById(R.id.option_a);
         optionB = view.findViewById(R.id.option_b);
         optionC = view.findViewById(R.id.option_c);
@@ -113,35 +104,28 @@ public class MultipleChoiceImageFragmentNew extends Fragment {
     private void displayQuestion() {
         if (questions != null && currentQuestionIndex < questions.size()) {
             Question question = questions.get(currentQuestionIndex);
-            String[] imageOptions = {question.getImage_option_a(), question.getImage_option_b(), question.getImage_option_c(), question.getImage_option_d()};
-            String[] answerOptions = {question.getOption_a(), question.getOption_b(), question.getOption_c(), question.getOption_d()};
             correctAnswer = question.getCorrect_answer();
             questionTv.setText(question.getQuestion_text());
-
-            Picasso.get().load(imageOptions[0]).into(imageA);
-            Picasso.get().load(imageOptions[1]).into(imageB);
-            Picasso.get().load(imageOptions[2]).into(imageC);
-            Picasso.get().load(imageOptions[3]).into(imageD);
-
-            optionA.setText(answerOptions[0]);
-            optionB.setText(answerOptions[1]);
-            optionC.setText(answerOptions[2]);
-            optionD.setText(answerOptions[3]);
+            optionA.setText(question.getOption_a());
+            optionB.setText(question.getOption_b());
+            optionC.setText(question.getOption_c());
+            optionD.setText(question.getOption_d());
         } else {
+            Toast.makeText(getContext(), "Đã hoàn thành bài tập!", Toast.LENGTH_SHORT).show();
             if (getParentFragmentManager() != null) {
                 getParentFragmentManager().beginTransaction()
-                        .replace(R.id.frameLayout, new PracticeFinishFragment())
+                        .replace(R.id.frameLayout, new PracticeFragment())
                         .commit();
             }
         }
     }
 
     private void setBackground(CardView selectedCardView) {
-        selectedCardView.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.pink3));
+        selectedCardView.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.pink3));
 
         for (CardView cardView : new CardView[]{cardViewA, cardViewB, cardViewC, cardViewD}) {
             if (cardView != selectedCardView) {
-                cardView.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), android.R.color.white));
+                cardView.setCardBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.white));
             }
         }
     }
@@ -153,7 +137,6 @@ public class MultipleChoiceImageFragmentNew extends Fragment {
         }
         return false;
     }
-
     private void handleTextToSpeech(String text) {
         if (tts != null && !tts.isSpeaking()) {
             tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
@@ -166,7 +149,7 @@ public class MultipleChoiceImageFragmentNew extends Fragment {
         currentQuestionIndex++;
         if (currentQuestionIndex < questions.size()) {
             displayQuestion();
-        } else {
+        }  else {
             PracticeFinishFragment practiceFinishFragment = new PracticeFinishFragment();
 
             // Gửi dữ liệu qua Bundle
@@ -180,5 +163,5 @@ public class MultipleChoiceImageFragmentNew extends Fragment {
                     .addToBackStack(null)
                     .commit();
         }
-    }}
-
+    }
+}

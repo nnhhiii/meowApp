@@ -48,7 +48,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         // Tạo builder cho thông báo
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_logo2) // Đảm bảo icon tồn tại
+                .setSmallIcon(R.drawable.ic_logo2)
                 .setContentTitle(title != null ? title : "Thông báo mới")
                 .setContentText(messageBody)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)

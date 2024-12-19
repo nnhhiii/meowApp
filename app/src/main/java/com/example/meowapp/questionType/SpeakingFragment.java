@@ -1,11 +1,13 @@
 package com.example.meowapp.questionType;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
+import android.provider.Settings;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,8 +41,6 @@ public class SpeakingFragment extends Fragment {
     private Intent recognizerIntent;
     private Handler handler = new Handler();
     private boolean isListening = false;
-    private static final int RECORDING_TIMEOUT = 10000; // 5 giây
-
     private RelativeLayout btnMicro;
     private TextView questionTv;
     private String correct_answer;
@@ -118,6 +118,12 @@ public class SpeakingFragment extends Fragment {
                         break;
                     case SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS:
                         errorMessage += "Không có quyền truy cập mic.";
+
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        Uri uri = Uri.fromParts("package", getContext().getPackageName(), null);
+                        intent.setData(uri);
+                        getContext().startActivity(intent);
+
                         break;
                     case SpeechRecognizer.ERROR_NO_MATCH:
                         errorMessage += "Không có kết quả phù hợp.";
@@ -158,8 +164,8 @@ public class SpeakingFragment extends Fragment {
         isListening = true;
         speechRecognizer.startListening(recognizerIntent);
 
-        // Dừng tự động sau 5 giây nếu người dùng không nhấn nút
-        handler.postDelayed(this::stopListening, RECORDING_TIMEOUT);
+        // Dừng tự động sau 10 giây nếu người dùng không nhấn nút
+        handler.postDelayed(this::stopListening, 10000);
     }
 
     private void stopListening() {
