@@ -7,59 +7,83 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import java.util.List;
+
 import com.example.meowapp.R;
-import com.example.meowapp.questionType.BlankActivity;
 import com.example.meowapp.questionType.StartActivity;
 
-public class ButtonAdapter extends RecyclerView.Adapter<ButtonAdapter.ButtonViewHolder> {
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-    private List<String> lessonNames, lessonIds;
+public class ButtonAdapter extends RecyclerView.Adapter<ButtonAdapter.ViewHolder> {
+    private List<String> lessonNames; // Danh sách tên bài học
+    private List<String> lessonIds; // Danh sách ID bài học
     private Context context;
+    private Set<String> completedLessons = new HashSet<>(); // Danh sách bài học đã hoàn thành
 
+    // Constructor
     public ButtonAdapter(List<String> lessonNames, List<String> lessonIds, Context context) {
         this.lessonNames = lessonNames;
         this.lessonIds = lessonIds;
         this.context = context;
     }
 
+    // Phương thức cập nhật danh sách bài học hoàn thành
+    public void updateLessonStatus(Set<String> completedLessons) {
+        this.completedLessons = completedLessons;
+        notifyDataSetChanged(); // Cập nhật lại giao diện
+    }
+
     @NonNull
     @Override
-    public ButtonViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_button, parent, false);
-        return new ButtonViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ButtonViewHolder holder, int position) {
-        String lessonName = lessonNames.get(position); // Lấy tên bài học
-        String lessonKey = lessonIds.get(position);
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        String lessonId = lessonIds.get(position);
+        holder.textView.setText(lessonNames.get(position)); // Hiển thị tên bài học
 
-        holder.textView.setText(lessonName); // Hiển thị tên bài học trong TextView
+        // Kiểm tra trạng thái hoàn thành của bài học
+        if (completedLessons.contains(lessonId)) {
+            holder.imageButton.setImageResource(R.drawable.buttonmeow); // Hình ảnh khi đã hoàn thành
+            holder.imageButton.setClickable(true); // Bật click cho bài học hoàn thành
+        } else {
+            holder.imageButton.setImageResource(R.drawable.buttonmeow_1); // Hình ảnh khi chưa hoàn thành
+            holder.imageButton.setClickable(false); // Tắt click cho bài học chưa hoàn thành
+        }
 
-        holder.button.setOnClickListener(v -> {
-            // Tạo intent để chuyển đến Activity khác
-            Intent intent = new Intent(context, StartActivity.class);
-            intent.putExtra("LESSON_ID", lessonKey);
-            context.startActivity(intent);
+        holder.imageButton.setOnClickListener(v -> {
+            if (completedLessons.contains(lessonId)) {
+                Intent intent = new Intent(context, StartActivity.class);
+                intent.putExtra("LESSON_ID", lessonId);
+                context.startActivity(intent);
+            } else {
+                Toast.makeText(context, "Bạn cần hoàn thành các bài học trước!", Toast.LENGTH_SHORT).show(); // Thông báo cần hoàn thành bài học trước
+            }
         });
     }
 
     @Override
     public int getItemCount() {
-        return lessonNames.size(); // Trả về kích thước của danh sách tên bài học
+        return lessonNames.size();
     }
 
-    public static class ButtonViewHolder extends RecyclerView.ViewHolder {
-        ImageButton button; // Sử dụng ImageButton thay cho Button
-        TextView textView;  // TextView hiển thị tên bài học
+    // ViewHolder class
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView textView;
+        ImageButton imageButton;
 
-        public ButtonViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            button = itemView.findViewById(R.id.item_button);
-            textView = itemView.findViewById(R.id.item_text); // Lấy TextView
+            textView = itemView.findViewById(R.id.item_text);
+            imageButton = itemView.findViewById(R.id.item_button);
         }
     }
 }
