@@ -18,4 +18,6 @@
     <color name="green1">#59A700</color>
     <color name="green2">#75C134</color>
     <color name="green3">#d7ffb8</color>
+    <color name="completedLessonColor">#FF0000</color>
+    <color name="defaultLessonColor">#d7ffb8</color>
 </resources>

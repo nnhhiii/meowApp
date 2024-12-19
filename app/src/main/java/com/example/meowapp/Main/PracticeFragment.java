@@ -49,7 +49,7 @@ public class PracticeFragment extends Fragment {
         btnNghe.setOnClickListener(v -> loadFragmentWithQuestions("4", this::loadListeningFragment));
         btnNoi.setOnClickListener(v -> loadFragmentWithQuestions("5", this::loadSpeakingFragment));
         btnViet.setOnClickListener(v -> loadFragmentWithQuestions("1", this::loadWritingFragment));
-//        btnSapXepChu.setOnClickListener(v -> loadFragmentWithQuestions("l1", this::loadArrangeWordsFragment));
+       btnSapXepChu.setOnClickListener(v -> loadFragmentWithQuestions("1", this::loadArrangeWordsFragment));
     }
 
     private void loadFragmentWithQuestions(String questionType, QuestionsCallback callback) {
@@ -136,13 +136,14 @@ public class PracticeFragment extends Fragment {
         replaceFragment(WritingFragmentNew.newInstance(questions));
     }
 
-//    private void loadArrangeWordsFragment(List<Question> questions) {
-//        Question question = questions.get(0);
-//        String questionText = question.getQuestion_text();
-//        String[] wordsToArrange = question.getOrder_words().split(" ");
-//
-//        replaceFragment(Arrange.newInstance(questionText, wordsToArrange));
-//    }
+    private void loadArrangeWordsFragment(List<Question> questions) {
+        Question question = questions.get(0);
+        String correctAnswer = question.getCorrect_answer();
+        String questionText = question.getQuestion_text();
+        String orderWords = question.getOrder_words();
+
+        replaceFragment(ArrangeWordsFragment.newInstance(questions));
+    }
 
     @FunctionalInterface
     private interface QuestionsCallback {

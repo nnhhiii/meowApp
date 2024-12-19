@@ -83,7 +83,7 @@ public class WritingFragmentNew extends Fragment {
             handleTextToSpeech(questionTv.getText().toString());
         });
 
-        displayQuestion(); // Initialize the first question
+        displayQuestion();
 
         return view;
     }

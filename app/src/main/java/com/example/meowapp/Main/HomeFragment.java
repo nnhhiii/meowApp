@@ -75,7 +75,7 @@ public class HomeFragment extends Fragment {
     private List<String> lessonIds, lessonNames;
     private List<Language> languages;
     private Map<String, Pair<String, Integer>> languageIdMap = new HashMap<>();
-    private String userId, languageId;
+    private String userId, languageId, levelId;
     private int language_score, score, streaks, hearts, eightyLessons, lessons, perfectLessons, diamonds;
     private FirebaseAuth firebaseAuth;
     private LinearLayout heartContainer;
@@ -150,7 +150,7 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    private void fetchLessonsByLanguageId(String languageId) {
+    private void fetchLessonsByLanguageAndLevelId(String languageId, String levelId) {
         FirebaseApiService.apiService.getAllLessonByLanguageId("\"language_id\"", "\"" + languageId + "\"").enqueue(new Callback<Map<String, Lesson>>() {
             @Override
             public void onResponse(Call<Map<String, Lesson>> call, Response<Map<String, Lesson>> response) {
@@ -159,7 +159,16 @@ public class HomeFragment extends Fragment {
                     lessonNames.clear();
                     List<Map.Entry<String, Lesson>> entries = new ArrayList<>(response.body().entrySet());
 
-                    Collections.sort(entries, new Comparator<Map.Entry<String, Lesson>>() {
+                    // Lọc thêm theo level_id
+                    List<Map.Entry<String, Lesson>> filteredEntries = new ArrayList<>();
+                    for (Map.Entry<String, Lesson> entry : entries) {
+                        if (entry.getValue().getLevel_id().equals(levelId)) {
+                            filteredEntries.add(entry);
+                        }
+                    }
+
+                    // Sắp xếp theo thứ tự bài học (nếu cần)
+                    Collections.sort(filteredEntries, new Comparator<Map.Entry<String, Lesson>>() {
                         @Override
                         public int compare(Map.Entry<String, Lesson> entry1, Map.Entry<String, Lesson> entry2) {
                             String lessonName1 = entry1.getValue().getLesson_name();
@@ -171,14 +180,19 @@ public class HomeFragment extends Fragment {
                         }
                     });
 
-                    for (Map.Entry<String, Lesson> entry : entries) {
+                    // Thêm bài học vào danh sách hiển thị
+                    for (Map.Entry<String, Lesson> entry : filteredEntries) {
                         String lessonName = entry.getValue().getLesson_name();
                         String lessonNumber = lessonName.replaceAll("[^0-9]", "");
                         lessonIds.add(entry.getKey());
                         lessonNames.add(lessonNumber);
                     }
-                    buttonAdapter.notifyDataSetChanged(); // Update adapter
-                    Log.d("HomeFragment", "Lesson Numbers: " + lessonIds);
+
+                    // Cập nhật RecyclerView
+                    buttonAdapter.notifyDataSetChanged();
+                    Log.d("HomeFragment", "Filtered Lessons: " + lessonIds);
+                } else {
+                    Log.e("HomeFragment", "No lessons found for language_id and level_id.");
                 }
             }
 
@@ -189,36 +203,42 @@ public class HomeFragment extends Fragment {
         });
     }
 
+
+
     private void fetchLanguagePreference() {
         FirebaseApiService.apiService.getAllLanguagePreferenceByUserId("\"user_id\"", "\"" + userId + "\"")
                 .enqueue(new Callback<Map<String, LanguagePreference>>() {
-            @Override
-            public void onResponse(Call<Map<String, LanguagePreference>> call, Response<Map<String, LanguagePreference>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    for (Map.Entry<String, LanguagePreference> entry : response.body().entrySet()) {
-                        languageId = entry.getValue().getLanguage_id();
-                        language_score = entry.getValue().getLanguage_score();
+                    @Override
+                    public void onResponse(Call<Map<String, LanguagePreference>> call, Response<Map<String, LanguagePreference>> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            for (Map.Entry<String, LanguagePreference> entry : response.body().entrySet()) {
+                                languageId = entry.getValue().getLanguage_id();
+                                levelId = entry.getValue().getLevel_id(); // Lấy level_id
 
-                        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyPref", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("languageId", languageId);
-                        editor.putInt("languagePreferenceScore", language_score);
-                        editor.apply();
+                                language_score = entry.getValue().getLanguage_score();
 
-                        fetchLanguageById(languageId, language_score);
-                        fetchLessonsByLanguageId(languageId);
+                                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyPref", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("languageId", languageId);
+                                editor.putString("levelId", levelId); // Thêm levelId
+                                editor.putInt("languagePreferenceScore", language_score);
+                                editor.apply();
+
+                                fetchLanguageById(languageId, language_score);
+                                fetchLessonsByLanguageAndLevelId(languageId, levelId);
+                            }
+                        } else {
+                            Toast.makeText(getContext(), "No language preference available", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                } else {
-                    Toast.makeText(getContext(), "No language preference available", Toast.LENGTH_SHORT).show();
-                }
-            }
 
-            @Override
-            public void onFailure(Call<Map<String, LanguagePreference>> call, Throwable t) {
-                Log.e("HomeFragment", "Error fetching languages", t);
-            }
-        });
+                    @Override
+                    public void onFailure(Call<Map<String, LanguagePreference>> call, Throwable t) {
+                        Toast.makeText(getContext(), "Error fetching language preferences", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
+
 
     private void fetchLanguageById(String languageId, int languagePreferenceScore) {
         FirebaseApiService.apiService.getLanguageById(languageId).enqueue(new Callback<Language>() {
@@ -321,7 +341,7 @@ public class HomeFragment extends Fragment {
                 Pair<String, Integer> pair = languageIdMap.get(language.getLanguage_name());
                 String languageId = pair.first;
                 int language_score = pair.second;
-                fetchLessonsByLanguageId(languageId); // Gọi hàm để lấy bài học
+                fetchLessonsByLanguageAndLevelId(languageId, levelId); // Gọi hàm để lấy bài học
 
                 SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyPref", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
