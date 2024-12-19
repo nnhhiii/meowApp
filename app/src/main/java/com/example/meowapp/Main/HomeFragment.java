@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import com.example.meowapp.model.LanguagePreference;
 import com.example.meowapp.model.User;
+import com.example.meowapp.model.UserProgress;
 import com.example.meowapp.questionType.BlankActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
@@ -62,10 +63,12 @@ import retrofit2.Response;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 public class HomeFragment extends Fragment {
 
@@ -103,6 +106,7 @@ public class HomeFragment extends Fragment {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         userId = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
         fetchUserById();
+        fetchUserProgress();
         fetchLanguagePreference();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -290,6 +294,46 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+    private void fetchUserProgress() {
+        FirebaseApiService.apiService.getAllUserProgressByUserId("\"user_id\"", "\"" + userId + "\"")
+                .enqueue(new Callback<Map<String, UserProgress>>() {
+                    @Override
+                    public void onResponse(Call<Map<String, UserProgress>> call, Response<Map<String, UserProgress>> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            Map<String, UserProgress> userProgressMap = response.body();
+                            Set<String> completedLessons = new HashSet<>();
+
+                            for (UserProgress progress : userProgressMap.values()) {
+                                String lessonId = progress.getLesson_id();  // Gán lessonId từ UserProgress
+                                Log.d("HomeFragment", "Lesson ID: " + lessonId);
+                                completedLessons.add(lessonId);
+
+                                // Thêm vào completedLessons cho lessonId, lessonId-1 và lessonId+1
+                                for (int i = Integer.parseInt(lessonId) - 1; i <= Integer.parseInt(lessonId) + 1; i++) {
+                                    completedLessons.add(String.valueOf(i));
+                                }
+                            }
+
+                            buttonAdapter.updateLessonStatus(completedLessons);
+                        } else {
+                            Log.e("HomeFragment", "No user progress found.");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Map<String, UserProgress>> call, Throwable t) {
+                        Log.e("HomeFragment", "Error fetching user progress", t);
+                    }
+                });
+    }
+
+
+
+
+
+
+
+
 
     private void showLanguagePopup() {
         LayoutInflater inflater = getLayoutInflater();
