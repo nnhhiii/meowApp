@@ -308,8 +308,7 @@ public class HomeFragment extends Fragment {
                                 Log.d("HomeFragment", "Lesson ID: " + lessonId);
                                 completedLessons.add(lessonId);
 
-                                // Thêm vào completedLessons cho lessonId, lessonId-1 và lessonId+1
-                                for (int i = Integer.parseInt(lessonId) - 1; i <= Integer.parseInt(lessonId) + 1; i++) {
+                                for (int i = 1; i <= Integer.parseInt(lessonId) + 1; i++) {
                                     completedLessons.add(String.valueOf(i));
                                 }
                             }

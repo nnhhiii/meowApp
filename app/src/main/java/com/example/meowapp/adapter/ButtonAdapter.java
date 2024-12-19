@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -52,21 +53,26 @@ public class ButtonAdapter extends RecyclerView.Adapter<ButtonAdapter.ViewHolder
         // Kiểm tra trạng thái hoàn thành của bài học
         if (completedLessons.contains(lessonId)) {
             holder.imageButton.setImageResource(R.drawable.buttonmeow); // Hình ảnh khi đã hoàn thành
+            holder.imageButton.setClickable(true); // Bật click cho bài học hoàn thành
         } else {
             holder.imageButton.setImageResource(R.drawable.buttonmeow_1); // Hình ảnh khi chưa hoàn thành
+            holder.imageButton.setClickable(false); // Tắt click cho bài học chưa hoàn thành
         }
 
-        // Xử lý sự kiện click vào nút bài học
         holder.imageButton.setOnClickListener(v -> {
-            Intent intent = new Intent(context, StartActivity.class); // Mở Activity bài học
-            intent.putExtra("LESSON_ID", lessonId);// Truyền ID bài học sang Activity
-            context.startActivity(intent);
+            if (completedLessons.contains(lessonId)) {
+                Intent intent = new Intent(context, StartActivity.class);
+                intent.putExtra("LESSON_ID", lessonId);
+                context.startActivity(intent);
+            } else {
+                Toast.makeText(context, "Bạn cần hoàn thành các bài học trước!", Toast.LENGTH_SHORT).show(); // Thông báo cần hoàn thành bài học trước
+            }
         });
     }
 
     @Override
     public int getItemCount() {
-        return lessonNames.size(); // Số lượng bài học
+        return lessonNames.size();
     }
 
     // ViewHolder class
@@ -76,8 +82,8 @@ public class ButtonAdapter extends RecyclerView.Adapter<ButtonAdapter.ViewHolder
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.item_text); // TextView hiển thị tên bài học
-            imageButton = itemView.findViewById(R.id.item_button); // ImageButton để click
+            textView = itemView.findViewById(R.id.item_text);
+            imageButton = itemView.findViewById(R.id.item_button);
         }
     }
 }
