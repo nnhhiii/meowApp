@@ -4,40 +4,45 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="#FAF9F9">
+    android:padding="16dp">
 
+    <!-- Header Section -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@color/white"
         android:gravity="center_vertical"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="16dp"
+        android:padding="8dp"
+        android:elevation="4dp">
 
         <ImageButton
             android:id="@+id/btnBack"
-            android:layout_width="65dp"
-            android:layout_height="65dp"
-            android:background="@color/white"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@android:color/transparent"
             android:src="@drawable/ic_arrow_back" />
 
         <TextView
             android:id="@+id/tvHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Chỉnh sửa hồ sơ"
+            android:text="Chỉnh sửa thông tin"
             android:textSize="20sp"
             android:textColor="#D32F2F"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:layout_marginStart="16dp" />
     </LinearLayout>
 
+    <!-- Avatar Section -->
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imgAvatar"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_gravity="center"
         android:scaleType="centerCrop"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="20dp"
         app:shapeAppearanceOverlay="@style/circleImageStyle"
         app:srcCompat="@drawable/ic_launcher_background" />
 
@@ -45,62 +50,73 @@
         android:id="@+id/btnImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="12dp"
-        android:layout_marginBottom="20dp"
         android:text="Tải ảnh"
+        android:textSize="14sp"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/rounded_gradient_button"
+        android:layout_marginBottom="24dp"
         android:layout_gravity="center"/>
 
+    <!-- Input Fields Section -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:orientation="vertical">
+
+        <!-- Name Input -->
         <EditText
             android:id="@+id/edtName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint=" Tên người dùng"
+            android:hint=" Username"
             android:textColor="#000000"
-            android:textSize="18sp"
-            android:padding="14dp"
+            android:textSize="16sp"
+            android:padding="12dp"
             android:background="@drawable/edit_text_background"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="16dp"
             android:drawableLeft="@drawable/ic_username"
-            android:paddingLeft="10dp"
+            android:paddingLeft="12dp"
             android:paddingTop="10dp"
-            android:paddingRight="10dp"/>
+            android:paddingRight="10dp"
+            android:elevation="2dp"/>
 
+        <!-- Email Input -->
         <EditText
             android:id="@+id/edtEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint=" Email"
             android:textColor="#000000"
-            android:textSize="18sp"
-            android:padding="14dp"
+            android:textSize="16sp"
+            android:padding="12dp"
             android:background="@drawable/edit_text_background"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="16dp"
             android:drawableLeft="@drawable/ic_email"
-            android:paddingLeft="10dp"
+            android:paddingLeft="12dp"
             android:paddingTop="10dp"
-            android:paddingRight="10dp"/>
+            android:paddingRight="10dp"
+            android:elevation="2dp"/>
 
+        <!-- Password Input -->
         <EditText
             android:id="@+id/edtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="  Mật khẩu"
+            android:hint=" Mật khẩu"
             android:textColor="#000000"
-            android:textSize="18sp"
-            android:padding="14dp"
+            android:textSize="16sp"
+            android:padding="12dp"
             android:background="@drawable/edit_text_background"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="16dp"
             android:inputType="textPassword"
             android:drawableLeft="@drawable/ic_password_star"
-            android:paddingLeft="10dp"
+            android:paddingLeft="12dp"
             android:paddingTop="10dp"
-            android:paddingRight="10dp"/>
+            android:paddingRight="10dp"
+            android:elevation="2dp"/>
 
+        <!-- Save Button -->
         <Button
             android:id="@+id/btnSave"
             android:layout_width="match_parent"
@@ -108,8 +124,8 @@
             android:text="Lưu"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
-            android:background="@drawable/rounded_button_background"
-            android:layout_marginTop="32dp"
+            android:background="@drawable/rounded_gradient_button"
+            android:layout_marginTop="24dp"
             android:layout_gravity="center"/>
     </LinearLayout>
 </LinearLayout>
