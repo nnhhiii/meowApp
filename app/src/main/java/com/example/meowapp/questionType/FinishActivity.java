@@ -67,10 +67,16 @@ public class FinishActivity extends AppCompatActivity {
         tvPercent.setText(percentScore + "%");
 
         lessonId = getIntent().getStringExtra("LESSON_ID");
+        if(lessonId != null){
+            loadData();
+        }else {
+            scoreLesson = 5;
+            tvScore.setText("5");
+        }
 
         SharedPreferences sharedPreferences = getSharedPreferences("MyPref", MODE_PRIVATE);
         languageId = sharedPreferences.getString("languageId", null);
-        languageScore = sharedPreferences.getInt("languagePreferenceScore", 0);
+        languageScore = sharedPreferences.getInt("languageScore", 0);
         previousStreaks = sharedPreferences.getInt("streaks", 0);
         streaks = sharedPreferences.getInt("streaks", 0);
         scoreUser = sharedPreferences.getInt("score", 0);
@@ -81,7 +87,7 @@ public class FinishActivity extends AppCompatActivity {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         userId = firebaseAuth.getCurrentUser().getUid();
 
-        loadData();
+
         btnFinish.setOnClickListener(v -> {
             updateUserScore();
             updateLanguageScore();
@@ -133,7 +139,11 @@ public class FinishActivity extends AppCompatActivity {
                     editor.apply();
 
                     Toast.makeText(FinishActivity.this, "Điểm đã được cập nhật: " + newScore, Toast.LENGTH_SHORT).show();
-                    checkUserProgress();
+                    if(lessonId != null){
+                        checkUserProgress();
+                    }else {
+                        goToMainActivity();
+                    }
                 } else {
                     Toast.makeText(FinishActivity.this, "Không cập nhật được điểm", Toast.LENGTH_SHORT).show();
                 }

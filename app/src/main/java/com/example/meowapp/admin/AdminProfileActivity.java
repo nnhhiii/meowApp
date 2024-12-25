@@ -6,30 +6,36 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.meowapp.Main.SettingsEditProfileActivity;
 import com.example.meowapp.R;
+import com.example.meowapp.auth.ChangePasswordActivity;
 import com.example.meowapp.language.LanguageManagementActivity;
 import com.example.meowapp.lesson.LessonManagementActivity;
 import com.example.meowapp.mission.MissionManagementActivity;
+import com.example.meowapp.model.User;
 import com.example.meowapp.user.UserManagementActivity;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
+
+import java.util.Objects;
 
 public class AdminProfileActivity extends AppCompatActivity {
 
-    private TextView tvAdminName, tvAdminEmail, tvTotalUsers, tvTotalCourses, tvTotalLessons;
-    private Button btnEditProfile, btnLogout;
+    private TextView tvAdminName, tvAdminEmail, tvTotalCourses, tvTotalLessons;
+    private Button btnEditProfile, btnChangePassword;
     private ImageButton btnBack;
-    private LinearLayout usersSection, coursesSection, lessonsSection;
-
-    private DatabaseReference dbRef;
-    private String adminId = "admin"; // ID cố định hoặc lấy từ logic của bạn
+    private ImageView imgAvatar;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,43 +45,43 @@ public class AdminProfileActivity extends AppCompatActivity {
         // Ánh xạ view
         tvAdminName = findViewById(R.id.tvName);
         tvAdminEmail = findViewById(R.id.tvEmail);
-        tvTotalUsers = findViewById(R.id.tvTotalUsers);
         tvTotalCourses = findViewById(R.id.tvTotalCourses);
         tvTotalLessons = findViewById(R.id.tvTotalLessons);
-        btnEditProfile = findViewById(R.id.btnEditProfile);
+        imgAvatar = findViewById(R.id.imgAvatar);
+        btnEditProfile = findViewById(R.id.btnEdit);
         btnBack = findViewById(R.id.btnBack);
-        btnLogout = findViewById(R.id.btnLogout);
-
-        // Firebase reference
-        dbRef = FirebaseDatabase.getInstance().getReference();
+        btnChangePassword = findViewById(R.id.btnChangePassword);
 
         btnBack.setOnClickListener(v -> finish());
+        btnEditProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminProfileActivity.this, SettingsEditProfileActivity.class);
+            startActivity(intent);
+        });
+        btnChangePassword.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminProfileActivity.this, ChangePasswordActivity.class);
+            startActivity(intent);
+        });
 
-        getAdminInfo();
-        // Lấy dữ liệu từ Firebase
-        getAdminStats();
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        userId = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
 
-        usersSection.setOnClickListener(v -> navigateToUserManagement());
-
-        coursesSection.setOnClickListener(v -> navigateToLanguageManagement());
-
-        lessonsSection.setOnClickListener(v -> navigateToLessonManagement());
-
-        btnEditProfile.setOnClickListener(v -> editProfile());
-        btnLogout.setOnClickListener(v -> logout());
+        loadData();
     }
 
-    private void getAdminInfo() {
-        dbRef.child("admins").child(adminId).get().addOnCompleteListener(task -> {
+    private void loadData() {
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+        dbRef.child("users").child(userId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                DataSnapshot snapshot = task.getResult();
-                if (snapshot.exists()) {
-                    String adminName = snapshot.child("name").getValue(String.class);
-                    String adminEmail = snapshot.child("email").getValue(String.class);
+                DataSnapshot dataSnapshot = task.getResult();
+                if (dataSnapshot.exists()) {
+                    User user = dataSnapshot.getValue(User.class);
 
-                    // Cập nhật thông tin lên giao diện
-                    tvAdminName.setText(adminName != null ? adminName : "Chưa có tên");
-                    tvAdminEmail.setText(adminEmail != null ? adminEmail : "Chưa có email");
+                    tvAdminName.setText(user.getUsername());
+                    tvAdminEmail.setText(user.getEmail());
+
+                    if (user.getAvatar() != null && !user.getAvatar().isEmpty()) {
+                        Picasso.get().load(user.getAvatar()).into(imgAvatar);
+                    }
                 } else {
                     Toast.makeText(AdminProfileActivity.this, "Không tìm thấy thông tin admin", Toast.LENGTH_SHORT).show();
                 }
@@ -84,61 +90,10 @@ public class AdminProfileActivity extends AppCompatActivity {
             }
         });
     }
-    private void getAdminStats() {
-        // Lấy thông tin về số lượng người dùng, khóa học và bài học từ Firebase
-        dbRef.child("users").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DataSnapshot snapshot = task.getResult();
-                int userCount = (int) snapshot.getChildrenCount();
-                tvTotalUsers.setText(String.valueOf(userCount));
-            } else {
-                Toast.makeText(AdminProfileActivity.this, "Lỗi khi lấy dữ liệu người dùng", Toast.LENGTH_SHORT).show();
-            }
-        });
 
-        dbRef.child("languages").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DataSnapshot snapshot = task.getResult();
-                int courseCount = (int) snapshot.getChildrenCount(); // Số lượng khóa học
-                tvTotalCourses.setText(String.valueOf(courseCount));  // Hiển thị tổng số khóa học
-            } else {
-                Toast.makeText(AdminProfileActivity.this, "Lỗi khi lấy dữ liệu khóa học", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
-        dbRef.child("lessons").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DataSnapshot snapshot = task.getResult();
-                int lessonCount = (int) snapshot.getChildrenCount();
-                tvTotalLessons.setText(String.valueOf(lessonCount));
-            } else {
-                Toast.makeText(AdminProfileActivity.this, "Lỗi khi lấy dữ liệu bài học", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void navigateToUserManagement() {
-        Intent intent = new Intent(AdminProfileActivity.this, UserManagementActivity.class);
-        startActivity(intent);
-    }
-
-    private void navigateToLanguageManagement() {
-        Intent intent = new Intent(AdminProfileActivity.this, LanguageManagementActivity.class);
-        startActivity(intent);
-    }
-
-    private void navigateToLessonManagement() {
-        Intent intent = new Intent(AdminProfileActivity.this, LessonManagementActivity.class);
-        startActivity(intent);
-    }
-
-    private void editProfile() {
-        Intent intent = new Intent(AdminProfileActivity.this, AdminEditProfileActivity.class);
-        startActivity(intent);
-    }
-    private void logout() {
-        Toast.makeText(AdminProfileActivity.this, "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
-        finish();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadData();
     }
 }

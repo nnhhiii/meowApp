@@ -174,20 +174,30 @@ public class QuestionAdapter  extends RecyclerView.Adapter<QuestionAdapter.ViewH
         if (selectedIndex != -1) {
             holder.spQuestionType.setSelection(selectedIndex);
             updateView(holder, questionTypeNames.get(selectedIndex), question);
+        } else {
+            Log.e("Adapter", "Không tìm thấy loại câu hỏi tương ứng");
         }
+
 
         holder.spQuestionType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                questionTypeId = questionTypeList.get(position).first;
-                questionTypeName = questionTypeNames.get(position);
-                // Gọi lại phương thức cập nhật giao diện
-                updateView(holder, questionTypeName, question);
+                if (position >= 0 && position < questionTypeList.size()) {
+                    questionTypeId = questionTypeList.get(position).first;
+                    questionTypeName = questionTypeNames.get(position);
+                    // Cập nhật giao diện
+                    updateView(holder, questionTypeName, question);
+                } else {
+                    Log.e("Adapter", "Vị trí không hợp lệ: " + position);
+                }
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Không cần xử lý nếu không chọn gì
+            }
         });
+
 
         holder.btnImageA.setOnClickListener(v -> openGallery(holder, 0, position));
         holder.btnImageB.setOnClickListener(v -> openGallery(holder, 1, position));

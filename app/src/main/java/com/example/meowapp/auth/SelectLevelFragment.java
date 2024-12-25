@@ -140,6 +140,7 @@ public class SelectLevelFragment extends Fragment {
     private void navigationToMainActivity() {
         Intent intent = new Intent(requireActivity(), LoginActivity.class);
         startActivity(intent);
+        getActivity().finish();
     }
 
     private void processingSubmitOnClick() {
@@ -179,6 +180,9 @@ public class SelectLevelFragment extends Fragment {
                         if (exception instanceof FirebaseAuthException) {
                             String errorCode = ((FirebaseAuthException) exception).getErrorCode();
                             mappingErrorCode(errorCode);
+                            Intent intent = new Intent(requireActivity(), LoginActivity.class);
+                            startActivity(intent);
+                            getActivity().finish();
                         } else {
                             Log.e(TAG, "Create account with Firebase Authentication fail!", exception);
                         }
@@ -189,7 +193,7 @@ public class SelectLevelFragment extends Fragment {
     private void mappingErrorCode(String errorCode) {
         switch (errorCode) {
             case "ERROR_EMAIL_ALREADY_IN_USE":
-                Toast.makeText(requireContext(), "Email đã được đăng ký!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "Email đã tồn tại trong Auth. Vui lòng nhập email khác!", Toast.LENGTH_SHORT).show();
                 return;
             case "ERROR_INVALID_EMAIL":
                 Toast.makeText(requireContext(), "Email không đúng định dạng!", Toast.LENGTH_SHORT).show();
@@ -209,6 +213,8 @@ public class SelectLevelFragment extends Fragment {
         user.setUsername(username);
         user.setAvatar(defaultAvatar);
         user.setRole("user");
+        user.setHearts(5);
+        user.setDiamonds(1000);
 
         // Lấy thời gian hiện tại
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

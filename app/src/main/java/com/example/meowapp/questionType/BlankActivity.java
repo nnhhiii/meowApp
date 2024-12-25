@@ -53,7 +53,7 @@ public class BlankActivity extends AppCompatActivity {
     private List<Pair<String, QuestionType>> questionTypeList = new ArrayList<>();
     public int currentQuestionIndex = 0;
     public Map<String, Question> questionMap;
-    private String lessonId, userId;
+    private String lessonId, userId, questionType;
     private Map<String, QuestionType> questionTypeMap;
     private TextToSpeech tts;
     public int correctAnswers = 0;  // Số câu đúng
@@ -89,9 +89,18 @@ public class BlankActivity extends AppCompatActivity {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         userId = firebaseAuth.getCurrentUser().getUid();
 
+
         lessonId = getIntent().getStringExtra("LESSON_ID");
+        questionType = getIntent().getStringExtra("QUESTION_TYPE");
+
+        if(lessonId != null && questionType == null){
+            loadQuestionsByLessonId();
+            Log.e("HomeFragment", "load lessonId");
+        }else if(lessonId == null && questionType != null) {
+            loadQuestionsByQuestionType();
+            Log.e("HomeFragment", "load questionType");
+        }
         fetchUserById();
-        loadData();
     }
     private void fetchUserById() {
         FirebaseApiService.apiService.getUserById(userId).enqueue(new Callback<User>() {
@@ -113,7 +122,7 @@ public class BlankActivity extends AppCompatActivity {
             }
         });
     }
-    private void loadData() {
+    private void loadQuestionsByLessonId() {
         FirebaseApiService.apiService.getQuestionsByLessonId("\"lesson_id\"", "\"" + lessonId + "\"")
                 .enqueue(new Callback<Map<String, Question>>() {
                     @Override
@@ -136,7 +145,27 @@ public class BlankActivity extends AppCompatActivity {
                     }
                 });
     }
+    private void loadQuestionsByQuestionType() {
+        FirebaseApiService.apiService.getQuestionsByType("\"question_type\"", "\"" + questionType + "\"").enqueue(new Callback<Map<String, Question>>() {
+            @Override
+            public void onResponse(Call<Map<String, Question>> call, Response<Map<String, Question>> response) {
+                if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
+                    questionMap = response.body();
+                    questionIds.addAll(questionMap.keySet());
+                    totalQuestions = questionIds.size();
 
+                    getAllQuestionType();
+                } else {
+                    Log.e("PracticeFragment", "No questions available or API failed.");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Map<String, Question>> call, Throwable t) {
+                Log.e("PracticeFragment", "Error loading questions", t);
+            }
+        });
+    }
     private void getAllQuestionType() {
         questionTypeList.clear();
         FirebaseApiService.apiService.getAllQuestionType().enqueue(new Callback<Map<String, QuestionType>>() {

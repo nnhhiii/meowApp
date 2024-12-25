@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +21,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     // Khai báo và ánh xạ giao diện
     private TextInputEditText edtCurrentPassword, edtNewPassword, edtConfirmPassword;
     private Button btnChangePassword;
+    private ImageButton btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
         edtNewPassword = findViewById(R.id.edtNewPassword);
         edtConfirmPassword = findViewById(R.id.edtConfirmPassword);
         btnChangePassword = findViewById(R.id.btnChangePassword);
+        btnBack = findViewById(R.id.back_btn);
+        btnBack.setOnClickListener(v -> finish());
 
         btnChangePassword.setOnClickListener(v -> changePassword());
     }

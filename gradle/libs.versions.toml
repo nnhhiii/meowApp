@@ -27,6 +27,8 @@ firebaseAppcheckPlayintegrity = "18.0.0"
 firebaseAppcheck = "18.0.0"
 firebaseMessaging = "24.1.0"
 googleAuthLibraryOauth2Http = "1.30.0"
+glide = "5.0.0-rc01"
+commonsLang3 = "3.17.0"
 
 [libraries]
 recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
@@ -56,6 +58,8 @@ firebase-appcheck-playintegrity = { group = "com.google.firebase", name = "fireb
 firebase-appcheck = { group = "com.google.firebase", name = "firebase-appcheck", version.ref = "firebaseAppcheck" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
 google-auth-library-oauth2-http = { group = "com.google.auth", name = "google-auth-library-oauth2-http", version.ref = "googleAuthLibraryOauth2Http" }
+glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
+commons-lang3 = { group = "org.apache.commons", name = "commons-lang3", version.ref = "commonsLang3" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

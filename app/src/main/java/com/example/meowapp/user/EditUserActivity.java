@@ -51,10 +51,7 @@ public class EditUserActivity extends AppCompatActivity {
 
     private RadioGroup roleGroup;
     private RadioButton rbAdmin, rbStudent;
-    private Spinner spLanguage;
     private TextView scoreTextView;
-    private final Map<String, String> languageMap = new HashMap<>();
-    private String lastRole;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,34 +67,15 @@ public class EditUserActivity extends AppCompatActivity {
         roleGroup = findViewById(R.id.radioGroup);
         rbAdmin = findViewById(R.id.radioButtonAdmin);
         rbStudent = findViewById(R.id.radioButtonStudent);
-        spLanguage = findViewById(R.id.spLanguage);
         scoreTextView = findViewById(R.id.scoreTextView);
 
         btnCancel.setOnClickListener(v -> finish());
 
-        SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
-        String lastRole = sharedPreferences.getString("lastRole", "");
-        if (lastRole.equals("Admin")) {
-            rbAdmin.setChecked(true);
-            spLanguage.setVisibility(View.VISIBLE);
-            scoreTextView.setVisibility(View.GONE);
-            loadDataToSpinner(); // Load ngôn ngữ vào Spinner
-        } else if (lastRole.equals("Student")) {
-            rbStudent.setChecked(true);
-            spLanguage.setVisibility(View.GONE);
-            scoreTextView.setVisibility(View.VISIBLE);
-            scoreTextView.setText("Điểm số: " + 0);
-        }
-
         roleGroup.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.radioButtonAdmin) {
-                spLanguage.setVisibility(View.VISIBLE);
                 scoreTextView.setVisibility(View.GONE);
-                loadDataToSpinner();
             } else {
-                spLanguage.setVisibility(View.GONE);
                 scoreTextView.setVisibility(View.VISIBLE);
-                scoreTextView.setText("Điểm số: " + 0);
             }
         });
 
@@ -128,6 +106,15 @@ public class EditUserActivity extends AppCompatActivity {
                     if (user.getAvatar() != null && !user.getAvatar().isEmpty()) {
                         Picasso.get().load(user.getAvatar()).into(imageView);
                     }
+
+                    if (user.getRole().equals("admin")) {
+                        rbAdmin.setChecked(true);
+                        scoreTextView.setVisibility(View.GONE);
+                    } else {
+                        rbStudent.setChecked(true);
+                        scoreTextView.setVisibility(View.VISIBLE);
+                        scoreTextView.setText("Điểm số: " + user.getScore());
+                    }
                 } else {
                     Toast.makeText(EditUserActivity.this, "Không tải được dữ liệu!", Toast.LENGTH_SHORT).show();
                 }
@@ -140,45 +127,7 @@ public class EditUserActivity extends AppCompatActivity {
         });
     }
 
-    private void loadDataToSpinner() {
-        FirebaseApiService.apiService.getAllLanguage().enqueue(new Callback<Map<String, Language>>() {
-            @Override
-            public void onResponse(Call<Map<String, Language>> call, Response<Map<String, Language>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    Map<String, Language> languages = response.body();
-                    List<String> languageNames = new ArrayList<>();
-                    int selectedIndex = -1;
-                    int index = 0;
 
-                    for (Map.Entry<String, Language> entry : languages.entrySet()) {
-                        String languageName = entry.getValue().getLanguage_name();
-                        languageNames.add(languageName);
-                        languageMap.put(languageName, entry.getKey());
-
-                        if (entry.getKey().equals(user.getLanguage_id())) {
-                            selectedIndex = index;
-                        }
-                        index++;
-                    }
-
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(EditUserActivity.this, android.R.layout.simple_spinner_item, languageNames);
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spLanguage.setAdapter(adapter);
-
-                    if (selectedIndex != -1) {
-                        spLanguage.setSelection(selectedIndex);
-                    }
-                } else {
-                    Toast.makeText(EditUserActivity.this, "Không thể tải thông tin ngôn ngữ", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Map<String, Language>> call, Throwable throwable) {
-                Toast.makeText(EditUserActivity.this, "Lỗi khi tải ngôn ngữ!", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 
     private final ActivityResultLauncher<Intent> activityResult = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -216,22 +165,12 @@ public class EditUserActivity extends AppCompatActivity {
         user.setEmail(newEmail);
         user.setUpdated_at(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 
-        SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
         int selectedRoleId = roleGroup.getCheckedRadioButtonId();
         if (selectedRoleId == R.id.radioButtonAdmin) {
-            user.setRole("Admin");
-            String selectedLanguage = spLanguage.getSelectedItem().toString();
-            user.setLanguage_id(languageMap.get(selectedLanguage));
-            editor.putString("lastRole", "Admin");
+            user.setRole("admin");
         } else {
-            user.setRole("Student");
-            user.setScore(0);
-            scoreTextView.setText("Điểm số: " + 0);
-            editor.putString("lastRole", "Student");
+            user.setRole("student");
         }
-
-        editor.apply();
 
         if (imgUri != null) {
             uploadImageToFirebaseStorage(imgUri);

@@ -6,10 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meowapp.R;
@@ -49,6 +51,17 @@ public class ButtonAdapter extends RecyclerView.Adapter<ButtonAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String lessonId = lessonIds.get(position);
         holder.textView.setText(lessonNames.get(position)); // Hiển thị tên bài học
+
+        // Cập nhật margin để tạo kiểu zigzag
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) holder.imageButton.getLayoutParams();
+
+        if (position % 2 == 0) {
+            // Item lẻ: margin bên trái lớn hơn
+            params.setMargins(250, 8, 0, 8); // Left margin > Right margin
+        } else {
+            // Item chẵn: margin bên phải lớn hơn
+            params.setMargins(0, 8, 250, 8); // Right margin > Left margin
+        }
 
         // Kiểm tra trạng thái hoàn thành của bài học
         if (completedLessons.contains(lessonId)) {

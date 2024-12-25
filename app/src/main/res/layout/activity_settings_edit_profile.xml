@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,6 +7,7 @@
     android:background="#FAF9F9">
 
     <LinearLayout
+        android:id="@+id/layout_tren"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -35,9 +36,10 @@
         android:id="@+id/imgAvatar"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_gravity="center"
+        android:layout_centerHorizontal="true"
         android:scaleType="centerCrop"
         android:layout_marginBottom="10dp"
+        android:layout_below="@+id/layout_tren"
         app:shapeAppearanceOverlay="@style/circleImageStyle"
         app:srcCompat="@drawable/ic_launcher_background" />
 
@@ -48,12 +50,15 @@
         android:textSize="12dp"
         android:layout_marginBottom="20dp"
         android:text="Tải ảnh"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/imgAvatar"
         android:layout_gravity="center"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
+        android:layout_below="@+id/btnImage"
         android:orientation="vertical">
         <EditText
             android:id="@+id/edtName"
@@ -85,31 +90,16 @@
             android:paddingTop="10dp"
             android:paddingRight="10dp"/>
 
-        <EditText
-            android:id="@+id/edtPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="  Mật khẩu"
-            android:textColor="#000000"
-            android:textSize="18sp"
-            android:padding="14dp"
-            android:background="@drawable/edit_text_background"
-            android:layout_marginBottom="24dp"
-            android:inputType="textPassword"
-            android:drawableLeft="@drawable/ic_password_star"
-            android:paddingLeft="10dp"
-            android:paddingTop="10dp"
-            android:paddingRight="10dp"/>
-
-        <Button
-            android:id="@+id/btnSave"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:text="Lưu"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:background="@drawable/rounded_button_background"
-            android:layout_marginTop="32dp"
-            android:layout_gravity="center"/>
     </LinearLayout>
-</LinearLayout>
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Lưu"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:background="@drawable/rounded_button_background"
+        android:layout_marginTop="32dp"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp" />
+</RelativeLayout>

@@ -27,7 +27,7 @@
             android:layout_height="20dp"
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
-            android:text="mchau"
+            android:text="Đang tải"
             android:gravity="center"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -39,7 +39,7 @@
             android:layout_width="200dp"
             android:layout_height="20dp"
             android:layout_gravity="center"
-            android:text="mcapr3pi"
+            android:text="Đang tải"
             android:gravity="center"
             android:textSize="16sp"
             android:textColor="#777777" />
@@ -61,24 +61,76 @@
             android:id="@+id/tvCoursePoints"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Điểm: 1200"
+            android:text="Điểm: 0"
             android:textSize="18sp"
             android:textColor="#444444"
             android:layout_gravity="center_horizontal"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tvUserCourses"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/adminStatsSection"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Khóa học: Tiếng anh, Tiếng hàn"
-            android:textSize="18sp"
-            android:textColor="#444444"
-            android:layout_gravity="center_horizontal" />
+            android:orientation="horizontal"
+            android:background="@drawable/rounded_card_background"
+            android:padding="16dp"
+            android:layout_below="@+id/profileInfoSection"
+            android:layout_marginTop="20dp"
+            android:gravity="center">
+
+            <!-- Courses -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginEnd="16dp">
+
+                <TextView
+                    android:id="@+id/tvTotalCourses"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="..."
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="#4A148C" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ngôn ngữ học"
+                    android:textSize="16sp"
+                    android:textColor="#757575" />
+            </LinearLayout>
+
+            <!-- Lessons -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tvTotalLessons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="..."
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="#4A148C" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bài học hoàn thành"
+                    android:textSize="16sp"
+                    android:textColor="#757575" />
+            </LinearLayout>
+        </LinearLayout>
+
     </LinearLayout>
 
-    <ScrollView
+    <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/infoLayout"
@@ -86,23 +138,22 @@
         android:padding="10dp"
         android:scrollbars="none">
 
-        <LinearLayout
+    <LinearLayout
             android:id="@+id/courseLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:scrollbars="horizontal"
+            android:layout_gravity="center"
             android:gravity="center">
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="10dp"
-            android:contentDescription=" Flag"
-            android:scaleType="centerCrop"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/rounded_card_background"/>
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="80dp"
+                android:layout_marginEnd="10dp"
+                android:scaleType="centerCrop"
+                android:background="@drawable/rounded_card_background"/>
         </LinearLayout>
-    </ScrollView>
+    </HorizontalScrollView>
 
     <!-- Settings Button -->
     <ImageButton

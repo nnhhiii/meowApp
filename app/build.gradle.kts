@@ -69,6 +69,8 @@ dependencies {
     implementation(libs.firebase.appcheck)
     implementation(libs.firebase.messaging)
     implementation(libs.google.auth.library.oauth2.http)
+    implementation(libs.glide)
+    implementation(libs.commons.lang3)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

@@ -37,6 +37,8 @@
         android:textSize="18sp"
         android:textColor="#808080"
         android:layout_marginHorizontal="20dp"
+        android:dividerHeight="10dp"
+        android:divider="@android:color/transparent"
         android:gravity="center"
         android:layout_marginBottom="16dp"
         />

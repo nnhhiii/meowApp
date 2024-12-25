@@ -35,27 +35,17 @@
         android:gravity="center">
 
         <TextView
-            android:id="@+id/day_t1"
+            android:id="@+id/day_t0"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginEnd="4dp"
             android:background="@drawable/circle_background"
             android:padding="8dp"
-            android:text="T1"
+            android:text="T2"
             android:textColor="@android:color/white" />
 
         <TextView
-            android:id="@+id/day_t2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="T2"
-            android:background="@drawable/circle_background"
-            android:padding="8dp"
-            android:textColor="@android:color/white"
-            android:layout_marginEnd="4dp"/>
-
-        <TextView
-            android:id="@+id/day_t3"
+            android:id="@+id/day_t1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="T3"
@@ -65,7 +55,7 @@
             android:layout_marginEnd="4dp"/>
 
         <TextView
-            android:id="@+id/day_t4"
+            android:id="@+id/day_t2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="T4"
@@ -75,7 +65,7 @@
             android:layout_marginEnd="4dp"/>
 
         <TextView
-            android:id="@+id/day_t5"
+            android:id="@+id/day_t3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="T5"
@@ -85,7 +75,7 @@
             android:layout_marginEnd="4dp"/>
 
         <TextView
-            android:id="@+id/day_t6"
+            android:id="@+id/day_t4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="T6"
@@ -95,22 +85,24 @@
             android:layout_marginEnd="4dp"/>
 
         <TextView
-            android:id="@+id/day_T7"
+            android:id="@+id/day_t5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="T7"
             android:background="@drawable/circle_background"
             android:padding="8dp"
-            android:textColor="@android:color/white"/>
+            android:textColor="@android:color/white"
+            android:layout_marginEnd="4dp"/>
+
         <TextView
-            android:id="@+id/day_T8"
+            android:id="@+id/day_T6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="T8"
+            android:text="CN"
             android:background="@drawable/circle_background"
             android:padding="8dp"
             android:textColor="@android:color/white"/>
-        </LinearLayout>
+    </LinearLayout>
  <ImageView
         android:id="@+id/streak_check"
         android:layout_width="wrap_content"

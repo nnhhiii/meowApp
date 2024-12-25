@@ -81,7 +81,7 @@ public interface FirebaseApiService {
     @POST("language_preferences.json")
     Call<LanguagePreference> addLanguagePreference(@Body LanguagePreference language);
     @PATCH("language_preferences/{id}.json")
-    Call<LanguagePreference> updateLanguageScore(@Path("id") String userId, @Body Map<String, Object> scoreField);
+    Call<LanguagePreference> updateLanguagePreference(@Path("id") String userId, @Body Map<String, Object> field);
     @DELETE("language_preferences/{id}.json")
     Call<LanguagePreference> deleteLanguagePreference(@Path("id") String id);
 

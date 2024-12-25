@@ -112,7 +112,8 @@ public class UserManagementActivity extends AppCompatActivity {
         } else {
             for (Pair<String, User> pair : usersList) {
                 User user = pair.second; // Lấy đối tượng User từ cặp Pair
-                if (user.getUsername().toLowerCase().contains(keyword.toLowerCase())) { // Thay đổi theo thuộc tính tên của User
+                if (user.getUsername().toLowerCase().contains(keyword.toLowerCase()) ||
+                        user.getEmail().toLowerCase().contains(keyword.toLowerCase())) {
                     filteredUsersList.add(pair); // Thêm cặp Pair vào danh sách lọc
                 }
             }

@@ -84,13 +84,9 @@ public class AddUserActivity extends AppCompatActivity {
 
         roleGroup.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.radioButtonAdmin) {
-                spLanguage.setVisibility(View.VISIBLE);
                 scoreTextView.setVisibility(View.GONE);
-                loadDataToSpinner();
             } else {
-                spLanguage.setVisibility(View.GONE);
                 scoreTextView.setVisibility(View.VISIBLE);
-                scoreTextView.setText("Điểm số: " + 0);
             }
         });
         btnSave.setOnClickListener(v -> {
@@ -119,11 +115,9 @@ public class AddUserActivity extends AppCompatActivity {
             }
 
             if (rbAdmin.isChecked()) {
-                user.setRole("Admin");
-                String selectedLanguage = spLanguage.getSelectedItem().toString();
-                user.setLanguage_id(languageMap.get(selectedLanguage));
+                user.setRole("admin");
             } else if (rbStudent.isChecked()) {
-                user.setRole("Student");
+                user.setRole("student");
                 user.setScore(0);
                 scoreTextView.setText("Điểm số: " + 0);
             }
@@ -161,48 +155,7 @@ public class AddUserActivity extends AppCompatActivity {
                 });
     }
 
-    private void loadDataToSpinner() {
-        FirebaseApiService.apiService.getAllLanguage().enqueue(new Callback<Map<String, Language>>() {
-            @Override
-            public void onResponse(Call<Map<String, Language>> call, Response<Map<String, Language>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    Map<String, Language> languages = response.body();
-                    List<String> languageNames = new ArrayList<>();
-                    int selectedIndex = -1;
-                    int index = 0;
-
-                    for (Map.Entry<String, Language> entry : languages.entrySet()) {
-                        String languageName = entry.getValue().getLanguage_name();
-                        languageNames.add(languageName);
-                        languageMap.put(languageName, entry.getKey());
-
-                        if (entry.getKey().equals(user.getLanguage_id())) {
-                            selectedIndex = index;
-                        }
-                        index++;
-                    }
-
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(AddUserActivity.this, android.R.layout.simple_spinner_item, languageNames);
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spLanguage.setAdapter(adapter);
-
-                    if (selectedIndex != -1) {
-                        spLanguage.setSelection(selectedIndex);
-                    }
-                } else {
-                    Toast.makeText(AddUserActivity.this, "Không thể tải thông tin ngôn ngữ", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Map<String, Language>> call, Throwable throwable) {
-                Toast.makeText(AddUserActivity.this, "Lỗi khi tải ngôn ngữ!", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
     private void saveToFireBase(User user) {
-        Log.d("AddUserActivity", "Bắt đầu lưu người dùng vào Firebase");
         FirebaseApiService.apiService.addUser(user).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {

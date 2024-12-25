@@ -16,12 +16,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.meowapp.R;
 import com.example.meowapp.api.FirebaseApiService;
 import com.example.meowapp.model.User;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,7 +37,6 @@ public class SettingsEditProfileActivity extends AppCompatActivity {
     private Uri imgUri;
     private User user;
     private String userId;
-    private EditText edtPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,28 +49,14 @@ public class SettingsEditProfileActivity extends AppCompatActivity {
         btnChangeImage = findViewById(R.id.btnImage);
         ivAvatar = findViewById(R.id.imgAvatar);
         btnBack = findViewById(R.id.btnBack);
-        edtPassword = findViewById(R.id.edtPassword);
 
-        // Xử lý sự kiện nút quay lại
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        userId = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
+
+        btnChangeImage.setOnClickListener(v -> selectImage());
+        btnSave.setOnClickListener(v -> saveUserProfile());
         btnBack.setOnClickListener(v -> finish());
 
-        // Lấy userId từ Intent
-        userId = getIntent().getStringExtra("userId");
-
-        // Kiểm tra nếu userId không hợp lệ
-        if (userId == null || userId.isEmpty()) {
-            Toast.makeText(this, "Không tìm thấy thông tin người dùng!", Toast.LENGTH_SHORT).show();
-            finish();  // Quay lại nếu không có userId
-            return;
-        }
-
-        // Chọn hình ảnh mới
-        btnChangeImage.setOnClickListener(v -> selectImage());
-
-        // Lưu thông tin người dùng khi nhấn nút lưu
-        btnSave.setOnClickListener(v -> saveUserProfile());
-
-        // Tải dữ liệu người dùng
         loadUserData();
     }
 
@@ -97,34 +84,6 @@ public class SettingsEditProfileActivity extends AppCompatActivity {
             }
         });
     }
-    private void updatePassword() {
-        String newPassword = edtPassword.getText().toString().trim();
-
-        if (TextUtils.isEmpty(newPassword)) {
-            Toast.makeText(this, "Vui lòng nhập mật khẩu mới!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // Cập nhật mật khẩu thông qua API
-        user.setPassword(newPassword);  // Giả sử model User có thuộc tính password
-        FirebaseApiService.apiService.updateUser(userId, user).enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(SettingsEditProfileActivity.this, "Mật khẩu đã được cập nhật!", Toast.LENGTH_SHORT).show();
-                    edtPassword.setText(""); // Xóa trường nhập mật khẩu sau khi cập nhật
-                } else {
-                    Toast.makeText(SettingsEditProfileActivity.this, "Cập nhật mật khẩu thất bại!", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(SettingsEditProfileActivity.this, "Lỗi mạng! Không thể cập nhật mật khẩu.", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
     private void selectImage() {
         Intent intent = new Intent();
         intent.setType("image/*");

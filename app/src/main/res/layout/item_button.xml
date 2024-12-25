@@ -1,33 +1,40 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="130dp"
     android:orientation="vertical"
+    android:layout_marginHorizontal="20dp"
     android:padding="16dp">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/item_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="28dp"
+        android:text="15"
+        android:textColor="@color/pink1"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/item_button"
+        app:layout_constraintEnd_toEndOf="@+id/item_button"
+        app:layout_constraintStart_toStartOf="@+id/item_button" />
 
-    <FrameLayout
-        android:layout_width="108dp"
-        android:layout_height="98dp"
-        android:layout_gravity="center">
-
-        <TextView
-            android:id="@+id/item_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="22dp"
-            android:layout_marginLeft="1dp"
-            android:text="15"
-            android:textColor="@color/pink1"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <ImageButton
-            android:id="@+id/item_button"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:elevation="8dp"
-            app:srcCompat="@drawable/buttonmeow" />
-    </FrameLayout>
+    <ImageButton
+        android:id="@+id/item_button"
+        android:layout_width="150dp"
+        android:layout_height="120dp"
+        android:background="@null"
+        android:elevation="8dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/buttonmeow" />
+</androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
-    android:background="#F5F5F5"
+    android:background="#FFF5F5"
     tools:context=".user.DetailUserActivity">
 
     <RelativeLayout
@@ -31,119 +31,178 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="17dp"
             android:text="Thông tin người dùng"
-            android:textSize="20sp"
+            android:textSize="22sp"
             android:textStyle="bold" />
 
     </RelativeLayout>
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/image"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_margin="25dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/layout_tren"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_add_image"
-        app:shapeAppearanceOverlay="@style/roundedImageStyle" />
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_below="@+id/image"
-        android:background="@drawable/radius_4_goc"
-        android:backgroundTint="@color/white"
-        android:padding="25dp">
-
-
-        <TextView
-            android:id="@+id/username_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tên người dùng"
-            android:textSize="18dp"
-            android:textColor="#000" />
-
-        <TextView
-            android:id="@+id/username"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layout_tren">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18dp"
-            android:text="Nguyen Ngoc Minh Chau"
-            android:textColor="@color/dark_gray"
-            android:layout_marginTop="8dp" />
-
-        <TextView
-            android:id="@+id/email_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Email"
-            android:textSize="18dp"
-            android:textColor="#000"
-            android:layout_marginTop="16dp" />
-
-        <TextView
-            android:id="@+id/email"
+            android:orientation="vertical">
+            <LinearLayout
+            android:id="@+id/profileInfoSection"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18dp"
-            android:text="mchau@gmail.com"
-            android:textColor="@color/dark_gray"
-            android:layout_marginTop="8dp" />
-        <TextView
-            android:id="@+id/role_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Vai trò"
-            android:textSize="18dp"
-            android:textColor="#000"
-            android:layout_marginTop="16dp" />
+            android:orientation="vertical"
+            android:background="@drawable/rounded_card_background"
+            android:padding="20dp"
+            android:layout_below="@+id/layout_tren"
+            android:layout_marginTop="20dp">
 
-        <TextView
-            android:id="@+id/role"
+            <!-- Avatar -->
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imgAvatar"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/circleImageStyle"
+                app:srcCompat="@drawable/user_avatar"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Name -->
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="username"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#4A148C"
+                android:layout_gravity="center"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Email -->
+            <TextView
+                android:id="@+id/tvEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="admin@example.com"
+                android:textSize="16sp"
+                android:textColor="#757575"
+                android:layout_gravity="center"
+                android:layout_marginBottom="12dp" />
+
+            <!-- Role -->
+            <TextView
+                android:id="@+id/tvRole"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vai trò: Học viên"
+                android:textSize="16sp"
+                android:textColor="#D81B60"
+                android:layout_gravity="center" />
+        </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/adminStatsSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/rounded_card_background"
+                android:padding="16dp"
+                android:layout_below="@+id/profileInfoSection"
+                android:layout_margin="20dp"
+                android:elevation="5dp"
+                android:gravity="center">
+
+                <!-- Courses -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_marginEnd="16dp">
+
+                    <TextView
+                        android:id="@+id/tvTotalCourses"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:textColor="#4A148C" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ngôn ngữ học"
+                        android:textSize="16sp"
+                        android:textColor="#757575" />
+                </LinearLayout>
+
+                <!-- Lessons -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/tvTotalLessons"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:textColor="#4A148C" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bài học"
+                        android:textSize="16sp"
+                        android:textColor="#757575" />
+                </LinearLayout>
+            </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18dp"
-            android:text="Quản trị"
-            android:textColor="@color/dark_gray"
-            android:layout_marginTop="8dp" />
-        <TextView
-            android:id="@+id/createdAt_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ngày tạo"
-            android:textSize="18dp"
-            android:textColor="#000"
-            android:layout_marginTop="16dp" />
+            android:orientation="vertical"
+            android:layout_below="@+id/tvRole"
+            android:layout_marginTop="20dp"
+            android:padding="25dp">
+            <TextView
+                android:id="@+id/createdAt_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ngày tạo"
+                android:textSize="18dp"
+                android:textColor="#000"/>
 
-        <TextView
-            android:id="@+id/createdAt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18dp"
-            android:text="1/4/2024"
-            android:textColor="@color/dark_gray"
-            android:layout_marginTop="8dp" />
-        <TextView
-            android:id="@+id/updatedAt_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ngày cập nhật"
-            android:textSize="18dp"
-            android:textColor="#000"
-            android:layout_marginTop="16dp" />
+            <TextView
+                android:id="@+id/createdAt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:text="1/4/2024"
+                android:textColor="@color/dark_gray"
+                android:layout_marginTop="8dp" />
+            <TextView
+                android:id="@+id/updatedAt_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ngày cập nhật"
+                android:textSize="18dp"
+                android:textColor="#000"
+                android:layout_marginTop="16dp" />
 
-        <TextView
-            android:id="@+id/updatedAt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18dp"
-            android:text="13/10/2024"
-            android:textColor="@color/dark_gray"
-            android:layout_marginTop="8dp" />
-
-    </LinearLayout>
-
+            <TextView
+                android:id="@+id/updatedAt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:text="13/10/2024"
+                android:textColor="@color/dark_gray"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+</LinearLayout>
+    </ScrollView>
     <Button
         android:id="@+id/btnDelete"
         android:layout_width="wrap_content"
